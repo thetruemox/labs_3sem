@@ -11,6 +11,8 @@ int main()
 	cin >> col;
 	cout << endl;
 
+	if (col == 0) return 0;
+
 	float** mx = new float*[col];
 	int* arr_size = new int[col];
 
@@ -80,6 +82,7 @@ int main()
 
 void busort(float* arr, int size)
 {
+	if (size == 0) return;
 	if (arr[0] > 0)
 	{
 		for (int i = 0; i < size - 1; i++)
