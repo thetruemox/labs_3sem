@@ -9,9 +9,25 @@ int main()
 	int col;
 	cout << "Enter array of array size: ";
 	cin >> col;
+
+	if (cin.good())
+	{
+		cout << "We are good!" << endl;
+	}
+	else
+	{
+		cout << "We are bad!";
+		return 0;
+	}
+	
 	cout << endl;
 
-	if (col == 0) return 0;
+	//cin.
+	//clear and ignore
+	//good bad
+	//Переделать структуру хранения, хеш таблица, ключ - само значение
+
+	if (col == 0 || col < 0) return 0;
 
 	float** mx = new float*[col];
 	int* arr_size = new int[col];
@@ -34,7 +50,7 @@ int main()
 
 	int m_sum = 0, t_sum = 0, m_i;
 
-	for (int i = 0; i < col; i++)
+	for (int i = 0; i < col; i++) //отдельная ф-ия
 	{
 		for (int j = 0; j < arr_size[i]; j++)
 		{
@@ -51,7 +67,7 @@ int main()
 
 	}
 
-	cout << "Original Array:" << endl;
+	cout << "Original Array:" << endl; //отдельная ф-ия
 
 	for (int i = 0; i < col; i++)
 	{
@@ -65,7 +81,7 @@ int main()
 	busort(mx[m_i], arr_size[m_i]);
 
 
-	cout << "Edited Array:" << endl;
+	cout << "Edited Array:" << endl; //отдельная ф-ия
 
 	for (int i = 0; i < col; i++)
 	{
