@@ -1,129 +1,257 @@
 ﻿#include <iostream>
-using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
 
-void busort(float *arr, int size);
+//Дописать функцию busort, можно еще написать функцию которая будет возвращать указатель на Element по запросу с ключом и по этому указателю менять j объекта на соотв в остортированном массиве в busort
 
+class Element
+{
+public:
+	int i;
+	int j;
+	int key;
+	Element* next;
+
+	Element()
+	{
+		next = NULL;
+	}
+};
+
+class Matrix
+{
+public:
+	int size;
+	Element** arr;
+
+	Matrix(int size);
+	void add(int key, int i, int j);
+	int search(int it, int jt);
+	void mx_out(int n, int m);
+};
+
+template <typename T>
+T read(T* var);
+
+int hash(int size, int key);
+int find_max(Matrix* mx);
+int busort(Matrix* mx, int it, int m);
 
 int main()
 {
-	int col;
-	cout << "Enter array of array size: ";
-	cin >> col;
-
-	if (cin.good())
-	{
-		cout << "We are good!" << endl;
-	}
-	else
-	{
-		cout << "We are bad!";
-		return 0;
-	}
+	int n, m, temp;
 	
+	cout << "n: ";
+	read(&n);
+	cout << endl << "m: ";
+	read(&m);
 	cout << endl;
 
-	//cin.
-	//clear and ignore
-	//good bad
-	//Переделать структуру хранения, хеш таблица, ключ - само значение
+	Matrix mx(n);
 
-	if (col == 0 || col < 0) return 0;
-
-	float** mx = new float*[col];
-	int* arr_size = new int[col];
-
-	for (int i = 0; i < col; i++)
+	for (int i = 0; i < n; i++)
 	{
-		cout << "Enter size of " << i <<" array: ";
-		cin >> arr_size[i];
-
-		mx[i] = new float[arr_size[i]];
-
-		cout << endl << "Enter " << arr_size[i] << " numbers" << endl;
-		for (int j = 0; j < arr_size[i]; j++)
+		for (int j = 0; j < m; j++)
 		{
-			cin >> mx[i][j];
-		}
+			if (read(&temp) != 0)
+			{
+				mx.add(temp, i, j);
+			}
 
+		}
 	}
 
-
-	int m_sum = 0, t_sum = 0, m_i;
-
-	for (int i = 0; i < col; i++) //отдельная ф-ия
-	{
-		for (int j = 0; j < arr_size[i]; j++)
-		{
-			t_sum += mx[i][j];
-		}
-
-		if (t_sum > m_sum)
-		{
-			m_sum = t_sum;
-			m_i = i;
-		}
-
-		t_sum = 0;
-
-	}
-
-	cout << "Original Array:" << endl; //отдельная ф-ия
-
-	for (int i = 0; i < col; i++)
-	{
-		for (int j = 0; j < arr_size[i]; j++)
-		{
-			cout << mx[i][j] << " ";
-		}
-		cout << endl;
-	}
-	 
-	busort(mx[m_i], arr_size[m_i]);
+	mx.mx_out(n, m);
+	cout << endl;
+	cout << find_max(&mx);
 
 
-	cout << "Edited Array:" << endl; //отдельная ф-ия
-
-	for (int i = 0; i < col; i++)
-	{
-		for (int j = 0; j < arr_size[i]; j++)
-		{
-			cout << mx[i][j] << " ";
-		}
-		cout << endl;
-	}
-
-	//cout << endl << "m_sum: " << m_sum << " m_i: "<< m_i << endl;
-
+	return 0;
 }
 
-void busort(float* arr, int size)
+template<typename T>
+T read(T *var)
 {
-	if (size == 0) return;
-	if (arr[0] > 0)
-	{
-		for (int i = 0; i < size - 1; i++)
-		{
-			for (int j = 0; j < size - 1; j++)
-			{
-				if (arr[j] > arr[j+1])
-				{
-					swap(arr[j], arr[j + 1]);
-				}
-			}
-		}
-	}
-	else 
-	{
-		for (int i = 0; i < size - 1; i++)
-		{
-			for (int j = 0; j < size - 1; j++)
-			{
-				if (arr[j] <= arr[j + 1])
-				{
-					swap(arr[j], arr[j + 1]);
-				}
-			}
-		}
-	}
+	T temp;
+	cin >> temp;
 	
+	while (!cin.good())
+	{
+		cout << endl << "Invalid input, try again" << endl;
+		cin.clear();
+		cin.ignore(cin.rdbuf()->in_avail());
+		cin >> temp;
+	}
+
+	*var = temp;
+	return temp;
 }
+
+int hash(int size, int key)
+{
+	return key % size;
+}
+
+int find_max(Matrix* mx)
+{
+	int max = 0, i_max;
+
+	int* arr = new int[mx->size];
+	for (int i = 0; i < mx->size; i++)
+	{
+		arr[i] = 0;
+	}
+
+	Element* cur_ptr;
+
+	for (int i = 0; i < mx->size; i++)
+	{
+		cur_ptr = mx->arr[i];
+
+		if (cur_ptr != NULL)
+		{
+			while (cur_ptr->next != NULL)
+			{
+				arr[cur_ptr->i] += cur_ptr->key;
+				cur_ptr = cur_ptr->next;
+			}
+			arr[cur_ptr->i] += cur_ptr->key;
+		}
+	}
+
+	for (int i = 0; i < mx->size; i++)
+	{
+		if (arr[i] > max)
+		{
+			max = arr[i];
+			i_max = i;
+		}
+	}
+
+	delete(arr);
+	return i_max;
+}
+
+int busort(Matrix* mx, int it, int m)
+{
+	int* arr = new int[m];
+	int t_i = 0;
+	for (int i = 0; i < m; i++)
+	{
+		arr[i] = 0;
+	}
+
+	Element* cur_ptr;
+
+	for (int i = 0; i < mx->size; i++)
+	{
+		cur_ptr = mx->arr[i];
+
+		if (cur_ptr != NULL)
+		{
+			while (cur_ptr->next != NULL)
+			{
+				if (cur_ptr->i == it)
+				{
+					arr[t_i] = cur_ptr->key;
+				}
+				cur_ptr = cur_ptr->next;
+			}
+			if (cur_ptr->i == it)
+			{
+				arr[t_i] = cur_ptr->key;
+			}
+		}
+	}
+
+
+
+
+	delete(arr);
+	return 0;
+}
+
+Matrix::Matrix(int size)
+{
+	this->size = size;
+	arr = new Element * [size];
+	for (int i = 0; i < size; i++)
+	{
+		arr[i] = NULL;
+	}
+}
+
+void Matrix::add(int key, int i, int j)
+{
+	Element* cur_ptr = arr[hash(size, key)];
+
+	if (cur_ptr == NULL)
+	{
+		arr[hash(size, key)] = new Element;
+		cur_ptr = arr[hash(size, key)];
+	}
+	else if (cur_ptr != NULL)
+	{		
+		while (cur_ptr->next != NULL)
+		{
+			cur_ptr = cur_ptr->next;
+		}
+		cur_ptr->next = new Element;
+		cur_ptr = cur_ptr->next;		
+	}
+
+	cur_ptr->i = i;
+	cur_ptr->j = j;
+	cur_ptr->key = key;
+	cur_ptr->next = NULL;
+}
+
+int Matrix::search(int it, int jt)
+{
+	Element* cur_ptr;
+
+	for (int i = 0; i < this->size; i++)
+	{
+		cur_ptr = this->arr[i];
+
+		if (cur_ptr != NULL)
+		{
+			while (cur_ptr->next != NULL)
+			{
+				if (cur_ptr->i == it && cur_ptr->j == jt)
+				{
+					return cur_ptr->key;
+				}
+				cur_ptr = cur_ptr->next;
+			}
+			if (cur_ptr->i == it && cur_ptr->j == jt)
+			{
+				return cur_ptr->key;
+			}
+		}
+	}
+	return 0;
+}
+
+void Matrix::mx_out(int n, int m)
+{
+	int temp;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			temp = search(i, j);
+			if (temp != 0)
+			{
+				cout << temp << " ";
+			} 
+			else
+			{
+				cout << 0 << " ";
+			}
+		}
+		cout << endl;
+	}
+}
+
