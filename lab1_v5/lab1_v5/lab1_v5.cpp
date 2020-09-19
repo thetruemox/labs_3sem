@@ -3,8 +3,6 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-//Дописать функцию busort, можно еще написать функцию которая будет возвращать указатель на Element по запросу с ключом и по этому указателю менять j объекта на соотв в остортированном массиве в busort
-
 class Element
 {
 public:
@@ -62,10 +60,14 @@ int main()
 		}
 	}
 
+	cout << endl << "Original matrix";
 	mx.mx_out(n, m);
 	cout << endl;
-	cout << find_max(&mx);
 
+	busort(&mx, find_max(&mx), m);
+
+	cout << "Modified matrix";
+	mx.mx_out(n, m);
 
 	return 0;
 }
@@ -76,7 +78,7 @@ T read(T *var)
 	T temp;
 	cin >> temp;
 	
-	while (!cin.good())
+	while (!cin.good() || temp < 0)
 	{
 		cout << endl << "Invalid input, try again" << endl;
 		cin.clear();
@@ -135,13 +137,9 @@ int find_max(Matrix* mx)
 
 int busort(Matrix* mx, int it, int m)
 {
-	int* arr = new int[m];
+	Element** arr = new Element*[m];
 	int t_i = 0;
-	for (int i = 0; i < m; i++)
-	{
-		arr[i] = 0;
-	}
-
+	
 	Element* cur_ptr;
 
 	for (int i = 0; i < mx->size; i++)
@@ -154,19 +152,53 @@ int busort(Matrix* mx, int it, int m)
 			{
 				if (cur_ptr->i == it)
 				{
-					arr[t_i] = cur_ptr->key;
+					arr[t_i] = cur_ptr;
+					t_i++;
 				}
 				cur_ptr = cur_ptr->next;
 			}
 			if (cur_ptr->i == it)
 			{
-				arr[t_i] = cur_ptr->key;
+				arr[t_i] = cur_ptr;
+				t_i++;
 			}
 		}
 	}
 
 
 
+	Element* temp;
+	for (int i = 0; i < t_i - 1; i++)
+	{
+		for (int j = 0; j < t_i - 1; j++)
+		{
+			if (arr[j]->key > arr[j+1]->key)
+			{
+				temp = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = temp;
+			}
+		}
+	}
+	
+	if (mx->search(it, 0) > 0)
+	{
+		for (int i = m - t_i; i < m; i++)
+		{
+			arr[i - (m - t_i)]->j = i;
+		}
+	}
+	else
+	{
+		int i_temp = 0;
+		for (int i = t_i - 1; i >= 0; i--)
+		{
+			arr[i]->j = i_temp;
+			i_temp++;
+		}
+	}
+
+	
 
 	delete(arr);
 	return 0;
@@ -237,6 +269,9 @@ int Matrix::search(int it, int jt)
 void Matrix::mx_out(int n, int m)
 {
 	int temp;
+
+	cout << endl;
+
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = 0; j < m; j++)
