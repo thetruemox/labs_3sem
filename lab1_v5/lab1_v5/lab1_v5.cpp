@@ -79,7 +79,7 @@ T read(T *var)
 	T temp;
 	cin >> temp;
 	
-	while (!cin.good() || temp < 0)
+	while (!cin.good() || temp <= 0)
 	{
 		cout << endl << "Invalid input, try again" << endl;
 		cin.clear();
