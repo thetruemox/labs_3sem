@@ -24,6 +24,7 @@ public:
 	Element** arr;
 
 	Matrix(int size);
+	void del(int it, int jt);
 	void add(int key, int i, int j);
 	int search(int it, int jt);
 	void mx_out(int n, int m);
@@ -32,7 +33,7 @@ public:
 template <typename T>
 T read(T* var);
 
-int hash(int size, int key);
+int hash(int size, int i, int j);
 int find_max(Matrix* mx);
 int busort(Matrix* mx, int it, int m);
 
@@ -90,9 +91,9 @@ T read(T *var)
 	return temp;
 }
 
-int hash(int size, int key)
+int hash(int size, int i, int j)
 {
-	return key % size;
+	return (i+j) % size;
 }
 
 int find_max(Matrix* mx)
@@ -137,7 +138,7 @@ int find_max(Matrix* mx)
 
 int busort(Matrix* mx, int it, int m)
 {
-	Element** arr = new Element*[m];
+	Element* arr = new Element[m];
 	int t_i = 0;
 	
 	Element* cur_ptr;
@@ -152,14 +153,14 @@ int busort(Matrix* mx, int it, int m)
 			{
 				if (cur_ptr->i == it)
 				{
-					arr[t_i] = cur_ptr;
+					arr[t_i] = *cur_ptr;
 					t_i++;
 				}
 				cur_ptr = cur_ptr->next;
 			}
 			if (cur_ptr->i == it)
 			{
-				arr[t_i] = cur_ptr;
+				arr[t_i] = *cur_ptr;
 				t_i++;
 			}
 		}
@@ -167,12 +168,12 @@ int busort(Matrix* mx, int it, int m)
 
 
 
-	Element* temp;
+	Element temp;
 	for (int i = 0; i < t_i - 1; i++)
 	{
 		for (int j = 0; j < t_i - 1; j++)
 		{
-			if (arr[j]->key > arr[j+1]->key)
+			if (arr[j].key > arr[j+1].key)
 			{
 				temp = arr[j];
 				arr[j] = arr[j + 1];
@@ -185,7 +186,9 @@ int busort(Matrix* mx, int it, int m)
 	{
 		for (int i = m - t_i; i < m; i++)
 		{
-			arr[i - (m - t_i)]->j = i;
+			mx->del(it, arr[i - (m - t_i)].j);
+			arr[i - (m - t_i)].j = i;
+			mx->add(arr[i - (m - t_i)].key, it, arr[i - (m - t_i)].j);
 		}
 	}
 	else
@@ -193,7 +196,9 @@ int busort(Matrix* mx, int it, int m)
 		int i_temp = 0;
 		for (int i = t_i - 1; i >= 0; i--)
 		{
-			arr[i]->j = i_temp;
+			mx->del(it, arr[i].j);
+			arr[i].j = i_temp;
+			mx->add(arr[i].key, it, arr[i].j);
 			i_temp++;
 		}
 	}
@@ -214,14 +219,54 @@ Matrix::Matrix(int size)
 	}
 }
 
+void Matrix::del(int it, int jt)
+{
+	Element* cur_ptr = arr[hash(size, it, jt)];
+	Element* prev_ptr = cur_ptr;
+	
+	if (cur_ptr == NULL)
+	{
+		cout << "No such element!" << endl;
+		return;
+	}
+
+	if (cur_ptr->i == it && cur_ptr->j == jt)
+	{
+		arr[hash(size, it, jt)] = cur_ptr->next;
+		delete(cur_ptr);
+		return;
+	}
+
+	while (cur_ptr->next != NULL)
+	{
+		prev_ptr = cur_ptr;
+		cur_ptr = cur_ptr->next;
+
+		if (cur_ptr->i == it && cur_ptr->j == jt)
+		{
+			prev_ptr->next = cur_ptr->next;
+			delete(cur_ptr);
+			return;
+		}
+	}
+
+	if (cur_ptr->i == it && cur_ptr->j == jt)
+	{
+		prev_ptr->next = cur_ptr->next;
+		delete(cur_ptr);
+		return;
+	}
+
+}
+
 void Matrix::add(int key, int i, int j)
 {
-	Element* cur_ptr = arr[hash(size, key)];
+	Element* cur_ptr = arr[hash(size, i, j)];
 
 	if (cur_ptr == NULL)
 	{
-		arr[hash(size, key)] = new Element;
-		cur_ptr = arr[hash(size, key)];
+		arr[hash(size, i, j)] = new Element;
+		cur_ptr = arr[hash(size, i, j)];
 	}
 	else if (cur_ptr != NULL)
 	{		
@@ -241,28 +286,24 @@ void Matrix::add(int key, int i, int j)
 
 int Matrix::search(int it, int jt)
 {
-	Element* cur_ptr;
+	Element* cur_ptr = arr[hash(size, it, jt)];
 
-	for (int i = 0; i < this->size; i++)
+	if (cur_ptr == NULL) return 0;
+	
+	while (cur_ptr->next != NULL)
 	{
-		cur_ptr = this->arr[i];
-
-		if (cur_ptr != NULL)
+		if (cur_ptr->i == it && cur_ptr->j == jt)
 		{
-			while (cur_ptr->next != NULL)
-			{
-				if (cur_ptr->i == it && cur_ptr->j == jt)
-				{
-					return cur_ptr->key;
-				}
-				cur_ptr = cur_ptr->next;
-			}
-			if (cur_ptr->i == it && cur_ptr->j == jt)
-			{
-				return cur_ptr->key;
-			}
+			return cur_ptr->key;
 		}
+		cur_ptr = cur_ptr->next;
 	}
+	
+	if (cur_ptr->i == it && cur_ptr->j == jt)
+	{
+		return cur_ptr->key;
+	}
+
 	return 0;
 }
 
