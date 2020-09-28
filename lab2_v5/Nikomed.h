@@ -13,6 +13,8 @@ public:
 
 	int get_descartes_y(float x, float* res);
 	int get_polar_r(float angle, float* res);
+	int get_curve_r(float* arr_res);
+	int get_circle_area(float* res);
 
 private:
 	float a, l;

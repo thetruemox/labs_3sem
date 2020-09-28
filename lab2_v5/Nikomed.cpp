@@ -54,8 +54,33 @@ int Nikomed::get_polar_r(float angle, float* res)
     }
     else
     {
-        *res = a / cos(angle);
+        *res = a / cos(angle) + l;
         return 0;
     }
+}
+
+int Nikomed::get_curve_r(float* arr_res)
+{
+    arr_res[0] = pow((l + a), 2) / l;
+    arr_res[1] = pow((l - a), 2) / l;
+    arr_res[2] = ( l * sqrt(pow(l, 2) - pow(a, 2)) ) / (2 * a);
+
+    return 0;
+}
+
+int Nikomed::get_circle_area(float* res)
+{
+    float sqrt_arg = pow(l, 2) - pow(a, 2);
+    if (sqrt_arg < 0) return -1;
+    
+    float ln_arg = (l + sqrt(sqrt_arg)) / a;
+    if (ln_arg <= 0) return -1;
+    
+    float acos_arg = a / l;
+    if (acos_arg > 1 || acos_arg < -1) return -1;
+    
+    *res = a * sqrt(sqrt_arg) - 2 * a * l * log(ln_arg) + pow(l, 2) * acos(acos_arg);
+
+    return 0;
 }
 
