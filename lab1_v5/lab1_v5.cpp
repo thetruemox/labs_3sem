@@ -3,6 +3,11 @@ using std::cin;
 using std::cout;
 using std::endl;
 
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+ //todo Проверка на утечки hyper инструменты
 class Element
 {
 public:
@@ -35,7 +40,7 @@ T read(T* var);
 
 int hash(int size, int i, int j);
 int find_max(Matrix* mx);
-int* busort(Matrix* mx, int it, int m);
+void busort(Matrix* mx, int* s_arr, int it, int m);
 void modif_out(Matrix* mx, int it, int* arr, int n, int m);
 
 int main()
@@ -66,14 +71,36 @@ int main()
 	cout << endl << "Original matrix";
 	mx.mx_out(n, m);
 
-	cout << endl <<  "Modified matrix" << endl;
-	modif_out(&mx, find_max(&mx),busort(&mx, find_max(&mx), m), n, m);
+	int* s_arr = new int[m];
 
+	busort(&mx, s_arr, find_max(&mx), m);
+
+	cout << endl <<  "Modified matrix" << endl;
+	modif_out(&mx, find_max(&mx), s_arr, n, m);
+
+
+	delete[] s_arr;
+
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			mx.del(i, j);
+		}
+	}
+
+	for (int i = 0; i < mx.size; i++)
+	{
+		delete[] mx.arr[i];
+	}
+	delete[] mx.arr;
+
+	_CrtDumpMemoryLeaks();
 	return 0;
 }
 
-template<typename T> //
-T read(T *var) //элементы матрицы могут быть отрицательными
+template<typename T> 
+T read(T *var) 
 {
 	T temp;
 	cin >> temp;
@@ -135,19 +162,17 @@ int find_max(Matrix* mx)
 	return i_max;
 }
 
-int* busort(Matrix* mx, int it, int m)
+void busort(Matrix* mx, int* s_arr, int it, int m)
 {
-	int* arr = new int[m];
-	
 	Element* cur_ptr;
 
 	for (int j = 0; j < m; j++)
 	{
-		arr[j] = mx->search(it, j);
+		s_arr[j] = mx->search(it, j);
 	}
 
 	
-	int first = arr[0];
+	int first = s_arr[0];
 	int temp;
 	for (int i = 0; i < m - 1; i++)
 	{
@@ -155,26 +180,25 @@ int* busort(Matrix* mx, int it, int m)
 		{
 			if (first > 0)
 			{
-				if (arr[j] > arr[j+1])
+				if (s_arr[j] > s_arr[j+1])
 				{
-					temp = arr[j];
-					arr[j] = arr[j + 1];
-					arr[j + 1] = temp;
+					temp = s_arr[j];
+					s_arr[j] = s_arr[j + 1];
+					s_arr[j + 1] = temp;
 				}
 			}
 			else
 			{
-				if (arr[j] < arr[j + 1])
+				if (s_arr[j] < s_arr[j + 1])
 				{
-					temp = arr[j];
-					arr[j] = arr[j + 1];
-					arr[j + 1] = temp;
+					temp = s_arr[j];
+					s_arr[j] = s_arr[j + 1];
+					s_arr[j + 1] = temp;
 				}
 			}
 		}
 	}
-
-	return arr;
+	return;
 }
 
 void modif_out(Matrix* mx, int it, int* arr, int n, int m)
