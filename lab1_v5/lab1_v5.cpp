@@ -35,7 +35,8 @@ T read(T* var);
 
 int hash(int size, int i, int j);
 int find_max(Matrix* mx);
-int busort(Matrix* mx, int it, int m);
+int* busort(Matrix* mx, int it, int m);
+void modif_out(Matrix* mx, int it, int* arr, int n, int m);
 
 int main()
 {
@@ -53,7 +54,8 @@ int main()
 	{
 		for (int j = 0; j < m; j++)
 		{
-			if (read(&temp) != 0)
+			cin >> temp;
+			if (temp != 0)
 			{
 				mx.add(temp, i, j);
 			}
@@ -63,23 +65,20 @@ int main()
 
 	cout << endl << "Original matrix";
 	mx.mx_out(n, m);
-	cout << endl;
 
-	busort(&mx, find_max(&mx), m);
-
-	cout << "Modified matrix";
-	mx.mx_out(n, m);
+	cout << endl <<  "Modified matrix" << endl;
+	modif_out(&mx, find_max(&mx),busort(&mx, find_max(&mx), m), n, m);
 
 	return 0;
 }
 
-template<typename T>
-T read(T *var)
+template<typename T> //
+T read(T *var) //элементы матрицы могут быть отрицательными
 {
 	T temp;
 	cin >> temp;
 	
-	while (!cin.good() || temp <= 0)
+	while (!cin.good() || temp < 0)
 	{
 		cout << endl << "Invalid input, try again" << endl;
 		cin.clear();
@@ -136,77 +135,69 @@ int find_max(Matrix* mx)
 	return i_max;
 }
 
-int busort(Matrix* mx, int it, int m)
+int* busort(Matrix* mx, int it, int m)
 {
-	Element* arr = new Element[m];
-	int t_i = 0;
+	int* arr = new int[m];
 	
 	Element* cur_ptr;
 
-	for (int i = 0; i < mx->size; i++)
+	for (int j = 0; j < m; j++)
 	{
-		cur_ptr = mx->arr[i];
+		arr[j] = mx->search(it, j);
+	}
 
-		if (cur_ptr != NULL)
+	
+	int first = arr[0];
+	int temp;
+	for (int i = 0; i < m - 1; i++)
+	{
+		for (int j = 0; j < m - 1; j++)
 		{
-			while (cur_ptr->next != NULL)
+			if (first > 0)
 			{
-				if (cur_ptr->i == it)
+				if (arr[j] > arr[j+1])
 				{
-					arr[t_i] = *cur_ptr;
-					t_i++;
+					temp = arr[j];
+					arr[j] = arr[j + 1];
+					arr[j + 1] = temp;
 				}
-				cur_ptr = cur_ptr->next;
 			}
-			if (cur_ptr->i == it)
+			else
 			{
-				arr[t_i] = *cur_ptr;
-				t_i++;
+				if (arr[j] < arr[j + 1])
+				{
+					temp = arr[j];
+					arr[j] = arr[j + 1];
+					arr[j + 1] = temp;
+				}
 			}
 		}
 	}
 
+	return arr;
+}
 
-
-	Element temp;
-	for (int i = 0; i < t_i - 1; i++)
+void modif_out(Matrix* mx, int it, int* arr, int n, int m)
+{
+	for (int i = 0; i < n; i++)
 	{
-		for (int j = 0; j < t_i - 1; j++)
+		if (i == it)
 		{
-			if (arr[j].key > arr[j+1].key)
+			for (int j = 0; j < m; j++)
 			{
-				temp = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = temp;
+				cout << arr[j] << " ";
 			}
 		}
-	}
-	
-	if (mx->search(it, 0) > 0)
-	{
-		for (int i = m - t_i; i < m; i++)
+		else
 		{
-			mx->del(it, arr[i - (m - t_i)].j);
-			arr[i - (m - t_i)].j = i;
-			mx->add(arr[i - (m - t_i)].key, it, arr[i - (m - t_i)].j);
-		}
-	}
-	else
-	{
-		int i_temp = 0;
-		for (int i = t_i - 1; i >= 0; i--)
-		{
-			mx->del(it, arr[i].j);
-			arr[i].j = i_temp;
-			mx->add(arr[i].key, it, arr[i].j);
-			i_temp++;
-		}
-	}
+			for (int j = 0; j < m; j++)
+			{
+				cout << mx->search(i, j) << " ";
+			}
+		}	
 
-	
-
-	delete(arr);
-	return 0;
+		cout << endl;
+	}
 }
 
 Matrix::Matrix(int size)
