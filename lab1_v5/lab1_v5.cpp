@@ -29,6 +29,7 @@ public:
 	Element** arr;
 
 	Matrix(int size);
+
 	void del(int it, int jt);
 	void add(int key, int i, int j);
 	int search(int it, int jt);
@@ -80,6 +81,7 @@ int main()
 
 
 	delete[] s_arr;
+
 
 	for (int i = 0; i < n; i++)
 	{
