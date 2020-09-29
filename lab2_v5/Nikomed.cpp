@@ -32,7 +32,7 @@ int Nikomed::get_descartes_y(float x, float* res)
 {
     float acos_arg = (x - a) / l;
     float angle;
-
+    
     if (acos_arg > 1 || acos_arg < -1)
     {       
         return -1;
@@ -63,21 +63,24 @@ int Nikomed::get_curve_r(float* arr_res)
 {
     arr_res[0] = pow((l + a), 2) / l;
     arr_res[1] = pow((l - a), 2) / l;
-    arr_res[2] = ( l * sqrt(pow(l, 2) - pow(a, 2)) ) / (2 * a);
+    
+    if (l >= a && a != 0)
+    {
+        arr_res[2] = (l * sqrt(pow(l, 2) - pow(a, 2))) / (2 * a);
+    }
+    else return -1;
+    
 
     return 0;
 }
 
 int Nikomed::get_circle_area(float* res)
 {
-    float sqrt_arg = pow(l, 2) - pow(a, 2);
-    if (sqrt_arg < 0) return -1;
-    
-    float ln_arg = (l + sqrt(sqrt_arg)) / a;
-    if (ln_arg <= 0) return -1;
-    
+    if ((l <= a) || a == 0) return -1;
+
+    float sqrt_arg = pow(l, 2) - pow(a, 2);    
+    float ln_arg = (l + sqrt(sqrt_arg)) / a;  
     float acos_arg = a / l;
-    if (acos_arg > 1 || acos_arg < -1) return -1;
     
     *res = a * sqrt(sqrt_arg) - 2 * a * l * log(ln_arg) + pow(l, 2) * acos(acos_arg);
 
