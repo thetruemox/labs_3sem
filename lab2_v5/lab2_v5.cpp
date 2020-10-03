@@ -4,6 +4,11 @@
 using std::cout;
 using std::endl;
 
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+
 int main()
 {
 	cout << "Type l and a (l > 0, a = R)" << endl;
@@ -102,6 +107,8 @@ int main()
 			cout << endl;
 			break;
 		case 6:
+
+			_CrtDumpMemoryLeaks();
 			return 0;
 			break;
 		default:
