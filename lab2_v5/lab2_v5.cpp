@@ -10,7 +10,9 @@ int main()
 	Nikomed nikomed(read_r(), read_poz());
 
 	int com_num;
+	int t_s;
 	float* arr_res;
+	float* arr_x;
 	float res, x, angle;
 
 	while (1)
@@ -84,8 +86,19 @@ int main()
 			cout << endl;
 			break;
 		case 5:
-			//точки перегиба
+			arr_x = new float[3];
 
+			t_s = nikomed.get_inflection_x(arr_x);
+			float temp;
+
+			cout << "Inflection points: " << endl;
+			for (int i = 0; i < t_s; i++)
+			{
+				nikomed.get_descartes_y(arr_x[i], &temp);
+				cout << "x: " << arr_x[i] << " y: " << temp << endl;
+			}
+
+			delete[] arr_x;
 			cout << endl;
 			break;
 		case 6:

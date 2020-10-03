@@ -15,6 +15,7 @@ public:
 	int get_polar_r(float angle, float* res);
 	int get_curve_r(float* arr_res);
 	int get_circle_area(float* res);
+	int get_inflection_x(float* arr_res);
 
 private:
 	float a, l;

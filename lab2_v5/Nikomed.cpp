@@ -87,3 +87,29 @@ int Nikomed::get_circle_area(float* res)
     return 0;
 }
 
+int Nikomed::get_inflection_x(float* arr_res)
+{
+    if (a > l)
+    {
+        arr_res[0] = 2.35 * a;
+        return 1;
+    }
+    else if (l == a)
+    {
+        arr_res[0] = a * sqrt(3);
+        arr_res[1] = 0;
+        arr_res[2] = -a * sqrt(3);
+        return 3;
+    }
+    else if (a < l)
+    {
+        arr_res[0] = 1.38 * a;
+        arr_res[1] = 0.57 * a;
+        arr_res[2] = -1.9 * a;
+        return 3;
+    }
+
+
+    return -1;
+}
+
