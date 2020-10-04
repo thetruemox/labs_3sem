@@ -4,8 +4,8 @@
 
 Nikomed::Nikomed(float a, float l)
 {
-	this->a = a;
-	this->l = l;
+	set_a(a);
+	set_l(l);
 }
 
 float Nikomed::get_a()

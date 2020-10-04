@@ -14,13 +14,13 @@ int main()
 	cout << "Type l and a (l > 0, a = R)" << endl;
 	Nikomed nikomed(read_r(), read_poz());
 
-	int com_num;
+	int com_num = 0;
 	int t_s;
 	float* arr_res;
 	float* arr_x;
 	float res, x, angle;
 
-	while (1)
+	while (com_num != 6)
 	{
 		cout << "1. get_descartes_y()" << endl;
 		cout << "2. get_polar_r()" << endl;
