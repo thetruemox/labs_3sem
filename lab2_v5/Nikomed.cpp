@@ -55,6 +55,10 @@ int Nikomed::get_polar_r(float angle, float* res)
     else
     {
         *res = a / cos(angle) + l;
+        if (*res < 0)
+        {
+            return -1;
+        }
         return 0;
     }
 }
