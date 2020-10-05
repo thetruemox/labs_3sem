@@ -12,6 +12,7 @@ using std::endl;
 int main()
 {
 	cout << "Type l and a (l > 0, a = R)" << endl;
+
 	Nikomed nikomed(read_r(), read_poz());
 
 	int com_num = 0;
@@ -19,15 +20,17 @@ int main()
 	float* arr_res;
 	float* arr_x;
 	float res, x, angle;
-
-	while (com_num != 6)
+	
+	while (com_num != 8)
 	{
 		cout << "1. get_descartes_y()" << endl;
 		cout << "2. get_polar_r()" << endl;
 		cout << "3. get_curve_r()" << endl;
 		cout << "4. get_circle_area()" << endl;
 		cout << "5. get_inflection_p()" << endl;
-		cout << "6. Exit" << endl;
+		cout << "6. set_a()" << endl;
+		cout << "7. set_l()" << endl;
+		cout << "8. Exit" << endl;
 		cout << "Command number: ";
 
 		com_num = read_poz();
@@ -37,7 +40,7 @@ int main()
 		case 1:
 			cout << "Type x: ";
 			x = read_r();
-			if (nikomed.get_descartes_y(x, &res) == 0)
+			if (nikomed.get_descartes_y(x, res) == 0)
 			{
 				cout << "y = " << res << endl;
 			}
@@ -48,7 +51,7 @@ int main()
 		case 2:
 			cout << "Type angle: ";
 			angle = read_r();
-			if (nikomed.get_polar_r(angle, &res) == 0)
+			if (nikomed.get_polar_r(angle, res) == 0)
 			{
 				cout << "length = " << res << endl;
 			}
@@ -58,31 +61,18 @@ int main()
 			break;
 		case 3:
 			arr_res = new float[3];
-			
-			if (nikomed.get_curve_r(arr_res) == 0)
+				
+			cout << "Radiuses of curvature: " << endl;
+			for (int i = 0; i < nikomed.get_curve_r(arr_res); i++)
 			{
-				cout << "Radiuses of curvature: " << endl;
-				for (int i = 0; i < 3; i++)
-				{
-					cout << "R" << i << ": " << arr_res[i] << " ";
-				}
-				cout << endl;
+				cout << "R" << i << ": " << arr_res[i] << " ";
 			}
-			else 
-			{
-				cout << "Radiuses of curvature: " << endl;
-				for (int i = 0; i < 2; i++)
-				{
-					cout << "R" << i << ": " << arr_res[i] << " ";
-				}
-				cout << endl;
-			}
+			cout << endl << endl;
 
-			cout << endl;
 			delete[] arr_res;
 			break;
 		case 4:
-			if (nikomed.get_circle_area(&res) == 0)
+			if (nikomed.get_circle_area(res) == 0)
 			{
 				cout << "Circle area = " << res << endl;
 			}
@@ -92,22 +82,33 @@ int main()
 			break;
 		case 5:
 			arr_x = new float[3];
-
-			t_s = nikomed.get_inflection_x(arr_x);
 			float temp;
 
 			cout << "Inflection points: " << endl;
-			for (int i = 0; i < t_s; i++)
+			for (int i = 0; i < nikomed.get_inflection_x(arr_x); i++)
 			{
-				nikomed.get_descartes_y(arr_x[i], &temp);
+				nikomed.get_descartes_y(arr_x[i], temp);
 				cout << "x: " << arr_x[i] << " y: " << temp << endl;
 			}
 
 			delete[] arr_x;
 			cout << endl;
 			break;
-		case 6:
 
+		case 6:
+			cout << "Type a: ";
+			nikomed.set_a(read_r());
+
+			cout << endl;
+			break;
+		case 7:
+			cout << "Type l: ";
+			nikomed.set_l(read_poz());
+		
+			
+			cout << endl;
+			break;
+		case 8:
 			_CrtDumpMemoryLeaks();
 			return 0;
 			break;
