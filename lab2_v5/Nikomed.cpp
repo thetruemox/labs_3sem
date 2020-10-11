@@ -60,7 +60,6 @@ const int Nikomed::get_descartes_y(float x, float& res)
 
 const int Nikomed::get_polar_r(float angle, float& res)
 {
-
     if (cos(angle) == 0)
     {
         return -1;
