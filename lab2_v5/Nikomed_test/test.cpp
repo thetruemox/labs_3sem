@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include <cmath>
+#define NUM_OF_TESTS 100
 //#include "../Nikomed.h"
 
 class Nikomed
@@ -163,77 +164,119 @@ const int Nikomed::get_inflection_x(float* arr_res)
         EXPECT_DOUBLE_EQ(0, nik->get_a());
         EXPECT_DOUBLE_EQ(1, nik->get_l());
     }
-
+    
     TEST_F(NikomedTest, custom_constr)
     {
-        nik = new Nikomed(2, 3);
+        for (int i = 1; i < NUM_OF_TESTS; i++)
+        {
+            Nikomed nik(i, i);
 
-        EXPECT_DOUBLE_EQ(2, nik->get_a());
-        EXPECT_DOUBLE_EQ(3, nik->get_l());
+            EXPECT_DOUBLE_EQ(i, nik.get_a());
+            EXPECT_DOUBLE_EQ(i, nik.get_l());
+        }        
     }
     
     TEST_F(NikomedTest, set_a_l)
     {
-        nik->set_a(-23);
-        EXPECT_DOUBLE_EQ(-23, nik->get_a());
-
-        nik->set_l(20);
-        EXPECT_DOUBLE_EQ(20, nik->get_l());
+        for (int i = -NUM_OF_TESTS/2; i < NUM_OF_TESTS / 2; i++)
+        {
+            nik->set_a(i);
+            EXPECT_DOUBLE_EQ(i, nik->get_a());
+        }
+       
+        for (int i = 1; i < NUM_OF_TESTS; i++)
+        {
+            nik->set_l(i);
+            EXPECT_DOUBLE_EQ(i, nik->get_l());
+        }
+       
     }
 
     TEST_F(NikomedTest, set_wrong_l)
     {
-        EXPECT_ANY_THROW(nik->set_l(-20));
+        for (int i = -NUM_OF_TESTS; i < 0; i++)
+        {
+            EXPECT_THROW(nik->set_l(i), char*);
+        }
+        
     }
 
     TEST_F(NikomedTest, descartes_a_more_l)
     {
-        nik->set_a(5);
-        nik->set_l(1);
         float res;
-        EXPECT_EQ(0, nik->get_descartes_y(5, res));
-        EXPECT_EQ(-1, nik->get_descartes_y(1, res));
+
+        for (int i = 1; i < NUM_OF_TESTS/2; i++)
+        {
+            nik->set_a(i + NUM_OF_TESTS / 2);
+            nik->set_l(i);
+            EXPECT_EQ(0, nik->get_descartes_y(i + NUM_OF_TESTS/2, res));
+            EXPECT_EQ(-1, nik->get_descartes_y(i, res));
+        }
+        
     }
 
     TEST_F(NikomedTest, descartes_a_equal_l)
     {
-        nik->set_a(1);
-        nik->set_l(1);
         float res;
-        EXPECT_EQ(0, nik->get_descartes_y(2, res));
-        EXPECT_EQ(-1, nik->get_descartes_y(5, res));
+
+        for (int i = 1; i < NUM_OF_TESTS / 2; i++)
+        {
+            nik->set_a(i);
+            nik->set_l(i);
+            EXPECT_EQ(0, nik->get_descartes_y(i, res));
+            EXPECT_EQ(-1, nik->get_descartes_y(i + NUM_OF_TESTS / 2, res));
+        }
     }
 
     TEST_F(NikomedTest, descartes_a_less_l)
     {
-        nik->set_a(1);
-        nik->set_l(5);
         float res;
-        EXPECT_EQ(0, nik->get_descartes_y(2, res));
-        EXPECT_EQ(-1, nik->get_descartes_y(15, res));
+
+        for (int i = 1; i < NUM_OF_TESTS / 2; i++)
+        {
+            nik->set_a(i);
+            nik->set_l(i + NUM_OF_TESTS / 2);
+            EXPECT_EQ(0, nik->get_descartes_y(i, res));
+            EXPECT_EQ(-1, nik->get_descartes_y(i + NUM_OF_TESTS, res));
+        }
     }
 
     TEST_F(NikomedTest, polar)
     {
-        nik->set_a(1);
-        nik->set_l(2);
         float res;
-        EXPECT_EQ(0, nik->get_polar_r(20, res));
-        EXPECT_EQ(-1, nik->get_polar_r(90, res));
+
+        for (int i = 1; i < NUM_OF_TESTS; i++)
+        {
+            nik->set_a(i);
+            nik->set_l(i);
+            
+            EXPECT_EQ(0, nik->get_polar_r(20, res));
+            EXPECT_EQ(-1, nik->get_polar_r(90, res));
+        }
+        
     }
     
     TEST_F(NikomedTest, curve)
     {
-        nik->set_a(1);
-        nik->set_l(2);
         float* arr_res = new float[3];
-        EXPECT_EQ(0, nik->get_curve_r(nullptr));
-        EXPECT_EQ(3, nik->get_curve_r(arr_res));
 
-        nik->set_a(2);
-        nik->set_l(1);
-        EXPECT_EQ(2, nik->get_curve_r(arr_res));
+        for (int i = 1; i < NUM_OF_TESTS / 2; i++)
+        {
+            nik->set_a(i);
+            nik->set_l(i + NUM_OF_TESTS / 2);
 
+            EXPECT_EQ(0, nik->get_curve_r(nullptr));
+            EXPECT_EQ(3, nik->get_curve_r(arr_res));
+        }
+
+        for (int i = 1; i < NUM_OF_TESTS / 2; i++)
+        {
+            nik->set_a(i + NUM_OF_TESTS / 2);
+            nik->set_l(i);
+
+            EXPECT_EQ(0, nik->get_curve_r(nullptr));
+            EXPECT_EQ(2, nik->get_curve_r(arr_res));
+        }
         delete[] arr_res;
     }
     
@@ -241,29 +284,42 @@ const int Nikomed::get_inflection_x(float* arr_res)
     {
         float res;
 
-        nik->set_a(5);
-        nik->set_l(2);
-        EXPECT_EQ(-1, nik->get_circle_area(res));
+        for (int i = 1; i < NUM_OF_TESTS / 2; i++)
+        {
+            nik->set_a(i);
+            nik->set_l(i + NUM_OF_TESTS / 2);  
+            EXPECT_EQ(0, nik->get_circle_area(res));
+        }
 
-        nik->set_a(2);
-        nik->set_l(5);
-        EXPECT_EQ(0, nik->get_circle_area(res));
+        for (int i = 1; i < NUM_OF_TESTS / 2; i++)
+        {
+            nik->set_a(i + NUM_OF_TESTS / 2);
+            nik->set_l(i);
+            EXPECT_EQ(-1, nik->get_circle_area(res));
+        }
     }
 
     TEST_F(NikomedTest, inflection)
     {
         float* arr_res = new float[3];
 
-        nik->set_a(5);
-        nik->set_l(2);
-        EXPECT_EQ(1, nik->get_inflection_x(arr_res));
+        for (int i = 1; i < NUM_OF_TESTS / 2; i++)
+        {
+            nik->set_a(i);
+            nik->set_l(i + NUM_OF_TESTS / 2);
+            EXPECT_EQ(3, nik->get_inflection_x(arr_res));
+        }
 
-        nik->set_a(2);
-        nik->set_l(5);
-        EXPECT_EQ(3, nik->get_inflection_x(arr_res));
+        for (int i = 1; i < NUM_OF_TESTS / 2; i++)
+        {
+            nik->set_a(i + NUM_OF_TESTS / 2);
+            nik->set_l(i);
+            EXPECT_EQ(1, nik->get_inflection_x(arr_res));
+        }
 
         delete[] arr_res;
     }
+    
 
 int main(int argc, char* argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
