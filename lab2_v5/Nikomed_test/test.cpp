@@ -5,6 +5,7 @@
 #define NUM_OF_TESTS 100
 //#include "../Nikomed.h"
 
+/*
 class Nikomed
 {
 public:
@@ -144,7 +145,7 @@ const int Nikomed::get_inflection_x(float* arr_res)
         return 3;
     }
 }
-
+*/
 
     class NikomedTest : public ::testing::Test
     {
