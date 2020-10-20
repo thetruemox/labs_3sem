@@ -1,6 +1,5 @@
 #pragma once
 #include "Cell.h"
-#define WIDTH 9
 #define HEIGHT 3
 
 class Loto_card
@@ -9,12 +8,16 @@ public:
 	Loto_card();
 	~Loto_card();
 
-	Cell* cells[HEIGHT][WIDTH];
-private:
-	const int height = HEIGHT;
-	const int width = WIDTH;
-
 	void generate_numbers();
+
+	Cell* cells[HEIGHT][9];
+private:
+	static const int height = HEIGHT;
+	static const int width = 9;
+
+	bool check_nums(int num, int* arr, int size);
+	int generate_r_num(int h_i, int w_j, int* uq_nums_arr, int &it_nums);
+	
 
 };
 

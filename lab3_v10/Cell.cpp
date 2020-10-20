@@ -6,9 +6,23 @@ Cell::Cell()
 	condition = 0;
 }
 
-Cell::Cell(int number)
+void Cell::set_number(int num)
 {
-	this->number = number;
-	condition = 1;
+	this->number = num;
+}
+
+void Cell::set_condition(int cond)
+{
+	this->condition = cond;
+}
+
+int Cell::get_number()
+{
+	return this->number;
+}
+
+int Cell::get_condition()
+{
+	return this->condition;
 }
 
