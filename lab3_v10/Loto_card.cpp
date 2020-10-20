@@ -2,6 +2,7 @@
 #include <cstdlib> 
 #include <ctime>
 #include <cmath>
+#include <iostream>
 
 Loto_card::Loto_card()
 {
@@ -66,11 +67,39 @@ void Loto_card::generate_numbers()
 	delete[] uq_nums_arr;  
 }
 
+void Loto_card::card_output()
+{
+	for (int i = 0; i < this->height; i++)
+	{
+		for (int j = 0; j < this->width; j++)
+		{
+			if (cells[i][j]->get_condition() == 1)
+			{
+				if (j == 0)
+				{
+					std::cout << "[ " << cells[i][j]->get_number() << "] ";
+				} else std::cout << "[" << cells[i][j]->get_number() << "] ";
+				
+			}
+			else
+			{
+				std::cout << "[";
+				for (int i = 0; i < (2 + this->height / 10); i++)
+				{
+					std::cout << " ";
+				}
+				std::cout << "] ";
+			}
+		}
+		std::cout << std::endl;
+	}
+}
+
 int Loto_card::generate_r_num(int h_i, int w_j, int* uq_nums_arr, int &it_nums)
 {
 	int rand_num;
 	int power = pow(10, 1 + this->height / 10); //диапазон чисел дл€ одной €чейки лото
-
+	//фикси дурачо, слишком крупные диапазоны получаешь
 	do
 	{
 		rand_num = rand() % power + power * w_j;

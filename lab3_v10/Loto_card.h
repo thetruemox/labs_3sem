@@ -1,16 +1,17 @@
 #pragma once
 #include "Cell.h"
-#define HEIGHT 3
+#define HEIGHT 20
 
 class Loto_card
 {
 public:
 	Loto_card();
 	~Loto_card();
+	Cell* cells[HEIGHT][9];
 
 	void generate_numbers();
+	void card_output(); //доделать красивый вывод (или нет)
 
-	Cell* cells[HEIGHT][9];
 private:
 	static const int height = HEIGHT;
 	static const int width = 9;
