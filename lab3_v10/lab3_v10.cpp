@@ -16,10 +16,14 @@ int main()
     {
         std::cout << "keg num: ";
         std::cin >> keg;
-   
+        
+        if (keg == 0) break;
+        
+
         lotto.put_keg(keg);
         std::cout << std::endl << std::endl;
 
+        lotto.check_for_busy_lines();
         lotto.card_output();
     }
 

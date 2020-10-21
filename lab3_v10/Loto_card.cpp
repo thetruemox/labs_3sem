@@ -6,6 +6,8 @@
 
 Lotto_card::Lotto_card()
 {
+	height = HEIGHT;
+
 	for (int i = 0; i < this->height; i++)
 	{
 		for (int j = 0; j < this->width; j++)
@@ -18,13 +20,8 @@ Lotto_card::Lotto_card()
 
 Lotto_card::~Lotto_card()
 {
-	for (int i = 0; i < this->height; i++)
-	{
-		for (int j = 0; j < this->width; j++)
-		{
-			delete cells[i][j];
-		}
-	}
+	//for (int i = 0; i < this->height; i++) delete[] cells[i];
+	//delete[] cells;
 }
 
 
@@ -46,7 +43,7 @@ void Lotto_card::generate_numbers()
 			{
 				if (rand() % 10 >= 5)
 				{				
-					cells[h_i][w_j]->set_number(generate_r_num(h_i, w_j, uq_nums_arr, it_nums));
+					cells[h_i][w_j]->set_number(generate_rand_num(h_i, w_j, uq_nums_arr, it_nums));
 					cells[h_i][w_j]->set_condition(1);
 
 					--w_nums;
@@ -54,7 +51,7 @@ void Lotto_card::generate_numbers()
 			}
 			else
 			{
-				cells[h_i][w_j]->set_number(generate_r_num(h_i, w_j, uq_nums_arr, it_nums));
+				cells[h_i][w_j]->set_number(generate_rand_num(h_i, w_j, uq_nums_arr, it_nums));
 				cells[h_i][w_j]->set_condition(1);
 
 				--w_nums;
@@ -67,8 +64,14 @@ void Lotto_card::generate_numbers()
 	delete[] uq_nums_arr;  
 }
 
-void Lotto_card::card_output() //дополнить вывод если поставлен бочонок 
+void Lotto_card::card_output() 
 {
+	if (this->height == 0)
+	{
+		std::cout << "This card is empty!" << std::endl;
+		return;
+	}
+
 	for (int i = 0; i < this->height; i++)
 	{
 		for (int j = 0; j < this->width; j++)
@@ -117,7 +120,56 @@ void Lotto_card::put_keg(int keg)
 	return;
 }
 
-int Lotto_card::generate_r_num(int h_i, int w_j, int* uq_nums_arr, int &it_nums)
+bool Lotto_card::is_cell_busy(int i, int j)
+{
+	if (cells[i][j]->get_condition() == 2)
+	{
+		return true;
+	} else return false;
+}
+
+void Lotto_card::check_for_busy_lines()
+{
+	bool busy;
+
+	for (int i = 0; i < this->height; i++)
+	{
+		busy = true;
+		for (int j = 0; j < this->width; j++)
+		{
+			if (cells[i][j]->get_condition() == 1)
+			{
+				busy = false;
+				break;
+			}
+		}
+
+		if (busy) delete_busy_line(i);
+	}
+}
+
+void Lotto_card::delete_busy_line(int height_i)
+{
+	if (height_i == this->height)
+	{
+		this->height--;
+		return;
+	}
+	else
+	{
+		for (int j = 0; j < this->width; j++)
+		{
+			cells[height_i][j]->set_condition(cells[this->height - 1][j]->get_condition());
+			cells[height_i][j]->set_number(cells[this->height - 1][j]->get_number());
+		}
+		this->height--;
+		return;
+	}
+
+	return;
+}
+
+int Lotto_card::generate_rand_num(int h_i, int w_j, int* uq_nums_arr, int &it_nums)
 {
 	int rand_num;
 	int power = 10; 
@@ -128,7 +180,7 @@ int Lotto_card::generate_r_num(int h_i, int w_j, int* uq_nums_arr, int &it_nums)
 	{
 		rand_num = rand() % power + power * w_j;
 
-	} while (!check_nums(rand_num, uq_nums_arr, it_nums));
+	} while (!check_unique_nums(rand_num, uq_nums_arr, it_nums));
 
 	uq_nums_arr[it_nums] = rand_num;
 	it_nums++;
@@ -136,8 +188,7 @@ int Lotto_card::generate_r_num(int h_i, int w_j, int* uq_nums_arr, int &it_nums)
 	return rand_num;
 }
 
-
-bool Lotto_card::check_nums(int num, int* arr, int size)
+bool Lotto_card::check_unique_nums(int num, int* arr, int size)
 {
 	if (size == 0) return true;
 

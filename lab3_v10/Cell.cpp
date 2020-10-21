@@ -2,7 +2,7 @@
 
 Cell::Cell()
 {
-	this->number = 0;
+	this->number = -1;
 	condition = 0;
 }
 
