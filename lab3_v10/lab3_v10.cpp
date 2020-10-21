@@ -6,10 +6,22 @@ using namespace std;
 
 int main()
 {
-    Loto_card loto;
-    loto.generate_numbers();
+    Lotto_card lotto;
+    lotto.generate_numbers();
 
-    loto.card_output();
+    lotto.card_output();
+
+    int keg;
+    while (true)
+    {
+        std::cout << "keg num: ";
+        std::cin >> keg;
+   
+        lotto.put_keg(keg);
+        std::cout << std::endl << std::endl;
+
+        lotto.card_output();
+    }
 
     
   

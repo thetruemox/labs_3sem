@@ -4,7 +4,7 @@
 #include <cmath>
 #include <iostream>
 
-Loto_card::Loto_card()
+Lotto_card::Lotto_card()
 {
 	for (int i = 0; i < this->height; i++)
 	{
@@ -16,7 +16,7 @@ Loto_card::Loto_card()
 }
 
 
-Loto_card::~Loto_card()
+Lotto_card::~Lotto_card()
 {
 	for (int i = 0; i < this->height; i++)
 	{
@@ -28,7 +28,7 @@ Loto_card::~Loto_card()
 }
 
 
-void Loto_card::generate_numbers()
+void Lotto_card::generate_numbers()
 {
 	srand(time(NULL));
 
@@ -67,7 +67,7 @@ void Loto_card::generate_numbers()
 	delete[] uq_nums_arr;  
 }
 
-void Loto_card::card_output()
+void Lotto_card::card_output() //дополнить вывод если поставлен бочонок 
 {
 	for (int i = 0; i < this->height; i++)
 	{
@@ -81,25 +81,49 @@ void Loto_card::card_output()
 				} else std::cout << "[" << cells[i][j]->get_number() << "] ";
 				
 			}
-			else
+			else if (cells[i][j]->get_condition() == 2)
 			{
-				std::cout << "[";
-				for (int i = 0; i < (2 + this->height / 10); i++)
+				if (j == 0)
 				{
-					std::cout << " ";
+					std::cout << "< " << cells[i][j]->get_number() << "> ";
 				}
-				std::cout << "] ";
-			}
+				else std::cout << "<" << cells[i][j]->get_number() << "> ";
+
+			} else std::cout << "[  ] ";
 		}
 		std::cout << std::endl;
 	}
 }
 
-int Loto_card::generate_r_num(int h_i, int w_j, int* uq_nums_arr, int &it_nums)
+void Lotto_card::put_keg(int keg)
+{
+	for (int i = 0; i < this->height; i++)
+	{
+		for (int j = 0; j < this->width; j++)
+		{
+			if ((cells[i][j]->get_condition() == 1) && (cells[i][j]->get_number() == keg))
+			{
+				cells[i][j]->set_condition(2);
+				return;
+			}
+			else if ((cells[i][j]->get_condition() == 2) && (cells[i][j]->get_number() == keg))
+			{
+				//throw "This number already busy!";
+				return;
+			}
+		}
+	}
+	//throw "There is no such number!";
+	return;
+}
+
+int Lotto_card::generate_r_num(int h_i, int w_j, int* uq_nums_arr, int &it_nums)
 {
 	int rand_num;
-	int power = pow(10, 1 + this->height / 10); //диапазон чисел дл€ одной €чейки лото
-	//фикси дурачо, слишком крупные диапазоны получаешь
+	int power = 10; 
+
+	while (height >= power) power *= 10; //диапазон чисел дл€ одной €чейки лото
+	
 	do
 	{
 		rand_num = rand() % power + power * w_j;
@@ -113,7 +137,7 @@ int Loto_card::generate_r_num(int h_i, int w_j, int* uq_nums_arr, int &it_nums)
 }
 
 
-bool Loto_card::check_nums(int num, int* arr, int size)
+bool Lotto_card::check_nums(int num, int* arr, int size)
 {
 	if (size == 0) return true;
 
