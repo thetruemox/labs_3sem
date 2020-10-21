@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include "Loto_card.h"
+#include <vector>
 using namespace std;
 
 
@@ -27,7 +28,12 @@ int main()
         lotto.card_output();
     }
 
+    std::vector<int>* array = lotto.get_remained_numbers();
     
+    cout << endl;
+
+    for (auto const& element : *array)
+        std::cout << element << ' ';
   
     return 0;
 }

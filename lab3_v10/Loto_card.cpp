@@ -3,6 +3,7 @@
 #include <ctime>
 #include <cmath>
 #include <iostream>
+#include <vector>
 
 Lotto_card::Lotto_card()
 {
@@ -146,6 +147,28 @@ void Lotto_card::check_for_busy_lines()
 
 		if (busy) delete_busy_line(i);
 	}
+}
+
+std::vector<int>* Lotto_card::get_remained_numbers()
+{
+	std::vector<int>* array = new std::vector<int>;
+	array->resize(this->height * 5);
+	int it = 0;
+
+	for (int i = 0; i < this->height; i++)
+	{
+		for (int j = 0; j < this->width; j++)
+		{
+			if (cells[i][j]->get_condition() == 1)
+			{
+				array->at(it) = cells[i][j]->get_number();
+				it++;
+			}
+		}
+	}
+
+	array->resize(it);
+	return array;
 }
 
 void Lotto_card::delete_busy_line(int height_i)
