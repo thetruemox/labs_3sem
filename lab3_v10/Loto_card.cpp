@@ -16,6 +16,8 @@ Lotto_card::Lotto_card()
 			cells[i][j] = new Cell;
 		}	
 	}
+
+	generate_numbers();
 }
 
 
