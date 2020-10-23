@@ -133,6 +133,24 @@ void Lotto_card::put_keg(int keg)
 	return;
 }
 
+int Lotto_card::how_many_busy()
+{
+	int many = 0;
+
+	for (int i = 0; i < this->height; i++)
+	{
+		for (int j = 0; j < this->width; j++)
+		{
+			if (cells[i][j]->get_condition() == 2)
+			{
+				many++;
+			}
+		}
+	}
+
+	return many;
+}
+
 bool Lotto_card::is_cell_busy(int i, int j)
 {
 	if (cells[i][j]->get_condition() == 2)

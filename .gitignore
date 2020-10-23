@@ -61,3 +61,8 @@
 *.vcxproj
 *.filters
 /lab3_v10/Lotto_v1/lab3_v10.vcxproj.user
+/lab3_v10/Lotto_v1/.vs/lab3_v10/v16/ipch/AutoPCH/d447a5c1d0c388c6
+/lab3_v10/Lotto_v1/.vs/lab3_v10/v16/Browse.VC.opendb
+/lab3_v10/Lotto_v1/.vs/lab3_v10/v16/Browse.VC.db-wal
+/lab3_v10/Lotto_v1/.vs/lab3_v10/v16/Browse.VC.db-shm
+/lab3_v10/Lotto_v1/.vs/lab3_v10/v16/Browse.VC.db

@@ -16,6 +16,7 @@ public:
 
 	void card_output(); //пока что красивый вывод только при height < 10
 	void put_keg(int keg);
+	int how_many_busy();
 	bool is_cell_busy(int i, int j);
 	void check_for_busy_lines();
 	std::vector<int>* get_remained_numbers();
