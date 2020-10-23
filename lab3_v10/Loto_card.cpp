@@ -180,7 +180,11 @@ std::vector<int>* Lotto_card::get_remained_numbers()
 	}
 
 	array->resize(it);
-	return array;
+
+	if (it == 0)
+	{
+		return nullptr;
+	} else return array;
 }
 
 void Lotto_card::delete_busy_line(int height_i)
