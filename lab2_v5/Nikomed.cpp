@@ -75,15 +75,17 @@ const int Nikomed::get_polar_r(float angle, float& res)
     }
 }
 
-const int Nikomed::get_curve_r(float* arr_res)
+const int Nikomed::get_curve_r(float* arr_res, int size)
 {
-    if (arr_res == nullptr) return 0;
+    if (arr_res == nullptr || size < 2) return 0;
 
     arr_res[0] = pow((l + a), 2) / l;
     arr_res[1] = pow((l - a), 2) / l;
     
     if (l >= a && a != 0)
     {
+        if (size < 3) return 2;
+
         arr_res[2] = (l * sqrt(pow(l, 2) - pow(a, 2))) / (2 * a);
         return 3;
     }
@@ -104,17 +106,21 @@ const int Nikomed::get_circle_area(float& res)
     return 0;
 }
 
-const int Nikomed::get_inflection_x(float* arr_res)
+const int Nikomed::get_inflection_x(float* arr_res, int size)
 {
     if (l <= 0 || arr_res == nullptr) return 0;
 
     if (a > l)
     {
+        if (size < 1) return 0;
+        
         arr_res[0] = 2.35 * a;
         return 1;
     }
     else if (l == a)
     {
+        if (size < 3) return 0;
+
         arr_res[0] = a * sqrt(3);
         arr_res[1] = 0;
         arr_res[2] = -a * sqrt(3);
@@ -122,6 +128,8 @@ const int Nikomed::get_inflection_x(float* arr_res)
     }
     else if (a < l)
     {
+        if (size < 3) return 0;
+
         arr_res[0] = 1.38 * a;
         arr_res[1] = 0.57 * a;
         arr_res[2] = -1.9 * a;

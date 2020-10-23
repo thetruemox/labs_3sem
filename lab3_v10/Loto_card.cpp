@@ -67,7 +67,17 @@ void Lotto_card::generate_numbers()
 	delete[] uq_nums_arr;  
 }
 
-void Lotto_card::card_output() 
+int Lotto_card::get_width()
+{
+	return this->width;
+}
+
+int Lotto_card::get_height()
+{
+	return this->height;
+}
+
+void Lotto_card::card_output()
 {
 	if (this->height == 0)
 	{

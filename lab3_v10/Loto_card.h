@@ -11,7 +11,9 @@ public:
 
 	Cell* cells[HEIGHT][9];
 
-	void generate_numbers();
+	int get_width();
+	int get_height();
+
 	void card_output(); //пока что красивый вывод только при height < 10
 	void put_keg(int keg);
 	bool is_cell_busy(int i, int j);
@@ -21,7 +23,7 @@ public:
 private:
 	int height;
 	const int width = 9;
-
+	void generate_numbers();
 	bool check_unique_nums(int num, int* arr, int size);
 	int generate_rand_num(int h_i, int w_j, int* uq_nums_arr, int &it_nums);
 	void delete_busy_line(int height_i);

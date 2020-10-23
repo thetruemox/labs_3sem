@@ -63,7 +63,7 @@ int main()
 			arr_res = new float[3];
 				
 			cout << "Radiuses of curvature: " << endl;
-			for (int i = 0; i < nikomed.get_curve_r(arr_res); i++)
+			for (int i = 0; i < nikomed.get_curve_r(arr_res, 3); i++)
 			{
 				cout << "R" << i << ": " << arr_res[i] << " ";
 			}
@@ -85,7 +85,7 @@ int main()
 			float temp;
 
 			cout << "Inflection points: " << endl;
-			for (int i = 0; i < nikomed.get_inflection_x(arr_x); i++)
+			for (int i = 0; i < nikomed.get_inflection_x(arr_x, 3); i++)
 			{
 				nikomed.get_descartes_y(arr_x[i], temp);
 				cout << "x: " << arr_x[i] << " y: " << temp << endl;
