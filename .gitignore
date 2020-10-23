@@ -58,3 +58,6 @@
 /lab3_v10/Lotto_test_v1/packages.config
 /lab3_v10/Lotto_test_v1/pch.cpp
 /lab3_v10/Lotto_test_v1/pch.h
+*.vcxproj
+*.filters
+/lab3_v10/Lotto_v1/lab3_v10.vcxproj.user
