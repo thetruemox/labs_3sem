@@ -20,14 +20,6 @@ Lotto_card::Lotto_card()
 	generate_numbers();
 }
 
-
-Lotto_card::~Lotto_card()
-{
-	//for (int i = 0; i < this->height; i++) delete[] cells[i];
-	//delete[] cells;
-}
-
-
 void Lotto_card::generate_numbers()
 {
 	srand(time(NULL));
@@ -67,17 +59,17 @@ void Lotto_card::generate_numbers()
 	delete[] uq_nums_arr;  
 }
 
-int Lotto_card::get_width()
+int Lotto_card::get_width() const
 {
 	return this->width;
 }
 
-int Lotto_card::get_height()
+int Lotto_card::get_height() const
 {
 	return this->height;
 }
 
-void Lotto_card::card_output()
+void Lotto_card::card_output() const
 {
 	if (this->height == 0)
 	{
@@ -133,7 +125,7 @@ void Lotto_card::put_keg(int keg)
 	return;
 }
 
-int Lotto_card::how_many_busy()
+int Lotto_card::how_many_busy() const
 {
 	int many = 0;
 
@@ -151,7 +143,7 @@ int Lotto_card::how_many_busy()
 	return many;
 }
 
-bool Lotto_card::is_cell_busy(int i, int j)
+bool Lotto_card::is_cell_busy(int i, int j) const
 {
 	if (cells[i][j]->get_condition() == 2)
 	{
@@ -179,7 +171,7 @@ void Lotto_card::check_for_busy_lines()
 	}
 }
 
-std::vector<int>* Lotto_card::get_remained_numbers()
+std::vector<int>* Lotto_card::get_remained_numbers() const
 {
 	std::vector<int>* array = new std::vector<int>;
 	array->resize(this->height * 5);
@@ -205,7 +197,7 @@ std::vector<int>* Lotto_card::get_remained_numbers()
 	} else return array;
 }
 
-void Lotto_card::delete_busy_line(int height_i)
+void Lotto_card::delete_busy_line(int height_i) 
 {
 	if (height_i == this->height)
 	{
@@ -245,7 +237,7 @@ int Lotto_card::generate_rand_num(int h_i, int w_j, int* uq_nums_arr, int &it_nu
 	return rand_num;
 }
 
-bool Lotto_card::check_unique_nums(int num, int* arr, int size)
+bool Lotto_card::check_unique_nums(int num, int* arr, int size) const
 {
 	if (size == 0) return true;
 
