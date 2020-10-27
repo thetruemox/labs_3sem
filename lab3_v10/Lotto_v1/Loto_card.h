@@ -8,8 +8,6 @@ class Lotto_card
 public:
 	Lotto_card();
 
-	Cell* cells[HEIGHT][9];
-
 	int get_width() const;
 	int get_height() const;
 
@@ -23,6 +21,8 @@ public:
 private:
 	int height;
 	const int width = 9;
+	Cell* cells[HEIGHT][9];
+
 	void generate_numbers();
 	bool check_unique_nums(int num, int* arr, int size) const;
 	int generate_rand_num(int h_i, int w_j, int* uq_nums_arr, int &it_nums);
