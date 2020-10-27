@@ -16,12 +16,12 @@ void Cell::set_condition(int cond)
 	this->condition = cond;
 }
 
-int Cell::get_number()
+int Cell::get_number() const
 {
 	return this->number;
 }
 
-int Cell::get_condition()
+int Cell::get_condition() const
 {
 	return this->condition;
 }
