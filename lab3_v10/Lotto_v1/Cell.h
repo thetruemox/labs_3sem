@@ -1,17 +1,24 @@
 #pragma once
 
+enum Condition
+{
+	EMPTY,
+	FREE_NUMBER,
+	BUSY_NUMBER
+};
+
 class Cell
 {
 public:
 	Cell();
 	void set_number(int num);
-	void set_condition(int cond);
+	void set_condition(Condition cond);
 	int get_number() const;
-	int get_condition() const;
+	Condition get_condition() const;
 private:
 	int number;
-	int condition; //0 - пустая, 1 - свободно с числом, 2 - занято с числом
-	//enum
+	Condition condition;
+
 };
 
 

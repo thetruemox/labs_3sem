@@ -3,7 +3,7 @@
 Cell::Cell()
 {
 	this->number = -1;
-	condition = 0;
+	condition = EMPTY;
 }
 
 void Cell::set_number(int num)
@@ -11,9 +11,9 @@ void Cell::set_number(int num)
 	this->number = num;
 }
 
-void Cell::set_condition(int cond)
+void Cell::set_condition(Condition cond)
 {
-	this->condition = cond;
+	condition = cond;
 }
 
 int Cell::get_number() const
@@ -21,7 +21,7 @@ int Cell::get_number() const
 	return this->number;
 }
 
-int Cell::get_condition() const
+Condition Cell::get_condition() const
 {
 	return this->condition;
 }

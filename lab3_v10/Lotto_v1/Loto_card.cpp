@@ -8,16 +8,6 @@
 Lotto_card::Lotto_card()
 {
 	height = HEIGHT;
-
-	//Поправить, тк статик
-	for (int i = 0; i < this->height; i++)
-	{
-		for (int j = 0; j < this->width; j++)
-		{
-			cells[i][j] = new Cell;
-		}	
-	}
-
 	generate_numbers();
 }
 
@@ -39,16 +29,16 @@ void Lotto_card::generate_numbers()
 			{
 				if (rand() % 10 >= 5)
 				{				
-					cells[h_i][w_j]->set_number(generate_rand_num(h_i, w_j, uq_nums_arr, it_nums));
-					cells[h_i][w_j]->set_condition(1);
+					cells[h_i][w_j].set_number(generate_rand_num(h_i, w_j, uq_nums_arr, it_nums));
+					cells[h_i][w_j].set_condition(FREE_NUMBER);
 
 					--w_nums;
 				}
 			}
 			else
 			{
-				cells[h_i][w_j]->set_number(generate_rand_num(h_i, w_j, uq_nums_arr, it_nums));
-				cells[h_i][w_j]->set_condition(1);
+				cells[h_i][w_j].set_number(generate_rand_num(h_i, w_j, uq_nums_arr, it_nums));
+				cells[h_i][w_j].set_condition(FREE_NUMBER);
 
 				--w_nums;
 			}
@@ -82,21 +72,21 @@ void Lotto_card::card_output() const //принимает параметром поток в который выво
 	{
 		for (int j = 0; j < this->width; j++)
 		{
-			if (cells[i][j]->get_condition() == 1)
+			if (cells[i][j].get_condition() == FREE_NUMBER)
 			{
 				if (j == 0)
 				{
-					std::cout << "[ " << cells[i][j]->get_number() << "] ";
-				} else std::cout << "[" << cells[i][j]->get_number() << "] ";
+					std::cout << "[ " << cells[i][j].get_number() << "] ";
+				} else std::cout << "[" << cells[i][j].get_number() << "] ";
 				
 			}
-			else if (cells[i][j]->get_condition() == 2)
+			else if (cells[i][j].get_condition() == BUSY_NUMBER)
 			{
 				if (j == 0)
 				{
-					std::cout << "< " << cells[i][j]->get_number() << "> ";
+					std::cout << "< " << cells[i][j].get_number() << "> ";
 				}
-				else std::cout << "<" << cells[i][j]->get_number() << "> ";
+				else std::cout << "<" << cells[i][j].get_number() << "> ";
 
 			} else std::cout << "[  ] ";
 		}
@@ -110,12 +100,12 @@ void Lotto_card::put_keg(int keg)
 	{
 		for (int j = 0; j < this->width; j++)
 		{
-			if ((cells[i][j]->get_condition() == 1) && (cells[i][j]->get_number() == keg))
+			if ((cells[i][j].get_condition() == FREE_NUMBER) && (cells[i][j].get_number() == keg))
 			{
-				cells[i][j]->set_condition(2);
+				cells[i][j].set_condition(BUSY_NUMBER);
 				return;
 			}
-			else if ((cells[i][j]->get_condition() == 2) && (cells[i][j]->get_number() == keg))
+			else if ((cells[i][j].get_condition() == BUSY_NUMBER) && (cells[i][j].get_number() == keg))
 			{
 				//throw "This number already busy!";
 				return;
@@ -134,7 +124,7 @@ int Lotto_card::how_many_busy() const
 	{
 		for (int j = 0; j < this->width; j++)
 		{
-			if (cells[i][j]->get_condition() == 2)
+			if (cells[i][j].get_condition() == BUSY_NUMBER)
 			{
 				many++;
 			}
@@ -146,7 +136,7 @@ int Lotto_card::how_many_busy() const
 
 bool Lotto_card::is_cell_busy(int i, int j) const
 {
-	if (cells[i][j]->get_condition() == 2)
+	if (cells[i][j].get_condition() == BUSY_NUMBER)
 	{
 		return true;
 	} else return false;
@@ -161,7 +151,7 @@ void Lotto_card::check_for_busy_lines()
 		busy = true;
 		for (int j = 0; j < this->width; j++)
 		{
-			if (cells[i][j]->get_condition() == 1)
+			if (cells[i][j].get_condition() == FREE_NUMBER)
 			{
 				busy = false;
 				break;
@@ -172,31 +162,18 @@ void Lotto_card::check_for_busy_lines()
 	}
 }
 
-std::vector<int>* Lotto_card::get_remained_numbers() const //пусть получает массив 
+void Lotto_card::get_remained_numbers(std::vector<int>* array) const
 {
-	//push_back
-	std::vector<int>* array = new std::vector<int>;
-	array->resize(this->height * 5);
-	int it = 0;
-
 	for (int i = 0; i < this->height; i++)
 	{
 		for (int j = 0; j < this->width; j++)
 		{
-			if (cells[i][j]->get_condition() == 1)
+			if (cells[i][j].get_condition() == FREE_NUMBER)
 			{
-				array->at(it) = cells[i][j]->get_number();
-				it++;
+				array->push_back(cells[i][j].get_number());
 			}
 		}
 	}
-
-	array->resize(it);
-
-	if (it == 0)
-	{
-		return nullptr;
-	} else return array;
 }
 
 void Lotto_card::delete_busy_line(int height_i) 
@@ -210,8 +187,8 @@ void Lotto_card::delete_busy_line(int height_i)
 	{
 		for (int j = 0; j < this->width; j++)
 		{
-			cells[height_i][j]->set_condition(cells[this->height - 1][j]->get_condition());
-			cells[height_i][j]->set_number(cells[this->height - 1][j]->get_number());
+			cells[height_i][j].set_condition(cells[this->height - 1][j].get_condition());
+			cells[height_i][j].set_number(cells[this->height - 1][j].get_number());
 		}
 		this->height--;
 		return;
@@ -239,7 +216,7 @@ int Lotto_card::generate_rand_num(int h_i, int w_j, int* uq_nums_arr, int &it_nu
 	return rand_num;
 }
 
-bool Lotto_card::check_unique_nums(int num, int* arr, int size) const //константный указатель на массив
+bool Lotto_card::check_unique_nums(int num, const int* arr, int size) const
 {
 	if (size == 0) return true;
 
