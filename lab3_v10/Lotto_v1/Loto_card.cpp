@@ -9,6 +9,7 @@ Lotto_card::Lotto_card()
 {
 	height = HEIGHT;
 
+	//Поправить, тк статик
 	for (int i = 0; i < this->height; i++)
 	{
 		for (int j = 0; j < this->width; j++)
@@ -69,7 +70,7 @@ int Lotto_card::get_height() const
 	return this->height;
 }
 
-void Lotto_card::card_output() const
+void Lotto_card::card_output() const //принимает параметром поток в который выводить
 {
 	if (this->height == 0)
 	{
@@ -171,8 +172,9 @@ void Lotto_card::check_for_busy_lines()
 	}
 }
 
-std::vector<int>* Lotto_card::get_remained_numbers() const
+std::vector<int>* Lotto_card::get_remained_numbers() const //пусть получает массив 
 {
+	//push_back
 	std::vector<int>* array = new std::vector<int>;
 	array->resize(this->height * 5);
 	int it = 0;
@@ -237,7 +239,7 @@ int Lotto_card::generate_rand_num(int h_i, int w_j, int* uq_nums_arr, int &it_nu
 	return rand_num;
 }
 
-bool Lotto_card::check_unique_nums(int num, int* arr, int size) const
+bool Lotto_card::check_unique_nums(int num, int* arr, int size) const //константный указатель на массив
 {
 	if (size == 0) return true;
 

@@ -10,7 +10,7 @@ public:
 
 	int get_width() const;
 	int get_height() const;
-
+								//unsigned int
 	void card_output() const; //пока что красивый вывод только при height < 10
 	void put_keg(int keg);
 	int how_many_busy() const;
@@ -20,7 +20,7 @@ public:
 
 private:
 	int height;
-	const int width = 9;
+	static const int width = 9;
 	Cell* cells[HEIGHT][9];
 
 	void generate_numbers();
