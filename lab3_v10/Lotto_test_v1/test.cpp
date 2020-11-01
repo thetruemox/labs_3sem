@@ -29,14 +29,22 @@ TEST(Lotto_card_test, zero_nums_remained)
     {
         EXPECT_NO_THROW(lotto->put_keg(i));
     }
-    EXPECT_EQ(nullptr, lotto->get_remained_numbers());
+
+    std::vector<int>* array = new std::vector<int>;
+    std::vector<int>* temp_nullptr = array;
+
+    lotto->get_remained_numbers(array);
+
+    EXPECT_EQ(temp_nullptr, array);
     delete lotto;
 }
 
 TEST(Lotto_card_test, clear_busy_lines)
 {
     Lotto_card* lotto = new Lotto_card;
-    std::vector<int>* array = lotto->get_remained_numbers();
+    std::vector<int>* array = new std::vector<int>;
+    lotto->get_remained_numbers(array);
+
     int it = 0;
     int expected_height = lotto->get_height();
 
