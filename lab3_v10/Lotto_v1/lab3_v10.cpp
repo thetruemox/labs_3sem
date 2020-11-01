@@ -10,6 +10,12 @@ int main()
     Lotto_card lotto;
     lotto.card_output();
 
+    int temp;
+    cin >> temp;
+    lotto.put_keg(temp);
+
+    lotto.card_output();
+
     std::vector<int>* array = new std::vector<int>;
 
     lotto.get_remained_numbers(array);

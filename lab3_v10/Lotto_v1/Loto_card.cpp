@@ -50,12 +50,12 @@ void Lotto_card::generate_numbers()
 	delete[] uq_nums_arr;  
 }
 
-int Lotto_card::get_width() const
+unsigned int Lotto_card::get_width() const
 {
 	return this->width;
 }
 
-int Lotto_card::get_height() const
+unsigned int Lotto_card::get_height() const
 {
 	return this->height;
 }
@@ -94,7 +94,7 @@ void Lotto_card::card_output() const //принимает параметром поток в который выво
 	}
 }
 
-void Lotto_card::put_keg(int keg)
+void Lotto_card::put_keg(unsigned int keg)
 {
 	for (int i = 0; i < this->height; i++)
 	{
@@ -116,7 +116,7 @@ void Lotto_card::put_keg(int keg)
 	return;
 }
 
-int Lotto_card::how_many_busy() const
+unsigned int Lotto_card::how_many_busy() const
 {
 	int many = 0;
 
@@ -197,7 +197,7 @@ void Lotto_card::delete_busy_line(int height_i)
 	return;
 }
 
-int Lotto_card::generate_rand_num(int h_i, int w_j, int* uq_nums_arr, int &it_nums)
+unsigned int Lotto_card::generate_rand_num(int h_i, int w_j, int* uq_nums_arr, int &it_nums)
 {
 	int rand_num;
 	int power = 10; 

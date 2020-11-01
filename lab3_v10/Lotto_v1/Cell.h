@@ -13,10 +13,10 @@ public:
 	Cell();
 	void set_number(int num);
 	void set_condition(Condition cond);
-	int get_number() const;
+	unsigned int get_number() const;
 	Condition get_condition() const;
 private:
-	int number;
+	unsigned int number;
 	Condition condition;
 
 };

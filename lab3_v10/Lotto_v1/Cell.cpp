@@ -2,7 +2,7 @@
 
 Cell::Cell()
 {
-	this->number = -1;
+	this->number = 0;
 	condition = EMPTY;
 }
 
@@ -16,7 +16,7 @@ void Cell::set_condition(Condition cond)
 	condition = cond;
 }
 
-int Cell::get_number() const
+unsigned int Cell::get_number() const
 {
 	return this->number;
 }
