@@ -2,7 +2,6 @@
 #include "Cell.h"
 #include <vector>
 #include <ostream>
-#define HEIGHT 3
 
 class Lotto_card
 {
@@ -12,7 +11,7 @@ public:
 	unsigned int get_width() const;
 	unsigned int get_height() const;
 
-	void card_output(std::ostream& out) const; //пока что красивый вывод только при height < 10
+	void card_output() const; //пока что красивый вывод только при height < 10
 	void put_keg(unsigned int keg);
 	unsigned int how_many_busy() const;
 	Condition is_cell_busy(int i, int j) const;
@@ -21,13 +20,13 @@ public:
 
 	Lotto_card& operator-- (int);
 	Condition operator() (int i, int j);
-	friend void operator<< (std::ostream &out, const Lotto_card & lotto);
+	friend std::ostream& operator<< (std::ostream& out, const Lotto_card& lotto);
 	friend std::istream& operator>> (std::istream& in, Lotto_card& lotto);
 
 private:
 	unsigned int height;
 	static const int width = 9;
-	Cell cells[HEIGHT][9];
+	Cell** cells;
 
 	void generate_numbers();
 	bool check_unique_nums(int num, const int* arr, int size) const;
