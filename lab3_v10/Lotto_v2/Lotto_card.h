@@ -22,7 +22,7 @@ public:
 	Lotto_card& operator-- (int);
 	Condition operator() (int i, int j);
 	friend void operator<< (std::ostream &out, const Lotto_card & lotto);
-	friend std::istream& operator>> (std::istream& in, Lotto_card& lotto);
+	friend void operator>> (std::istream& in, Lotto_card& lotto);
 
 private:
 	unsigned int height;

@@ -7,11 +7,12 @@ class Lotto_card
 {
 public:
 	Lotto_card();
+	Lotto_card(int height);
 
 	unsigned int get_width() const;
 	unsigned int get_height() const;
 
-	void card_output() const; //пока что красивый вывод только при height < 10
+	void card_output(std::ostream& out) const; //пока что красивый вывод только при height < 10
 	void put_keg(unsigned int keg);
 	unsigned int how_many_busy() const;
 	Condition is_cell_busy(int i, int j) const;
@@ -20,8 +21,8 @@ public:
 
 	Lotto_card& operator-- (int);
 	Condition operator() (int i, int j);
-	friend std::ostream& operator<< (std::ostream& out, const Lotto_card& lotto);
-	friend std::istream& operator>> (std::istream& in, Lotto_card& lotto);
+	friend void operator<< (std::ostream& out, const Lotto_card& lotto);
+	friend void operator>> (std::istream& in, Lotto_card& lotto);
 
 private:
 	unsigned int height;

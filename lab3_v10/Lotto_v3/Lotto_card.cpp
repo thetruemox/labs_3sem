@@ -7,13 +7,23 @@
 
 Lotto_card::Lotto_card()
 {
-	this->height = 3;
-	
-	cells = new Cell * [this->height];
-
-	for (int i = 0; i < this->height; i++)
+	height = 3;
+	cells = new Cell * [height];
+	for (int i = 0; i < height; i++)
 	{
-		cells[i] = new Cell[this->width];
+		cells[i] = new Cell[width];
+	}
+
+	generate_numbers();
+}
+
+Lotto_card::Lotto_card(int height)
+{
+	this->height = height;
+	cells = new Cell * [height];
+	for (int i = 0; i < height; i++)
+	{
+		cells[i] = new Cell[width];
 	}
 
 	generate_numbers();
@@ -68,9 +78,42 @@ unsigned int Lotto_card::get_height() const
 	return this->height;
 }
 
-void Lotto_card::card_output() const //принимает параметром поток в который выводить
+void Lotto_card::card_output(std::ostream& out) const //принимает параметром поток в который выводить
 {
-	
+	if (this->height == 0)
+	{
+		out << "This card is empty!" << std::endl;
+		return;
+	}
+
+
+	for (int i = 0; i < this->height; i++)
+	{
+		for (int j = 0; j < this->width; j++)
+		{
+			if (this->cells[i][j].get_condition() == FREE_NUMBER)
+			{
+				if (j == 0)
+				{
+					out << "[ " << this->cells[i][j].get_number() << "] ";
+				}
+				else out << "[" << this->cells[i][j].get_number() << "] ";
+
+			}
+			else if (this->cells[i][j].get_condition() == BUSY_NUMBER)
+			{
+				if (j == 0)
+				{
+					out << "< " << this->cells[i][j].get_number() << "> ";
+				}
+				else out << "<" << this->cells[i][j].get_number() << "> ";
+
+			}
+			else out << "[  ] ";
+		}
+		out << std::endl;
+	}
+	return;
 }
 
 void Lotto_card::put_keg(unsigned int keg)
@@ -163,49 +206,16 @@ Condition Lotto_card::operator()(int i, int j)
 	return this->is_cell_busy(i, j);
 }
 
-std::ostream& operator<< (std::ostream& out, const Lotto_card& lotto)
+void operator<< (std::ostream& out, const Lotto_card& lotto)
 {
-	if (lotto.height == 0)
-	{
-		out << "This card is empty!" << std::endl;
-		return out;
-	}
-
-	for (int i = 0; i < lotto.height; i++)
-	{
-		for (int j = 0; j < lotto.width; j++)
-		{
-			if (lotto.cells[i][j].get_condition() == FREE_NUMBER)
-			{
-				if (j == 0)
-				{
-					out << "[ " << lotto.cells[i][j].get_number() << "] ";
-				}
-				else out << "[" << lotto.cells[i][j].get_number() << "] ";
-
-			}
-			else if (lotto.cells[i][j].get_condition() == BUSY_NUMBER)
-			{
-				if (j == 0)
-				{
-					out << "< " << lotto.cells[i][j].get_number() << "> ";
-				}
-				else out << "<" << lotto.cells[i][j].get_number() << "> ";
-
-			}
-			else out << "[  ] ";
-		}
-		out << std::endl;
-	}
-	return out;
+	lotto.card_output(out);
 }
 
-std::istream& operator>> (std::istream& in, Lotto_card& lotto)
+void operator>> (std::istream& in, Lotto_card& lotto)
 {
 	int keg_num;
 	in >> keg_num;
 	lotto.put_keg(keg_num);
-	return in;
 }
 
 void Lotto_card::delete_busy_line(int height_i)
@@ -262,3 +272,4 @@ bool Lotto_card::check_unique_nums(int num, const int* arr, int size) const
 
 	return true;
 }
+

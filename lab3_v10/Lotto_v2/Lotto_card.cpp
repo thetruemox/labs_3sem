@@ -193,12 +193,11 @@ void operator<< (std::ostream& out, const Lotto_card& lotto)
 	lotto.card_output(out);
 }
 
-std::istream& operator>> (std::istream& in, Lotto_card& lotto)
+void operator>> (std::istream& in, Lotto_card& lotto)
 {
 	int keg_num;
 	in >> keg_num;
 	lotto.put_keg(keg_num);
-	return in;
 }
 
 void Lotto_card::delete_busy_line(int height_i)
