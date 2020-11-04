@@ -19,6 +19,7 @@ Lotto_card::Lotto_card()
 
 Lotto_card::Lotto_card(int height)
 {
+	height = abs(height);
 	this->height = height;
 	cells = new Cell * [height];
 	for (int i = 0; i < height; i++)
@@ -27,6 +28,10 @@ Lotto_card::Lotto_card(int height)
 	}
 
 	generate_numbers();
+}
+
+Lotto_card::~Lotto_card()
+{
 }
 
 void Lotto_card::generate_numbers()
@@ -220,23 +225,36 @@ void operator>> (std::istream& in, Lotto_card& lotto)
 
 void Lotto_card::delete_busy_line(int height_i)
 {
-	if (height_i == this->height)
+	Cell** t_cells = new Cell * [this->height - 1];
+	for (int i = 0; i < this->height - 1; i++)
 	{
-		this->height--;
-		return;
-	}
-	else
-	{
-		for (int j = 0; j < this->width; j++)
-		{
-			cells[height_i][j].set_condition(cells[this->height - 1][j].get_condition());
-			cells[height_i][j].set_number(cells[this->height - 1][j].get_number());
-		}
-		this->height--;
-		return;
+		t_cells[i] = new Cell[this->width];
 	}
 
-	return;
+	int t_i = 0;
+
+	for (int i = 0; i < this->height; i++)
+	{
+		if (i != height_i)
+		{
+			for (int j = 0; j < this->width; j++)
+			{
+				t_cells[t_i][j].set_condition(cells[i][j].get_condition());
+				t_cells[t_i][j].set_number(cells[i][j].get_number());
+			}
+			t_i++;
+		}
+		
+	}
+
+	for (int i = 0; i < this->height; i++)
+	{
+		delete[] cells[i];
+	}
+	delete[] cells;
+
+	this->height--;
+	this->cells = t_cells;
 }
 
 unsigned int Lotto_card::generate_rand_num(int h_i, int w_j, int* uq_nums_arr, int& it_nums)

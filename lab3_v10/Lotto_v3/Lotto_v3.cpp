@@ -3,11 +3,13 @@
 #include <vector>
 using namespace std;
 
-
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
 
 int main()
 {
-    Lotto_card lotto;
+    Lotto_card lotto(3);
 
     int choice;
 
@@ -38,6 +40,6 @@ int main()
 
     } while (true);
 
-
+    _CrtDumpMemoryLeaks();
     return 0;
 }

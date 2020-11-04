@@ -8,6 +8,7 @@ class Lotto_card
 public:
 	Lotto_card();
 	Lotto_card(int height);
+	~Lotto_card();
 
 	unsigned int get_width() const;
 	unsigned int get_height() const;
