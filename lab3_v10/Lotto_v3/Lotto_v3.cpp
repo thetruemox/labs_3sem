@@ -9,7 +9,10 @@ using namespace std;
 
 int main()
 {
-    Lotto_card lotto(3); //перемещающий конструктор, и оператор присваивания
+    Lotto_card temp(3);
+    Lotto_card lotto(temp); 
+
+    lotto = temp;
 
     int choice;
 
@@ -31,6 +34,7 @@ int main()
             cout << lotto;
             break;
         case 4:
+            cout << temp;
             return 0;
             break;
         default:

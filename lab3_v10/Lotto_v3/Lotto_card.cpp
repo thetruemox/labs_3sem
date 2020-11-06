@@ -30,8 +30,33 @@ Lotto_card::Lotto_card(int height)
 	generate_numbers();
 }
 
+Lotto_card::Lotto_card(const Lotto_card& obj)
+{
+	this->height = obj.height;
+	cells = new Cell * [height];
+	for (int i = 0; i < height; i++)
+	{
+		cells[i] = new Cell[width];
+	}
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			this->cells[i][j].set_condition(obj.cells[i][j].get_condition());
+			this->cells[i][j].set_number(obj.cells[i][j].get_number());
+		}
+	}
+
+}
+
 Lotto_card::~Lotto_card()
 {
+	for (int i = 0; i < height; i++)
+	{
+		delete[] cells[i];
+	}
+	delete[] cells;
 }
 
 void Lotto_card::generate_numbers()
@@ -200,27 +225,79 @@ void Lotto_card::get_remained_numbers(std::vector<int>* array) const
 	}
 }
 
-Lotto_card& Lotto_card::operator--(int)
+Lotto_card& Lotto_card::operator=(const Lotto_card& obj)
 {
-	this->check_for_busy_lines();
+	if (this == &obj) return *this; //сам себя себе присвоил
+
+
+	Cell** t_cells = new Cell * [obj.height];
+	
+	for (int i = 0; i < obj.height; i++)
+	{
+		t_cells[i] = new Cell[this->width];
+	}
+
+	for (int i = 0; i < obj.height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			t_cells[i][j].set_condition(obj.cells[i][j].get_condition());
+			t_cells[i][j].set_number(obj.cells[i][j].get_number());
+		}
+	}
+
+	for (int i = 0; i < this->height; i++)
+	{
+		delete[] cells[i];
+	}
+	delete[] cells;
+
+	this->height = obj.height;
+	this->cells = t_cells;
+
 	return *this;
 }
 
-Condition Lotto_card::operator()(int i, int j)
+Lotto_card& Lotto_card::operator--(int)
+{
+	Lotto_card temp_lotto = *this;
+	this->check_for_busy_lines();
+	return temp_lotto;
+}
+
+Condition Lotto_card::operator()(int i, int j) const
 {
 	return this->is_cell_busy(i, j);
 }
 
-void operator<< (std::ostream& out, const Lotto_card& lotto)
+void Lotto_card::operator()(int keg)
 {
-	lotto.card_output(out);
+	this->put_keg(keg);
 }
 
-void operator>> (std::istream& in, Lotto_card& lotto)
+std::ostream& operator<< (std::ostream& out, const Lotto_card& lotto)
+{
+	lotto.card_output(out);
+	return out;
+}
+
+std::istream& operator>> (std::istream& in, Lotto_card& lotto)
 {
 	int keg_num;
 	in >> keg_num;
-	lotto.put_keg(keg_num);
+
+	if (in.good())
+	{
+		lotto.put_keg(keg_num);
+	}
+	else
+	{
+		in.clear();
+		in.ignore(in.rdbuf()->in_avail());
+	}
+
+
+	return in;
 }
 
 void Lotto_card::delete_busy_line(int height_i)

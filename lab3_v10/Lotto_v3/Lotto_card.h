@@ -8,6 +8,7 @@ class Lotto_card
 public:
 	Lotto_card();
 	Lotto_card(int height);
+	Lotto_card(const Lotto_card& obj);
 	~Lotto_card();
 
 	unsigned int get_width() const;
@@ -20,10 +21,12 @@ public:
 	void check_for_busy_lines();
 	void get_remained_numbers(std::vector<int>* array) const;
 
+	Lotto_card& operator= (const Lotto_card& obj);
 	Lotto_card& operator-- (int);
-	Condition operator() (int i, int j);
-	friend void operator<< (std::ostream& out, const Lotto_card& lotto);
-	friend void operator>> (std::istream& in, Lotto_card& lotto);
+	Condition operator() (int i, int j) const;
+	void operator() (int keg);
+	friend std::ostream& operator<< (std::ostream& out, const Lotto_card& lotto);
+	friend std::istream& operator>> (std::istream& in, Lotto_card& lotto);
 
 private:
 	unsigned int height;
