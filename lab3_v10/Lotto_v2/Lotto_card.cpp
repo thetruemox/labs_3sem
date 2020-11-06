@@ -11,6 +11,20 @@ Lotto_card::Lotto_card()
 	generate_numbers();
 }
 
+Lotto_card::Lotto_card(const Lotto_card& obj)
+{
+	this->height = obj.height;
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int  j = 0; j < width; j++)
+		{
+			this->cells[i][j].set_condition(obj.cells[i][j].get_condition());
+			this->cells[i][j].set_number(obj.cells[i][j].get_number());
+		}
+	}
+}
+
 void Lotto_card::generate_numbers()
 {
 	srand(time(NULL));
@@ -60,7 +74,7 @@ unsigned int Lotto_card::get_height() const
 	return this->height;
 }
 
-void Lotto_card::card_output(std::ostream& out) const //принимает параметром поток в который выводить
+void Lotto_card::card_output(std::ostream& out) const
 {
 	if (this->height == 0)
 	{
@@ -98,7 +112,7 @@ void Lotto_card::card_output(std::ostream& out) const //принимает параметром пот
 	return;
 }
 
-void Lotto_card::put_keg(unsigned int keg)
+void Lotto_card::put_keg(int keg)
 {
 	for (int i = 0; i < this->height; i++)
 	{
@@ -111,12 +125,10 @@ void Lotto_card::put_keg(unsigned int keg)
 			}
 			else if ((cells[i][j].get_condition() == BUSY_NUMBER) && (cells[i][j].get_number() == keg))
 			{
-				//throw "This number already busy!";
 				return;
 			}
 		}
 	}
-	//throw "There is no such number!";
 	return;
 }
 
@@ -179,25 +191,44 @@ void Lotto_card::get_remained_numbers(std::vector<int>* array) const
 
 Lotto_card& Lotto_card::operator--(int)
 {
+	Lotto_card temp_lotto = *this;
 	this->check_for_busy_lines();
-	return *this;
+	return temp_lotto;
 }
 
-Condition Lotto_card::operator()(int i, int j)
+Condition Lotto_card::operator()(int i, int j) const 
 {
 	return this->is_cell_busy(i, j);
 }
 
-void operator<< (std::ostream& out, const Lotto_card& lotto)
+void Lotto_card::operator()(int keg)
 {
-	lotto.card_output(out);
+	this->put_keg(keg);
 }
 
-void operator>> (std::istream& in, Lotto_card& lotto)
+std::ostream& operator<< (std::ostream& out, const Lotto_card& lotto)
+{
+	lotto.card_output(out);
+	return out;
+}
+
+std::istream& operator>> (std::istream& in, Lotto_card& lotto)
 {
 	int keg_num;
 	in >> keg_num;
-	lotto.put_keg(keg_num);
+
+	if (in.good())
+	{
+		lotto.put_keg(keg_num);
+	}
+	else 
+	{
+		in.clear();
+		in.ignore(in.rdbuf()->in_avail());
+	}
+		
+	
+	return in;
 }
 
 void Lotto_card::delete_busy_line(int height_i)

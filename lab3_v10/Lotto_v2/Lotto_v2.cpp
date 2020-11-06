@@ -8,7 +8,6 @@ using namespace std;
 int main()
 {
     Lotto_card lotto;
-   
     int choice;
 
     do
@@ -16,6 +15,11 @@ int main()
         cout << "1. put_keg\n2. check_for_busy_lines\n3. lotto_out\n4. end my life" << endl;
 
         cin >> choice;
+        if (!cin.good())
+        {
+            cin.clear();
+            cin.ignore(cin.rdbuf()->in_avail());
+        }          
 
         switch (choice)
         {

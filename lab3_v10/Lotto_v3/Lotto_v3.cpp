@@ -9,7 +9,7 @@ using namespace std;
 
 int main()
 {
-    Lotto_card lotto(3);
+    Lotto_card lotto(3); //перемещающий конструктор, и оператор присваивания
 
     int choice;
 
