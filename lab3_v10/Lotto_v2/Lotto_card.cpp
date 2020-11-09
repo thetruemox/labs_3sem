@@ -191,7 +191,7 @@ void Lotto_card::get_remained_numbers(std::vector<int>* array) const
 
 Lotto_card& Lotto_card::operator--(int)
 {
-	Lotto_card temp_lotto = *this;
+	Lotto_card temp_lotto(*this);
 	this->check_for_busy_lines();
 	return temp_lotto;
 }
