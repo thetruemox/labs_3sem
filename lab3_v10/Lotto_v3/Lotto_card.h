@@ -9,6 +9,7 @@ public:
 	Lotto_card();
 	Lotto_card(int height);
 	Lotto_card(const Lotto_card& obj);
+	Lotto_card(Lotto_card&& obj);
 	~Lotto_card();
 
 	unsigned int get_width() const;

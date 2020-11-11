@@ -8,10 +8,25 @@
 Lotto_card::Lotto_card()
 {
 	height = 3;
-	cells = new Cell * [height];
+	cells = new (std::nothrow) Cell * [height];
+
+	if (cells == nullptr) throw "bad_alloc";
+
+	int good_alloc = 0;
 	for (int i = 0; i < height; i++)
 	{
-		cells[i] = new Cell[width];
+		cells[i] = new (std::nothrow) Cell[width];
+
+		if (cells[i] == nullptr)
+		{
+			for (int j = 0; j < good_alloc; j++)
+			{
+				delete[] cells[j];
+			}
+			delete[] cells;
+			throw "bad_alloc";
+		} else good_alloc++;
+		
 	}
 
 	generate_numbers();
@@ -21,10 +36,25 @@ Lotto_card::Lotto_card(int height)
 {
 	height = abs(height);
 	this->height = height;
-	cells = new Cell * [height];
+
+	cells = new (std::nothrow) Cell * [height];
+	if (cells == nullptr) throw "bad_alloc";
+	
+	int good_alloc = 0;
 	for (int i = 0; i < height; i++)
 	{
-		cells[i] = new Cell[width];
+		cells[i] = new (std::nothrow) Cell[width];
+
+		if (cells[i] == nullptr)
+		{
+			for (int j = 0; j < good_alloc; j++)
+			{
+				delete[] cells[j];
+			}
+			delete[] cells;
+			throw "bad_alloc";
+		}
+		else good_alloc++;
 	}
 
 	generate_numbers();
@@ -33,10 +63,24 @@ Lotto_card::Lotto_card(int height)
 Lotto_card::Lotto_card(const Lotto_card& obj)
 {
 	this->height = obj.height;
-	cells = new Cell * [height];
+	cells = new (std::nothrow) Cell * [height];
+	if (cells == nullptr) throw "bad_alloc";
+
+	int good_alloc = 0;
 	for (int i = 0; i < height; i++)
 	{
-		cells[i] = new Cell[width];
+		cells[i] = new (std::nothrow) Cell[width];
+
+		if (cells[i] == nullptr)
+		{
+			for (int j = 0; j < good_alloc; j++)
+			{
+				delete[] cells[j];
+			}
+			delete[] cells;
+			throw "bad_alloc";
+		}
+		else good_alloc++;
 	}
 
 	for (int i = 0; i < height; i++)
@@ -48,6 +92,15 @@ Lotto_card::Lotto_card(const Lotto_card& obj)
 		}
 	}
 
+}
+
+Lotto_card::Lotto_card(Lotto_card&& obj)
+{
+	this->height = obj.height;
+	this->cells = obj.cells;
+
+	obj.cells = nullptr;
+	obj.height = 0;
 }
 
 Lotto_card::~Lotto_card()
@@ -108,7 +161,7 @@ unsigned int Lotto_card::get_height() const
 	return this->height;
 }
 
-void Lotto_card::card_output(std::ostream& out) const //принимает параметром поток в который выводить
+void Lotto_card::card_output(std::ostream& out) const
 {
 	if (this->height == 0)
 	{
@@ -229,12 +282,24 @@ Lotto_card& Lotto_card::operator=(const Lotto_card& obj)
 {
 	if (this == &obj) return *this; //сам себя себе присвоил
 
+	Cell** t_cells = new (std::nothrow) Cell * [obj.height];
+	if (t_cells == nullptr) throw "bad_alloc";
 
-	Cell** t_cells = new Cell * [obj.height];
-	
+	int good_alloc = 0;
 	for (int i = 0; i < obj.height; i++)
 	{
-		t_cells[i] = new Cell[this->width];
+		t_cells[i] = new (std::nothrow) Cell[this->width];
+
+		if (t_cells[i] == nullptr)
+		{
+			for (int j = 0; j < good_alloc; j++)
+			{
+				delete[] t_cells[j];
+			}
+			delete[] t_cells;
+			throw "bad_alloc";
+		}
+		else good_alloc++;
 	}
 
 	for (int i = 0; i < obj.height; i++)
@@ -260,7 +325,7 @@ Lotto_card& Lotto_card::operator=(const Lotto_card& obj)
 
 Lotto_card& Lotto_card::operator--(int)
 {
-	Lotto_card temp_lotto = *this;
+	Lotto_card temp_lotto(*this);
 	this->check_for_busy_lines();
 	return temp_lotto;
 }
@@ -303,35 +368,21 @@ std::istream& operator>> (std::istream& in, Lotto_card& lotto)
 void Lotto_card::delete_busy_line(int height_i)
 {
 	Cell** t_cells = new Cell * [this->height - 1];
-	for (int i = 0; i < this->height - 1; i++)
-	{
-		t_cells[i] = new Cell[this->width];
-	}
-
 	int t_i = 0;
 
 	for (int i = 0; i < this->height; i++)
 	{
 		if (i != height_i)
 		{
-			for (int j = 0; j < this->width; j++)
-			{
-				t_cells[t_i][j].set_condition(cells[i][j].get_condition());
-				t_cells[t_i][j].set_number(cells[i][j].get_number());
-			}
+			t_cells[t_i] = cells[i];
 			t_i++;
 		}
-		
 	}
 
-	for (int i = 0; i < this->height; i++)
-	{
-		delete[] cells[i];
-	}
 	delete[] cells;
 
+	cells = t_cells;
 	this->height--;
-	this->cells = t_cells;
 }
 
 unsigned int Lotto_card::generate_rand_num(int h_i, int w_j, int* uq_nums_arr, int& it_nums)

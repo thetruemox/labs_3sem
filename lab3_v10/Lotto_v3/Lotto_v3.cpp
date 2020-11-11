@@ -7,12 +7,12 @@ using namespace std;
 #include <stdlib.h>
 #include <crtdbg.h>
 
+Lotto_card foo();
+
 int main()
 {
-    Lotto_card temp(3);
-    Lotto_card lotto(temp); 
-
-    lotto = temp;
+    Lotto_card temp(4);
+    Lotto_card lotto = temp; 
 
     int choice;
 
@@ -34,7 +34,7 @@ int main()
             cout << lotto;
             break;
         case 4:
-            cout << temp;
+
             return 0;
             break;
         default:
@@ -46,4 +46,10 @@ int main()
 
     _CrtDumpMemoryLeaks();
     return 0;
+}
+
+Lotto_card foo()
+{
+    Lotto_card temp(4);
+    return temp;
 }
