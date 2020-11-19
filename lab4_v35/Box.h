@@ -1,6 +1,14 @@
 #pragma once
 #include <string>
 
+enum Type
+{
+	DEFAULT,
+	FRAGILE,
+	COLD,
+	FRAGILE_COLD
+};
+
 class Box
 {
 public:
@@ -16,6 +24,7 @@ public:
 	int get_length() const;
 	int get_width() const;
 	int get_height() const;
+	Type get_type() const;
 	
 	//setters
 	void set_box_number(int num);
@@ -24,6 +33,8 @@ public:
 	void set_customer_name(std::string name);
 
 protected:
+
+	Type type;
 	int length, width, height;
 	unsigned int box_number;
 	float price;

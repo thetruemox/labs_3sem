@@ -5,6 +5,7 @@ Box::Box()
     this->length = 1;
     this->width = 1;
     this->height = 1;
+    this->type = DEFAULT;
 }
 
 Box::Box(int l, int w, int h)
@@ -26,6 +27,8 @@ Box::Box(int l, int w, int h)
         this->height = h;
     }
     else this->height = 1;
+
+    this->type = DEFAULT;
 }
 
 int Box::get_box_number() const
