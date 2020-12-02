@@ -4,9 +4,6 @@ using namespace std;
 #include <list>
 #include <vector>
 
-#include "Box.h"
-#include "Fragile_box.h"
-#include "Cold_box.h"
 
 int main()
 { 

@@ -5,8 +5,8 @@ enum Type
 {
 	DEFAULT,
 	FRAGILE,
-	COLD,
-	FRAGILE_COLD
+	COOL,
+	FRAGILE_COOL
 };
 
 class Box
@@ -35,7 +35,7 @@ public:
 protected:
 
 	Type type;
-	int length, width, height;
+	unsigned int length, width, height;
 	unsigned int box_number;
 	float price;
 	float mass;

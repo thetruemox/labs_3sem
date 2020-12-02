@@ -66,6 +66,11 @@ int Box::get_height() const
     return this->height;
 }
 
+Type Box::get_type() const
+{
+    return this->type;
+}
+
 void Box::set_box_number(int num)
 {
     this->box_number = num;

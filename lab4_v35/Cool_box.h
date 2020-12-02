@@ -1,12 +1,12 @@
 #pragma once
 #include "Box.h"
 
-class Cold_box : public Box
+class Cool_box : public Box
 {
 public:
-	Cold_box();
-	Cold_box(float temperature);
-	Cold_box(int l, int w, int h, float temperature);
+	Cool_box();
+	Cool_box(float temperature);
+	Cool_box(int l, int w, int h, float temperature);
 
 	float get_temperature() const;
 	void set_temperature(float temperature);
