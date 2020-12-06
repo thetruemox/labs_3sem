@@ -12,8 +12,11 @@ public:
 	//float get_pressure() const;
 
 	Box_container(Cursor cursor, int length, int width);
+	void put_box_in_stack(Box& box);
 
 private:
+
+	Box_container();
 
 	Cursor placed_cursor;
 
@@ -21,7 +24,7 @@ private:
 	int width;
 	int temp_height;
 
-	std::vector<std::shared_ptr<Box>> box_stacks;
+	std::vector<Box> box_stacks;
 };
 
 

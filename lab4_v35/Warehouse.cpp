@@ -46,18 +46,89 @@ Warehouse::~Warehouse()
 
 const char* Warehouse::place_box_auto(Type type, int length, int width, int height, int mass)
 {
+	Box* box;
+
+	switch (type)
+	{
+	case COOL:
+		box = new Cool_box(length, width, height, 0); //сделай с температурой что-то
+		break;
+	case FRAGILE:
+		box = new Fragile_box(length, width, height, 0); //сделай с давлением что-то
+		break;
+	case FRAGILE_COOL:
+		box = new Fragile_cool_box(length, width, height, 0, 0); //сделай с температурой давлением что-то
+		break;
+	default:
+		break;
+	}
+	
 	//≈сли на складе нет стеллажей, создаю новый по курсору (0,0)
 	if (box_racks.empty())
 	{
 		Cursor cursor;
-		if (map->is_it_empty_here(cursor, length, width, height)) //ѕрогнать разные повороты коробки
+
+		if (rotate_auto(cursor, box))
 		{
-			box_racks.push_back(Box_container(cursor, length, width));
+			//место найдено, добавл€ем стеллаж
+			this->box_racks.push_back(Box_container(cursor, box->get_length(), box->get_width()));
+
+
 		}
+		else return "There is no place for this box";
+
+		
 
 	}
 
 	return nullptr;
+}
+
+bool Warehouse::rotate_auto(Cursor cursor, Box* box)
+{
+	Type type = box->get_type();
+
+	int x, y, z;
+	x = box->get_length();
+	y = box->get_width();
+	z = box->get_height();
+
+	if (map->is_it_empty_here(cursor, x, y, z)) // lw
+	{
+		box->set_all(x, y, z);
+		return true;
+	}
+	if (map->is_it_empty_here(cursor, y, x, z)) // wl
+	{
+		box->set_all(y, x, z);
+		return true;
+	}
+
+	if (type != COOL) return false;
+
+	if (map->is_it_empty_here(cursor, z, x, y)) // hl
+	{
+		box->set_all(z, x, y);
+		return true;
+	}
+	if (map->is_it_empty_here(cursor, x, z, y)) // lh
+	{
+		box->set_all(x, z, y);
+		return true;
+	}
+
+	if (map->is_it_empty_here(cursor, y, z, x)) // wh
+	{
+		box->set_all(y, z, x);
+		return true;
+	}
+	if (map->is_it_empty_here(cursor, z, y, x)) // hw
+	{
+		box->set_all(z, y, x);
+		return true;
+	}
+
+	return false;
 }
 
 

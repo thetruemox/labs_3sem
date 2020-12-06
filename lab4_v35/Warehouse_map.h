@@ -10,6 +10,7 @@ public:
 	bool is_it_empty_here(Cursor cursor, int length, int width, int height);
 
 private:
+	Warehouse_map();
 
 	void place_container(Cursor cursor, int length, int width);
 

@@ -1,5 +1,6 @@
 #include "Box.h"
 
+/*
 Box::Box()
 {
     this->length = 1;
@@ -7,6 +8,7 @@ Box::Box()
     this->height = 1;
     this->type = DEFAULT;
 }
+*/
 
 Box::Box(int l, int w, int h)
 {
@@ -27,8 +29,6 @@ Box::Box(int l, int w, int h)
         this->height = h;
     }
     else this->height = 1;
-
-    this->type = DEFAULT;
 }
 
 int Box::get_box_number() const
@@ -69,6 +69,28 @@ int Box::get_height() const
 Type Box::get_type() const
 {
     return this->type;
+}
+
+void Box::set_all(int length, int width, int height)
+{
+    this->length = length;
+    this->width = width;
+    this->height = height;
+}
+
+void Box::set_length(int length)
+{
+    this->length = length;
+}
+
+void Box::set_width(int width)
+{
+    this->width = width;
+}
+
+void Box::set_height(int height)
+{
+    this->height = height;
 }
 
 void Box::set_box_number(int num)
