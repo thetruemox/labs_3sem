@@ -12,6 +12,9 @@ Lotto_card::Lotto_card()
 
 	if (cells == nullptr) throw "bad_alloc";
 
+	//throw std::bad_alloc
+	//Первое исключение не обрабатывать
+
 	int good_alloc = 0;
 	for (int i = 0; i < height; i++)
 	{
@@ -355,18 +358,13 @@ std::istream& operator>> (std::istream& in, Lotto_card& lotto)
 	{
 		lotto.put_keg(keg_num);
 	}
-	else
-	{
-		in.clear();
-		in.ignore(in.rdbuf()->in_avail());
-	}
-
 
 	return in;
 }
 
 void Lotto_card::delete_busy_line(int height_i)
 {
+	//bad_alloc
 	Cell** t_cells = new Cell * [this->height - 1];
 	int t_i = 0;
 
