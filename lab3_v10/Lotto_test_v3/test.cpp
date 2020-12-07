@@ -1,11 +1,15 @@
 #include "pch.h"
 #define NUM_OF_TESTS 100
+#define DEFAULT_LINES_NUMBER 3
 
+//тест на bad_alloc
+//в тестах проверять значения ячеек
 
 TEST(constructors, base) 
 {
+	//Проверка заполненности ячеек (и в остальных конструкторах тоже)
 	Lotto_card lotto;
-	EXPECT_EQ(3, lotto.get_height());
+	EXPECT_EQ(DEFAULT_LINES_NUMBER, lotto.get_height());
 }
 
 TEST(constructors, int_height)
@@ -56,7 +60,7 @@ Lotto_card foo(int size);
 
 TEST(constructors, move)
 {
-	Lotto_card* lotto = nullptr;;
+	Lotto_card* lotto = nullptr;
 
 	for (int i = 0; i < NUM_OF_TESTS; i++)
 	{
@@ -120,3 +124,5 @@ TEST(methods, clear_busy_lines)
 
 	delete lotto;
 }
+
+//тест ввода, вывода
