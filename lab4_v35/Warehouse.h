@@ -3,7 +3,7 @@
 #include "Box_container.h"
 #include "Warehouse_map.h"
 
-
+/*
 class Warehouse
 {
 public:
@@ -26,4 +26,4 @@ private:
 	bool rotate_auto(Cursor cursor, Box* box);
 		
 };
-
+*/

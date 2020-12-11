@@ -11,7 +11,7 @@ Warehouse::Warehouse()
 	this->width = BASE_SIZE;
 	this->height = BASE_SIZE;
 }
-*/
+
 
 Warehouse::Warehouse(int l, int w, int h)
 {
@@ -131,4 +131,4 @@ bool Warehouse::rotate_auto(Cursor cursor, Box* box)
 	return false;
 }
 
-
+*/

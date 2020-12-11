@@ -1,30 +1,32 @@
 #pragma once
-#include "Box.h"
 #include "Cursor.h"
 #include <memory>
 #include <vector>
 
+#include "Box.h"
+#include "Cool_box.h"
+#include "Fragile_box.h"
+#include "Fragile_cool_box.h"
 
-class Box_container
+
+class Box_container 
 {
 public:
-	//float get_temperature() const;
-	//float get_pressure() const;
-
-	Box_container(Cursor cursor, int length, int width);
-	void put_box_in_stack(Box& box);
+	
+	Box_container();
+	Box_container(Cursor cursor, Box* box);
+	
+	int size();
+	bool put_box(Box* box);
 
 private:
-
-	Box_container();
-
 	Cursor placed_cursor;
 
-	int length;
-	int width;
+	int base_length;
+	int base_width;
 	int temp_height;
 
-	std::vector<Box> box_stacks;
+	std::vector<Box*> box_rack;
 };
 
 
