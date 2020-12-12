@@ -5,7 +5,7 @@ class Cool_box : virtual public Box
 {
 public:
 	Cool_box();
-	Cool_box(int l, int w, int h, float temperature);
+	Cool_box(int l, int w, int h, float mass, float temperature);
 
 	float temperature;
 };

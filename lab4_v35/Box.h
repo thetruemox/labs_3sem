@@ -6,16 +6,18 @@ class Box
 public:
 
 	Box(); 
-	Box(int l, int w, int h);
+	Box(int l, int w, int h, float mass);
 	virtual ~Box() {}
 
 	void set_all(int length, int width, int height);
 
 	unsigned int length, width, height;
-	unsigned int box_number;
-	float price;
 	float mass;
+
+	/*
+	float price;
+	unsigned int box_number;
 	std::string customer_name;
-	
+	*/
 
 };

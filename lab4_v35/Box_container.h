@@ -14,7 +14,7 @@ class Box_container
 public:
 	
 	Box_container();
-	Box_container(Cursor cursor, Box* box);
+	Box_container(Cursor cursor, Box* box, int max_height);
 	
 	int size();
 	bool put_box(Box* box);
@@ -24,9 +24,16 @@ private:
 
 	int base_length;
 	int base_width;
+
 	int temp_height;
+	int max_height;
 
 	std::vector<Box*> box_rack;
+
+	bool check_pressure(float mass);
+	void add_pressure(float mass);
+
+	void put_box_push_back(int x, int y, int z, Box* box);
 };
 
 
