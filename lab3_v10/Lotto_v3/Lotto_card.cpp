@@ -22,7 +22,7 @@ Lotto_card::Lotto_card()
 				delete[] cells[j];
 			}
 			delete[] cells;
-			throw new std::bad_alloc;
+			throw std::bad_alloc();
 		} else good_alloc++;
 		
 	}
@@ -49,7 +49,7 @@ Lotto_card::Lotto_card(int height)
 				delete[] cells[j];
 			}
 			delete[] cells;
-			throw new std::bad_alloc;
+			throw std::bad_alloc();
 		}
 		else good_alloc++;
 	}
@@ -74,7 +74,7 @@ Lotto_card::Lotto_card(const Lotto_card& obj)
 				delete[] cells[j];
 			}
 			delete[] cells;
-			throw new std::bad_alloc;
+			throw std::bad_alloc();
 		}
 		else good_alloc++;
 	}
@@ -297,7 +297,7 @@ Lotto_card& Lotto_card::operator=(const Lotto_card& obj)
 				delete[] t_cells[j];
 			}
 			delete[] t_cells;
-			throw new std::bad_alloc;
+			throw std::bad_alloc();
 		}
 		else good_alloc++;
 	}
