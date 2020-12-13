@@ -23,7 +23,10 @@ public:
 	void get_remained_numbers(std::vector<int>* array) const;
 
 	Lotto_card& operator= (const Lotto_card& obj);
+
 	//Перемещающий оператор присваивания
+	Lotto_card& operator=(Lotto_card&& x);
+
 	Lotto_card& operator-- (int);
 	Condition operator() (int i, int j) const;
 	void operator() (int keg);

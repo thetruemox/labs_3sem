@@ -12,7 +12,7 @@ int main()
 
     for (int i = 1; i < 100; i++)
     {
-        cout << house.put_box(new Cool_box(i,i,i,1,100)) << " ";
+        cout << house.put_box(new Fragile_cool_box(i,i,i,1,100, 100)) << " ";
     }
     cout << endl << endl;
 

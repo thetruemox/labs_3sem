@@ -8,12 +8,7 @@
 Lotto_card::Lotto_card()
 {
 	height = 3;
-	cells = new (std::nothrow) Cell * [height];
-
-	if (cells == nullptr) throw "bad_alloc";
-
-	//throw std::bad_alloc
-	//Первое исключение не обрабатывать
+	cells = new Cell * [height];
 
 	int good_alloc = 0;
 	for (int i = 0; i < height; i++)
@@ -27,7 +22,7 @@ Lotto_card::Lotto_card()
 				delete[] cells[j];
 			}
 			delete[] cells;
-			throw "bad_alloc";
+			throw new std::bad_alloc;
 		} else good_alloc++;
 		
 	}
@@ -40,8 +35,7 @@ Lotto_card::Lotto_card(int height)
 	height = abs(height);
 	this->height = height;
 
-	cells = new (std::nothrow) Cell * [height];
-	if (cells == nullptr) throw "bad_alloc";
+	cells = new Cell * [height];
 	
 	int good_alloc = 0;
 	for (int i = 0; i < height; i++)
@@ -55,7 +49,7 @@ Lotto_card::Lotto_card(int height)
 				delete[] cells[j];
 			}
 			delete[] cells;
-			throw "bad_alloc";
+			throw new std::bad_alloc;
 		}
 		else good_alloc++;
 	}
@@ -66,8 +60,7 @@ Lotto_card::Lotto_card(int height)
 Lotto_card::Lotto_card(const Lotto_card& obj)
 {
 	this->height = obj.height;
-	cells = new (std::nothrow) Cell * [height];
-	if (cells == nullptr) throw "bad_alloc";
+	cells = new Cell * [height];
 
 	int good_alloc = 0;
 	for (int i = 0; i < height; i++)
@@ -81,7 +74,7 @@ Lotto_card::Lotto_card(const Lotto_card& obj)
 				delete[] cells[j];
 			}
 			delete[] cells;
-			throw "bad_alloc";
+			throw new std::bad_alloc;
 		}
 		else good_alloc++;
 	}
@@ -285,8 +278,7 @@ Lotto_card& Lotto_card::operator=(const Lotto_card& obj)
 {
 	if (this == &obj) return *this; //сам себя себе присвоил
 
-	Cell** t_cells = new (std::nothrow) Cell * [obj.height];
-	if (t_cells == nullptr) throw "bad_alloc";
+	Cell** t_cells = new Cell * [obj.height];
 
 	int good_alloc = 0;
 	for (int i = 0; i < obj.height; i++)
@@ -300,7 +292,7 @@ Lotto_card& Lotto_card::operator=(const Lotto_card& obj)
 				delete[] t_cells[j];
 			}
 			delete[] t_cells;
-			throw "bad_alloc";
+			throw new std::bad_alloc;
 		}
 		else good_alloc++;
 	}
@@ -322,6 +314,22 @@ Lotto_card& Lotto_card::operator=(const Lotto_card& obj)
 
 	this->height = obj.height;
 	this->cells = t_cells;
+
+	return *this;
+}
+
+Lotto_card& Lotto_card::operator=(Lotto_card&& obj)
+{
+	if (&obj == this) return *this;
+
+	this->cells = obj.cells;
+	this->height = obj.height;
+
+	for (int i = 0; i < height; i++)
+	{
+		delete[] obj.cells[i];
+	}
+	delete[] obj.cells;
 
 	return *this;
 }
