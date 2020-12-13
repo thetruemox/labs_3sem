@@ -9,7 +9,7 @@ Box_container::Box_container()
 	this->temp_height = 0;
 }
 
-Box_container::Box_container(Cursor cursor, Box* box, int max_height)
+Box_container::Box_container(Cursor cursor, Box* box, unsigned  int max_height)
 {
 	this->placed_cursor = cursor;
 	this->box_rack.push_back(box);
@@ -21,13 +21,21 @@ Box_container::Box_container(Cursor cursor, Box* box, int max_height)
 	this->temp_height = box->height;
 }
 
+Box_container::~Box_container()
+{
+	for (int i = 0; i < box_rack.size(); i++)
+	{
+		delete box_rack[i];
+	}
+}
+
 bool Box_container::put_box(Box* box)
 {
 	if(!check_pressure(box->mass)) return false;
 	
-	int x = box->length;
-	int y = box->width;
-	int z = box->height;
+	unsigned int x = box->length;
+	unsigned int y = box->width;
+	unsigned int z = box->height;
 
 	if (x <= this->base_length && y <= this->base_width && (z + this->temp_height) <= max_height) // XY
 	{
@@ -67,7 +75,7 @@ bool Box_container::put_box(Box* box)
 	return false;
 }
 
-void Box_container::put_box_push_back(int x, int y, int z, Box* box)
+void Box_container::put_box_push_back(unsigned int x, unsigned int y, unsigned int z, Box* box)
 {
 	box->set_all(x, y, z);
 	this->temp_height += z;
@@ -76,7 +84,7 @@ void Box_container::put_box_push_back(int x, int y, int z, Box* box)
 	add_pressure(box->mass);
 }
 
-bool Box_container::check_pressure(float mass)
+bool Box_container::check_pressure(float mass) const
 {
 	Fragile_box* f_ptr = nullptr;
 
@@ -85,7 +93,7 @@ bool Box_container::check_pressure(float mass)
 		f_ptr = dynamic_cast<Fragile_box*>(box_rack[i]);
 		if (f_ptr != nullptr)
 		{
-			if ((f_ptr->pressure + mass) > f_ptr->max_pressure) return false;
+			if ((f_ptr->get_pressure() + mass) > f_ptr->get_max_pressure()) return false;
 		}
 		f_ptr = nullptr;
 	}
@@ -102,16 +110,13 @@ void Box_container::add_pressure(float mass)
 		f_ptr = dynamic_cast<Fragile_box*>(box_rack[i]);
 		if (f_ptr != nullptr)
 		{
-			f_ptr->pressure += mass;
+			f_ptr->set_pressure(f_ptr->get_pressure() + mass);
 		}
 		f_ptr = nullptr;
 	}
-
 }
 
-
-
-int Box_container::size()
+unsigned int Box_container::size()
 {
 	return this->box_rack.size();
 }

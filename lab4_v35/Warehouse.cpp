@@ -1,42 +1,37 @@
 #include "Warehouse.h"
+#include <iostream>
 
-/*
-* #define BASE_SIZE 10
+#define BASE_SIZE 10
 Warehouse::Warehouse()
 {
+	map = new Warehouse_map(BASE_SIZE, BASE_SIZE, BASE_SIZE);
 	this->cursor.x_length = 0;
 	this->cursor.y_width = 0;
-
+	this->temperature = 36.6f;
 	this->length = BASE_SIZE;
 	this->width = BASE_SIZE;
 	this->height = BASE_SIZE;
 }
 
 
-Warehouse::Warehouse(int l, int w, int h)
+Warehouse::Warehouse(int l, int w, int h, float temperature)
 {
-	map = new Warehouse_map(l, w, h);
-
-	this->cursor.x_length = 0;
-	this->cursor.y_width = 0;
-
-	if (l > 0)
+	if (l <= 0 || w <= 0 || h <= 0)
+	{
+		throw "Warehouse: Incorrect values specified";
+	}
+	else
 	{
 		this->length = l;
-	}
-	else this->length = 10;
-
-	if (w > 0)
-	{
 		this->width = w;
-	}
-	else this->width = 10;
-
-	if (h > 0)
-	{
 		this->height = h;
+		this->temperature = temperature;
+
+		map = new Warehouse_map(l, w, h);
+
+		this->cursor.x_length = 0;
+		this->cursor.y_width = 0;
 	}
-	else this->height = 10;
 }
 
 Warehouse::~Warehouse()
@@ -44,91 +39,79 @@ Warehouse::~Warehouse()
 	delete map;
 }
 
-const char* Warehouse::place_box_auto(Type type, int length, int width, int height, int mass)
+bool Warehouse::put_box(Box *box)
 {
-	Box* box;
-
-	switch (type)
-	{
-	case COOL:
-		box = new Cool_box(length, width, height, 0); //сделай с температурой что-то
-		break;
-	case FRAGILE:
-		box = new Fragile_box(length, width, height, 0); //сделай с давлением что-то
-		break;
-	case FRAGILE_COOL:
-		box = new Fragile_cool_box(length, width, height, 0, 0); //сделай с температурой давлением что-то
-		break;
-	default:
-		break;
-	}
+	/* 
+	„то делать с температурой???-
+	Cool_box* cb_ptr = dynamic_cast<Cool_box*>(&box);
+	if (cb_ptr != nullptr && cb_ptr->get_temperature()) 
+	*/
 	
-	//≈сли на складе нет стеллажей, создаю новый по курсору (0,0)
-	if (box_racks.empty())
+	//ѕопытка поместить коробку на стеллаж 
+	for (int i = 0; i < racks.size(); i++)
 	{
-		Cursor cursor;
+		if (racks[i]->put_box(box)) return true;
+	}
 
-		if (rotate_auto(cursor, box))
+	//ѕоиск места и создание нового стеллажа
+	unsigned int x = box->length;
+	unsigned int y = box->width;
+	unsigned int z = box->height;
+
+	for (int i = 0; i < this->length; i++)
+	{
+		for (int j = 0; j < this->width; j++)
 		{
-			//место найдено, добавл€ем стеллаж
-			this->box_racks.push_back(Box_container(cursor, box->get_length(), box->get_width()));
+			cursor.x_length = i;
+			cursor.y_width = j;
 
+			if (map->is_it_empty_here(cursor, x, y, z))
+			{
+				box->set_all(x, y, z);
+				this->racks.push_back(new Box_container(cursor, box, this->height));
+				return true;
+			}
+			if (map->is_it_empty_here(cursor, y, x, z))
+			{
+				box->set_all(y, x, z);
+				this->racks.push_back(new Box_container(cursor, box, this->height));
+				return true;
+			}
 
+			if (dynamic_cast<Fragile_box*>(box) != nullptr) continue;
+			
+			if (map->is_it_empty_here(cursor, y, z, x))
+			{
+				box->set_all(y, z, x);
+				this->racks.push_back(new Box_container(cursor, box, this->height));
+				return true;
+			}
+			if (map->is_it_empty_here(cursor, z, y, x))
+			{
+				box->set_all(z, y, x);
+				this->racks.push_back(new Box_container(cursor, box, this->height));
+				return true;
+			}
+
+			if (map->is_it_empty_here(cursor, x, z, y))
+			{
+				box->set_all(x, z, y);
+				this->racks.push_back(new Box_container(cursor, box, this->height));
+				return true;
+			}
+			if (map->is_it_empty_here(cursor, z, x, y))
+			{
+				box->set_all(z, x, y);
+				this->racks.push_back(new Box_container(cursor, box, this->height));
+				return true;
+			}
 		}
-		else return "There is no place for this box";
-
-		
-
-	}
-
-	return nullptr;
-}
-
-bool Warehouse::rotate_auto(Cursor cursor, Box* box)
-{
-	Type type = box->get_type();
-
-	int x, y, z;
-	x = box->get_length();
-	y = box->get_width();
-	z = box->get_height();
-
-	if (map->is_it_empty_here(cursor, x, y, z)) // lw
-	{
-		box->set_all(x, y, z);
-		return true;
-	}
-	if (map->is_it_empty_here(cursor, y, x, z)) // wl
-	{
-		box->set_all(y, x, z);
-		return true;
-	}
-
-	if (type != COOL) return false;
-
-	if (map->is_it_empty_here(cursor, z, x, y)) // hl
-	{
-		box->set_all(z, x, y);
-		return true;
-	}
-	if (map->is_it_empty_here(cursor, x, z, y)) // lh
-	{
-		box->set_all(x, z, y);
-		return true;
-	}
-
-	if (map->is_it_empty_here(cursor, y, z, x)) // wh
-	{
-		box->set_all(y, z, x);
-		return true;
-	}
-	if (map->is_it_empty_here(cursor, z, y, x)) // hw
-	{
-		box->set_all(z, y, x);
-		return true;
 	}
 
 	return false;
 }
 
-*/
+void Warehouse::map_out()
+{
+	this->map->map_out();
+}

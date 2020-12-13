@@ -3,27 +3,26 @@
 #include "Box_container.h"
 #include "Warehouse_map.h"
 
-/*
+
 class Warehouse
 {
 public:
-
-	Warehouse(int l, int w, int h);
+	Warehouse();
+	Warehouse(int l, int w, int h, float temperature);
 	~Warehouse();
 
-	const char* place_box_auto(Type type, int length, int width, int height, int mass);
+	bool put_box(Box *box);
+	void map_out();
+		
 	
-
 private:
-	Warehouse();
-
 	Cursor cursor;
 	Warehouse_map* map;
 
 	unsigned int length, width, height;
-	std::vector<Box_container> box_racks;
+	float temperature;
 
-	bool rotate_auto(Cursor cursor, Box* box);
-		
+
+	std::vector<Box_container*> racks;
 };
-*/
+

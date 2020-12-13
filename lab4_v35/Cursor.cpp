@@ -6,7 +6,7 @@ Cursor::Cursor()
 	y_width = 0;
 }
 
-Cursor::Cursor(int x, int y)
+Cursor::Cursor(unsigned int x, unsigned int y)
 {
 	x_length = x;
 	y_width = y;

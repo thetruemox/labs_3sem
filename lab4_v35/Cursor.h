@@ -4,11 +4,11 @@ class Cursor
 {
 public:
 	Cursor();
-	Cursor(int x, int y);
+	Cursor(unsigned int x, unsigned int y);
 
 
 	Cursor& operator= (const Cursor& obj);
-	int x_length;
-	int y_width;
+	unsigned int x_length;
+	unsigned int y_width;
 };
 

@@ -53,6 +53,18 @@ bool Warehouse_map::is_it_empty_here(Cursor cursor, int length, int width, int h
 	return true;
 }
 
+void Warehouse_map::map_out()
+{
+	for (int i = 0; i < length; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			std::cout << map[i][j] << " ";
+		}
+		std::cout << std::endl;
+	}
+}
+
 void Warehouse_map::place_container(Cursor cursor, int length, int width)
 {
 	for (int i = cursor.x_length; i < cursor.x_length + length; i++)
