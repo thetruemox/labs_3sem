@@ -2,19 +2,33 @@
 #define NUM_OF_TESTS 100
 #define DEFAULT_LINES_NUMBER 3
 
-//тест на bad_alloc
-//в тестах проверять значения ячеек
-
+/*
 TEST(exceptions, bad_alloc)
 {
 	EXPECT_ANY_THROW(new Lotto_card(1000));
 }
+*/
 
 TEST(constructors, base) 
 {
-	//Проверка заполненности ячеек (и в остальных конструкторах тоже)
 	Lotto_card lotto;
+
 	EXPECT_EQ(DEFAULT_LINES_NUMBER, lotto.get_height());
+
+	int t_num;
+	int power = 10;
+	while (lotto.get_height() >= power) power *= 10;
+	for (int i = 0; i < lotto.get_height(); i++)
+	{
+		for (int j = 0; j < lotto.get_width(); j++)
+		{
+			t_num = lotto.get_number(i, j);
+			if (t_num != 0)
+			{
+				EXPECT_TRUE(t_num <= (j+1)*power && t_num >= j*power);
+			}
+		}
+	}
 
 }
 
@@ -27,6 +41,22 @@ TEST(constructors, int_height)
 		lotto = new Lotto_card(i);
 		EXPECT_FALSE(lotto == nullptr);
 		EXPECT_EQ(i, lotto->get_height());
+
+		int t_num;
+		int power = 10;
+		while (lotto->get_height() >= power) power *= 10;
+		for (int i = 0; i < lotto->get_height(); i++)
+		{
+			for (int j = 0; j < lotto->get_width(); j++)
+			{
+				t_num = lotto->get_number(i, j);
+				if (t_num != 0)
+				{
+					EXPECT_TRUE(t_num <= (j + 1) * power && t_num >= j * power);
+				}
+			}
+		}
+
 		delete lotto;
 		lotto = nullptr;
 	}
@@ -36,7 +66,6 @@ TEST(constructors, copy)
 {
 	Lotto_card* temp = nullptr;;
 	Lotto_card* lotto = nullptr;;
-
 	for (int i = 0; i < NUM_OF_TESTS; i++)
 	{
 		temp = new Lotto_card(i);
@@ -55,11 +84,27 @@ TEST(constructors, copy)
 			}
 		}
 
+		int t_num;
+		int power = 10;
+		while (lotto->get_height() >= power) power *= 10;
+		for (int i = 0; i < lotto->get_height(); i++)
+		{
+			for (int j = 0; j < lotto->get_width(); j++)
+			{
+				t_num = lotto->get_number(i, j);
+				if (t_num != 0)
+				{
+					EXPECT_TRUE(t_num <= (j + 1) * power && t_num >= j * power);
+				}
+			}
+		}
+
 		delete temp;
 		delete lotto;
 		lotto = nullptr;
 		temp = nullptr;
 	}
+
 }
 
 Lotto_card foo(int size);
@@ -72,6 +117,21 @@ TEST(constructors, move)
 	{
 		lotto = new Lotto_card(foo(i));
 		EXPECT_FALSE(lotto == nullptr);
+		
+		int t_num;
+		int power = 10;
+		while (lotto->get_height() >= power) power *= 10;
+		for (int i = 0; i < lotto->get_height(); i++)
+		{
+			for (int j = 0; j < lotto->get_width(); j++)
+			{
+				t_num = lotto->get_number(i, j);
+				if (t_num != 0)
+				{
+					EXPECT_TRUE(t_num <= (j + 1) * power && t_num >= j * power);
+				}
+			}
+		}
 
 		delete lotto;
 		lotto = nullptr;
@@ -130,5 +190,3 @@ TEST(methods, clear_busy_lines)
 
 	delete lotto;
 }
-
-//тест ввода, вывода
