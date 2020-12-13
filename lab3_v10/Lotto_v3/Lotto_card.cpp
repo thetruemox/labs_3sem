@@ -157,6 +157,11 @@ unsigned int Lotto_card::get_height() const
 	return this->height;
 }
 
+unsigned int Lotto_card::get_number(int i, int j) const
+{
+	return cells[i][j].get_number();
+}
+
 void Lotto_card::card_output(std::ostream& out) const
 {
 	if (this->height == 0)

@@ -14,6 +14,7 @@ public:
 
 	unsigned int get_width() const;
 	unsigned int get_height() const;
+	unsigned int get_number(int i, int j) const;
 
 	void card_output(std::ostream& out) const; //пока что красивый вывод только при height < 10
 	void put_keg(unsigned int keg);

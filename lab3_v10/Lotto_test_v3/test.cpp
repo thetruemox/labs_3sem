@@ -5,11 +5,17 @@
 //тест на bad_alloc
 //в тестах проверять значения ячеек
 
+TEST(exceptions, bad_alloc)
+{
+	EXPECT_ANY_THROW(new Lotto_card(1000));
+}
+
 TEST(constructors, base) 
 {
 	//Проверка заполненности ячеек (и в остальных конструкторах тоже)
 	Lotto_card lotto;
 	EXPECT_EQ(DEFAULT_LINES_NUMBER, lotto.get_height());
+
 }
 
 TEST(constructors, int_height)
