@@ -330,11 +330,7 @@ Lotto_card& Lotto_card::operator=(Lotto_card&& obj)
 	this->cells = obj.cells;
 	this->height = obj.height;
 
-	for (int i = 0; i < height; i++)
-	{
-		delete[] obj.cells[i];
-	}
-	delete[] obj.cells;
+	obj.cells = nullptr;
 
 	return *this;
 }

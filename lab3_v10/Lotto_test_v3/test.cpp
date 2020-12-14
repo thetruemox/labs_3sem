@@ -2,13 +2,12 @@
 #define NUM_OF_TESTS 100
 #define DEFAULT_LINES_NUMBER 3
 
-
+/*
 TEST(exceptions, bad_alloc)
 {
-	int* ptr = new int(3);
-	delete ptr;
-	EXPECT_ANY_THROW(delete ptr);
+	EXPECT_ANY_THROW(new Lotto_card());
 }
+*/
 
 TEST(constructors, base) 
 {

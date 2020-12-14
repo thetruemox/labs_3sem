@@ -26,7 +26,7 @@ public:
 	Lotto_card& operator= (const Lotto_card& obj);
 
 	//Перемещающий оператор присваивания
-	Lotto_card& operator=(Lotto_card&& x);
+	Lotto_card& operator=(Lotto_card&& obj);
 
 	Lotto_card& operator-- (int);
 	Condition operator() (int i, int j) const;
