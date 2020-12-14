@@ -22,6 +22,9 @@ public:
 	bool put_box(Box* box);
 
 private:
+	//Либо перегрузи конструкторы и операторы присваивания либо закрой (лучше первое)
+	//Для warehouse тоже
+
 	Cursor placed_cursor;
 
 	unsigned int base_length, base_width, temp_height, max_height;

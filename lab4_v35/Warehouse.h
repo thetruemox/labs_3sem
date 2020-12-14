@@ -26,3 +26,4 @@ private:
 	std::vector<Box_container*> racks;
 };
 
+//Основание 

@@ -6,14 +6,15 @@ using namespace std;
 
 #include "Warehouse.h"
 
+//Копируй объекты
+
 int main()
 { 
-    Warehouse house(50, 50, 1000, 228);
+    Warehouse house(10, 10, 10, 28);
 
-    for (int i = 1; i < 100; i++)
-    {
-        cout << house.put_box(new Fragile_cool_box(i,i,i,1,100, 100)) << " ";
-    }
+    house.put_box(new Fragile_cool_box(9,9,9,10,20,30));
+    house.put_box(new Fragile_cool_box(9, 9, 9, 10, 20, 30));
+
     cout << endl << endl;
 
     house.map_out();

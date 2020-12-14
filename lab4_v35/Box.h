@@ -11,12 +11,11 @@ public:
 
 	virtual ~Box() {}
 
-	bool set_all(int length, int width, int height);
-
 	friend class Box_container;
 	friend class Warehouse;
 
 private:
+	bool set_all(int length, int width, int height);
 
 	unsigned int length, width, height;
 	float mass;

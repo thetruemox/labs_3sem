@@ -37,12 +37,15 @@ Warehouse::Warehouse(int l, int w, int h, float temperature)
 Warehouse::~Warehouse()
 {
 	delete map;
+	//деструктор
 }
 
 bool Warehouse::put_box(Box *box)
 {
 	/* 
-	Что делать с температурой???-
+	Что делать с температурой???
+		*Диапазон температуры
+
 	Cool_box* cb_ptr = dynamic_cast<Cool_box*>(&box);
 	if (cb_ptr != nullptr && cb_ptr->get_temperature()) 
 	*/
