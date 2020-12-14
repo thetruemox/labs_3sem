@@ -327,6 +327,12 @@ Lotto_card& Lotto_card::operator=(Lotto_card&& obj)
 {
 	if (&obj == this) return *this;
 
+	for (int i = 0; i < height; i++)
+	{
+		delete[] this->cells[i];
+	}
+	delete[] this->cells;
+
 	this->cells = obj.cells;
 	this->height = obj.height;
 
