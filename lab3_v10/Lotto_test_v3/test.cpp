@@ -9,6 +9,8 @@ TEST(exceptions, bad_alloc)
 }
 */
 
+//todo тесты с методами изменяющими ее состояние
+
 TEST(constructors, base) 
 {
 	Lotto_card lotto;

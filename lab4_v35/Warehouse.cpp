@@ -36,6 +36,11 @@ Warehouse::Warehouse(int l, int w, int h, float temperature)
 
 Warehouse::~Warehouse()
 {
+	for (int i = 0; i < this->racks.size(); i++)
+	{
+		delete this->racks[i];
+	}
+
 	delete map;
 	//деструктор
 }
@@ -112,6 +117,18 @@ bool Warehouse::put_box(Box *box)
 	}
 
 	return false;
+}
+
+int Warehouse::get_size()
+{
+	int size = 0;
+
+	for (int i = 0; i < this->racks.size(); i++)
+	{
+		size += this->racks[i]->size();
+	}
+
+	return size;
 }
 
 void Warehouse::map_out()

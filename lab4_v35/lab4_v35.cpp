@@ -10,14 +10,17 @@ using namespace std;
 
 int main()
 { 
-    Warehouse house(10, 10, 10, 28);
+    /*
+    Warehouse house(2, 2, 10, 28);
 
-    house.put_box(new Fragile_cool_box(9,9,9,10,20,30));
-    house.put_box(new Fragile_cool_box(9, 9, 9, 10, 20, 30));
+    for (int i = 0; i < 100; i++)
+    {
+        if (house.put_box(new Fragile_box(1, 1, 1, 10, 10))) cout << i << " ";
+    }
 
     cout << endl << endl;
-
     house.map_out();
+    */
 
     return 0;
 }

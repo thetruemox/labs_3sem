@@ -7,14 +7,16 @@
 class Warehouse
 {
 public:
+	void map_out(); //Для отладки 
+
 	Warehouse();
 	Warehouse(int l, int w, int h, float temperature);
 	~Warehouse();
 
 	bool put_box(Box *box);
-	void map_out();
-		
-	
+	int get_size();
+	int get_all_boxes(Box *box);
+
 private:
 	Cursor cursor;
 	Warehouse_map* map;
