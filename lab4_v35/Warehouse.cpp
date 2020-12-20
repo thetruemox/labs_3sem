@@ -47,18 +47,17 @@ Warehouse::~Warehouse()
 
 bool Warehouse::put_box(Box *box)
 {
-	/* 
-	Что делать с температурой???
-		*Диапазон температуры
-
-	Cool_box* cb_ptr = dynamic_cast<Cool_box*>(&box);
-	if (cb_ptr != nullptr && cb_ptr->get_temperature()) 
-	*/
+	Cool_box* cb_ptr = dynamic_cast<Cool_box*>(box);
+	if (cb_ptr != nullptr && cb_ptr->get_temperature() > this->temperature) return false;
 	
 	//Попытка поместить коробку на стеллаж 
 	for (int i = 0; i < racks.size(); i++)
 	{
-		if (racks[i]->put_box(box)) return true;
+		if (racks[i]->put_box(box))
+		{
+			box->ID = this->get_size();
+			return true;
+		}
 	}
 
 	//Поиск места и создание нового стеллажа
@@ -76,12 +75,14 @@ bool Warehouse::put_box(Box *box)
 			if (map->is_it_empty_here(cursor, x, y, z))
 			{
 				box->set_all(x, y, z);
+				box->ID = this->get_size();
 				this->racks.push_back(new Box_container(cursor, box, this->height));
 				return true;
 			}
 			if (map->is_it_empty_here(cursor, y, x, z))
 			{
 				box->set_all(y, x, z);
+				box->ID = this->get_size();
 				this->racks.push_back(new Box_container(cursor, box, this->height));
 				return true;
 			}
@@ -91,12 +92,14 @@ bool Warehouse::put_box(Box *box)
 			if (map->is_it_empty_here(cursor, y, z, x))
 			{
 				box->set_all(y, z, x);
+				box->ID = this->get_size();
 				this->racks.push_back(new Box_container(cursor, box, this->height));
 				return true;
 			}
 			if (map->is_it_empty_here(cursor, z, y, x))
 			{
 				box->set_all(z, y, x);
+				box->ID = this->get_size();
 				this->racks.push_back(new Box_container(cursor, box, this->height));
 				return true;
 			}
@@ -104,12 +107,14 @@ bool Warehouse::put_box(Box *box)
 			if (map->is_it_empty_here(cursor, x, z, y))
 			{
 				box->set_all(x, z, y);
+				box->ID = this->get_size();
 				this->racks.push_back(new Box_container(cursor, box, this->height));
 				return true;
 			}
 			if (map->is_it_empty_here(cursor, z, x, y))
 			{
 				box->set_all(z, x, y);
+				box->ID = this->get_size();
 				this->racks.push_back(new Box_container(cursor, box, this->height));
 				return true;
 			}

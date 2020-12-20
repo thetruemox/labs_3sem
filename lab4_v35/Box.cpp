@@ -7,6 +7,7 @@ Box::Box()
     this->width = BASE_SIZE;
     this->height = BASE_SIZE;
     this->mass = BASE_SIZE;
+    this->ID = 0;
 }
 
 Box::Box(int length, int width, int height, float mass)
@@ -18,6 +19,7 @@ Box::Box(int length, int width, int height, float mass)
     else 
     {
         this->mass = mass;
+        this->ID = 0;
     }
 }
 
@@ -27,6 +29,12 @@ Box::Box(const Box& box)
     this->width = box.width;
     this->height = box.height;
     this->mass = box.mass;
+    this->ID = box.ID;
+}
+
+unsigned int Box::get_ID()
+{
+    return this->ID;
 }
 
 bool Box::set_all(int length, int width, int height)

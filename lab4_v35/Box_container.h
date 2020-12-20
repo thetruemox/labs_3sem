@@ -21,6 +21,7 @@ public:
 	unsigned int size();
 	bool put_box(Box* box);
 
+	friend class Warehouse;
 private:
 	//Либо перегрузи конструкторы и операторы присваивания либо закрой (лучше первое)
 	//Для warehouse тоже

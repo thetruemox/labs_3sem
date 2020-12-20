@@ -15,7 +15,7 @@ public:
 
 	bool put_box(Box *box);
 	int get_size();
-	int get_all_boxes(Box *box);
+	//int get_all_boxes(Box *box);
 
 private:
 	Cursor cursor;

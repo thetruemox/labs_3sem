@@ -11,6 +11,8 @@ public:
 
 	virtual ~Box() {}
 
+	unsigned int get_ID();
+
 	friend class Box_container;
 	friend class Warehouse;
 
@@ -18,6 +20,7 @@ private:
 	bool set_all(int length, int width, int height);
 
 	unsigned int length, width, height;
+	unsigned int ID;
 	float mass;
 
 	/*
@@ -25,5 +28,4 @@ private:
 	unsigned int box_number;
 	std::string customer_name;
 	*/
-
 };
