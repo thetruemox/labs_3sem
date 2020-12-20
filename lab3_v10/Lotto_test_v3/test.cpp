@@ -2,15 +2,6 @@
 #define NUM_OF_TESTS 100
 #define DEFAULT_LINES_NUMBER 3
 
-/*
-TEST(exceptions, bad_alloc)
-{
-	EXPECT_ANY_THROW(new Lotto_card());
-}
-*/
-
-//todo тесты с методами изменяющими ее состояние
-
 TEST(constructors, base) 
 {
 	Lotto_card lotto;
@@ -149,7 +140,7 @@ Lotto_card foo(int size)
 TEST(methods, zero_nums_remained)
 {
 	Lotto_card* lotto = new Lotto_card;
-
+	
 	int power = 10 * lotto->get_width();
 	while (lotto->get_height() >= power) power *= 10;
 
@@ -191,4 +182,33 @@ TEST(methods, clear_busy_lines)
 	}
 
 	delete lotto;
+}
+
+TEST(methods, put_keg)
+{
+	Lotto_card lotto;
+
+	int power = 10 * lotto.get_width();
+	while (lotto.get_height() >= power) power *= 10;
+
+	for (int i = 0; i < power; i++)
+	{
+		EXPECT_NO_THROW(lotto.put_keg(i));
+	}
+
+	int t_num;
+	power = 10;
+	while (lotto.get_height() >= power) power *= 10;
+	for (int i = 0; i < lotto.get_height(); i++)
+	{
+		for (int j = 0; j < lotto.get_width(); j++)
+		{
+			t_num = lotto.get_number(i, j);
+			if (t_num != 0)
+			{
+				EXPECT_TRUE(t_num <= (j + 1) * power && t_num >= j * power);
+			}
+		}
+	}
+
 }
