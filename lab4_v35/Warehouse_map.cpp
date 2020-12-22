@@ -53,6 +53,17 @@ bool Warehouse_map::is_it_empty_here(Cursor cursor, int length, int width, int h
 	return true;
 }
 
+void Warehouse_map::clear_place(Cursor cursor, int length, int width)
+{
+	for (int i = cursor.x_length; i < cursor.x_length + length; i++)
+	{
+		for (int j = cursor.y_width; j < cursor.y_width + width; j++)
+		{
+			map[i][j] = true;
+		}
+	}
+}
+
 void Warehouse_map::map_out()
 {
 	for (int i = 0; i < length; i++)

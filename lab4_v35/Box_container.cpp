@@ -75,6 +75,21 @@ bool Box_container::put_box(Box* box)
 	return false;
 }
 
+void Box_container::delete_box(int index)
+{
+	Fragile_box* fb_ptr = nullptr;
+	for (int i = 0; i < index; i++)
+	{
+		fb_ptr = dynamic_cast<Fragile_box*>(this->box_rack[i]);
+		if (fb_ptr != nullptr)
+		{
+			fb_ptr->set_pressure(fb_ptr->get_pressure() - this->box_rack[index]->mass);
+		}
+	}
+
+	this->box_rack.erase(this->box_rack.begin() + index);
+}
+
 void Box_container::put_box_push_back(unsigned int x, unsigned int y, unsigned int z, Box* box)
 {
 	box->set_all(x, y, z);

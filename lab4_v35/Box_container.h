@@ -19,7 +19,9 @@ public:
 	~Box_container();
 
 	unsigned int size();
+	
 	bool put_box(Box* box);
+	void delete_box(int index);
 
 	friend class Warehouse;
 private:

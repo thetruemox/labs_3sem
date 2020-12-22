@@ -12,30 +12,23 @@ using namespace std;
 
 //Копируй объекты
 
-void foo()
-{
-    Warehouse house(1, 1, 10, 28);
-
-   
-    house.put_box(new Fragile_box(1, 1, 1, 10, 10));
-    house.put_box(new Fragile_box(1, 1, 1, 10, 10));
-    house.map_out();
-}
 
 int main()
 { 
-    foo();
-    /*
-    Warehouse house(2, 2, 10, 28);
+    Warehouse house(10, 10, 10, 28);
 
     for (int i = 0; i < 100; i++)
     {
         if (house.put_box(new Fragile_box(1, 1, 1, 10, 10))) cout << i << " ";
     }
-
+   
     cout << endl << endl;
     house.map_out();
-    */
+    cout << endl;
+
+    //house.put_box(new Fragile_box(1, 1, 1, 10, 10));
+
+    house.out_all_boxes(cout);
 
     _CrtDumpMemoryLeaks();
     return 0;

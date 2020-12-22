@@ -45,6 +45,21 @@ Warehouse::~Warehouse()
 	//деструктор
 }
 
+void Warehouse::out_all_boxes(std::ostream& out) const
+{
+	for (int i = 0; i < this->racks.size(); i++)
+	{
+		out << "Rack number: " << i << std::endl;
+
+		for (int j = 0; j < this->racks[i]->size(); j++)
+		{
+			out << this->racks[i]->box_rack[j]->ID << " ";
+		}
+
+		out << std::endl << std::endl;
+	}
+}
+
 bool Warehouse::put_box(Box *box)
 {
 	Cool_box* cb_ptr = dynamic_cast<Cool_box*>(box);
@@ -55,7 +70,7 @@ bool Warehouse::put_box(Box *box)
 	{
 		if (racks[i]->put_box(box))
 		{
-			box->ID = this->get_size();
+			set_numbers();
 			return true;
 		}
 	}
@@ -74,16 +89,12 @@ bool Warehouse::put_box(Box *box)
 
 			if (map->is_it_empty_here(cursor, x, y, z))
 			{
-				box->set_all(x, y, z);
-				box->ID = this->get_size();
-				this->racks.push_back(new Box_container(cursor, box, this->height));
+				put_container_push_back(x, y, z, box);
 				return true;
 			}
 			if (map->is_it_empty_here(cursor, y, x, z))
 			{
-				box->set_all(y, x, z);
-				box->ID = this->get_size();
-				this->racks.push_back(new Box_container(cursor, box, this->height));
+				put_container_push_back(y, x, z, box);
 				return true;
 			}
 
@@ -91,31 +102,23 @@ bool Warehouse::put_box(Box *box)
 			
 			if (map->is_it_empty_here(cursor, y, z, x))
 			{
-				box->set_all(y, z, x);
-				box->ID = this->get_size();
-				this->racks.push_back(new Box_container(cursor, box, this->height));
+				put_container_push_back(y, z, x, box);
 				return true;
 			}
 			if (map->is_it_empty_here(cursor, z, y, x))
 			{
-				box->set_all(z, y, x);
-				box->ID = this->get_size();
-				this->racks.push_back(new Box_container(cursor, box, this->height));
+				put_container_push_back(z, y, x, box);
 				return true;
 			}
 
 			if (map->is_it_empty_here(cursor, x, z, y))
 			{
-				box->set_all(x, z, y);
-				box->ID = this->get_size();
-				this->racks.push_back(new Box_container(cursor, box, this->height));
+				put_container_push_back(x, z, y, box);
 				return true;
 			}
 			if (map->is_it_empty_here(cursor, z, x, y))
 			{
-				box->set_all(z, x, y);
-				box->ID = this->get_size();
-				this->racks.push_back(new Box_container(cursor, box, this->height));
+				put_container_push_back(z, x, y, box);
 				return true;
 			}
 		}
@@ -124,7 +127,32 @@ bool Warehouse::put_box(Box *box)
 	return false;
 }
 
-int Warehouse::get_size()
+bool Warehouse::delete_box(int ID)
+{
+	for (int i = 0; i < this->racks.size(); i++)
+	{
+		for (int j = 0; j < this->racks[i]->size(); j++)
+		{
+			if (this->racks[i]->box_rack[j]->ID == ID)
+			{
+				this->racks[i]->delete_box(j); //вызов функции удаления
+
+				if (this->racks[i]->size() == 0)
+				{
+					this->map->clear_place(this->racks[i]->placed_cursor, this->racks[i]->base_length, this->racks[i]->base_width);
+					this->racks.erase(this->racks.begin() + i);
+				}
+
+				this->set_numbers();
+				return true;
+			}
+			
+		}
+	}
+	return false;
+}
+
+int Warehouse::get_size() const
 {
 	int size = 0;
 
@@ -134,6 +162,26 @@ int Warehouse::get_size()
 	}
 
 	return size;
+}
+
+void Warehouse::set_numbers()
+{
+	unsigned int number = 0;
+	for (int i = 0; i < this->racks.size(); i++)
+	{
+		for (int j = 0; j < this->racks[i]->size(); j++)
+		{
+			this->racks[i]->box_rack[j]->ID = number;
+			number++;
+		}
+	}
+}
+
+void Warehouse::put_container_push_back(unsigned int x, unsigned int y, unsigned int z, Box* box)
+{
+	box->set_all(x, y, z);
+	this->racks.push_back(new Box_container(cursor, box, this->height));
+	set_numbers();
 }
 
 void Warehouse::map_out()

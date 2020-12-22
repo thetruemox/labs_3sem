@@ -10,6 +10,8 @@ public:
 	~Warehouse_map();
 
 	bool is_it_empty_here(Cursor cursor, int length, int width, int height);
+	void clear_place(Cursor cursor, int length, int width);
+
 	void map_out();
 
 private:
