@@ -10,12 +10,11 @@ using namespace std;
 #include <stdlib.h>
 #include <crtdbg.h>
 
-//Копируй объекты
 
 
 int main()
 { 
-    Warehouse house(10, 10, 10, 28);
+    Warehouse house(2, 2, 10, 28);
 
     for (int i = 0; i < 100; i++)
     {
