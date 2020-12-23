@@ -18,7 +18,6 @@ public:
 	bool put_box_auto(Box *box);
 	bool put_box_manual(Box* box, Cursor cursor);
 	bool delete_box(int ID);
-
 	bool move_box(int ID, Cursor cursor);
 
 	int get_size() const;

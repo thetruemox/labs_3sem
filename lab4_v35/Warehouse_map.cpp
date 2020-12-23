@@ -70,7 +70,11 @@ void Warehouse_map::map_out()
 	{
 		for (int j = 0; j < width; j++)
 		{
-			std::cout << map[i][j] << " ";
+			if (map[i][j])
+			{
+				std::cout << "_" << " ";
+			} else
+			std::cout << "0" << " ";
 		}
 		std::cout << std::endl;
 	}
