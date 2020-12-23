@@ -87,6 +87,7 @@ void Box_container::delete_box(int index)
 		}
 	}
 
+	delete this->box_rack[index];
 	this->box_rack.erase(this->box_rack.begin() + index);
 }
 

@@ -19,6 +19,8 @@ public:
 	bool put_box_manual(Box* box, Cursor cursor);
 	bool delete_box(int ID);
 
+	bool move_box(int ID, Cursor cursor);
+
 	int get_size() const;
 
 private:
@@ -30,9 +32,8 @@ private:
 
 	std::vector<Box_container*> racks;
 
+	unsigned int it_ID = 0;
+	unsigned int generate_ID();
 	int who_is_there(Cursor cursor);
-	void set_numbers();
-	void put_container_push_back(unsigned int x, unsigned int y, unsigned int z, Box* box);
+	void put_container_push_back(unsigned int x, unsigned int y, unsigned int z, Box* box, Cursor cursor);
 };
-
-//Основание 

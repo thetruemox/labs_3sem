@@ -36,7 +36,7 @@ Warehouse::Warehouse(int l, int w, int h, float temperature)
 
 Warehouse::~Warehouse()
 {
-	for (int i = 0; i < this->racks.size(); i++)
+	for (unsigned int i = 0; i < this->racks.size(); i++)
 	{
 		delete this->racks[i];
 	}
@@ -47,16 +47,17 @@ Warehouse::~Warehouse()
 
 void Warehouse::out_all_boxes(std::ostream& out) const
 {
-	for (int i = 0; i < this->racks.size(); i++)
+	for (unsigned int i = 0; i < this->racks.size(); i++)
 	{
 		out << "Rack number: " << i << std::endl;
 
-		for (int j = 0; j < this->racks[i]->size(); j++)
+		for (unsigned int j = 0; j < this->racks[i]->size(); j++)
 		{
-			out << this->racks[i]->box_rack[j]->ID << " ";
+			
+			out << "Box ID: " << this->racks[i]->box_rack[j]->ID << std::endl;
 		}
 
-		out << std::endl << std::endl;
+		out << std::endl;
 	}
 }
 
@@ -66,11 +67,11 @@ bool Warehouse::put_box_auto(Box *box)
 	if (cb_ptr != nullptr && cb_ptr->get_temperature() > this->temperature) return false;
 	
 	//Попытка поместить коробку на стеллаж 
-	for (int i = 0; i < racks.size(); i++)
+	for (unsigned int i = 0; i < racks.size(); i++)
 	{
 		if (racks[i]->put_box_auto(box))
 		{
-			set_numbers();
+			box->ID = this->generate_ID();
 			return true;
 		}
 	}
@@ -80,21 +81,21 @@ bool Warehouse::put_box_auto(Box *box)
 	unsigned int y = box->width;
 	unsigned int z = box->height;
 
-	for (int i = 0; i < this->length; i++)
+	for (unsigned int i = 0; i < this->length; i++)
 	{
-		for (int j = 0; j < this->width; j++)
+		for (unsigned int j = 0; j < this->width; j++)
 		{
 			cursor.x_length = i;
 			cursor.y_width = j;
 
 			if (map->is_it_empty_here(cursor, x, y, z))
 			{
-				put_container_push_back(x, y, z, box);
+				put_container_push_back(x, y, z, box, cursor);
 				return true;
 			}
 			if (map->is_it_empty_here(cursor, y, x, z))
 			{
-				put_container_push_back(y, x, z, box);
+				put_container_push_back(y, x, z, box, cursor);
 				return true;
 			}
 
@@ -102,23 +103,23 @@ bool Warehouse::put_box_auto(Box *box)
 			
 			if (map->is_it_empty_here(cursor, y, z, x))
 			{
-				put_container_push_back(y, z, x, box);
+				put_container_push_back(y, z, x, box, cursor);
 				return true;
 			}
 			if (map->is_it_empty_here(cursor, z, y, x))
 			{
-				put_container_push_back(z, y, x, box);
+				put_container_push_back(z, y, x, box, cursor);
 				return true;
 			}
 
 			if (map->is_it_empty_here(cursor, x, z, y))
 			{
-				put_container_push_back(x, z, y, box);
+				put_container_push_back(x, z, y, box, cursor);
 				return true;
 			}
 			if (map->is_it_empty_here(cursor, z, x, y))
 			{
-				put_container_push_back(z, x, y, box);
+				put_container_push_back(z, x, y, box, cursor);
 				return true;
 			}
 		}
@@ -136,7 +137,12 @@ bool Warehouse::put_box_manual(Box* box, Cursor cursor)
 
 	if (index != -1)
 	{
-		return this->racks[index]->put_box_auto(box);
+		if (this->racks[index]->put_box_auto(box))
+		{
+			box->ID = this->generate_ID();
+			return true;
+		}
+		else return false;
 	}
 
 	unsigned int x = box->length;
@@ -145,12 +151,12 @@ bool Warehouse::put_box_manual(Box* box, Cursor cursor)
 
 	if (map->is_it_empty_here(cursor, x, y, z))
 	{
-		put_container_push_back(x, y, z, box);
+		put_container_push_back(x, y, z, box, cursor);
 		return true;
 	}
 	if (map->is_it_empty_here(cursor, y, x, z))
 	{
-		put_container_push_back(y, x, z, box);
+		put_container_push_back(y, x, z, box, cursor);
 		return true;
 	}
 
@@ -158,23 +164,23 @@ bool Warehouse::put_box_manual(Box* box, Cursor cursor)
 
 	if (map->is_it_empty_here(cursor, y, z, x))
 	{
-		put_container_push_back(y, z, x, box);
+		put_container_push_back(y, z, x, box, cursor);
 		return true;
 	}
 	if (map->is_it_empty_here(cursor, z, y, x))
 	{
-		put_container_push_back(z, y, x, box);
+		put_container_push_back(z, y, x, box, cursor);
 		return true;
 	}
 
 	if (map->is_it_empty_here(cursor, x, z, y))
 	{
-		put_container_push_back(x, z, y, box);
+		put_container_push_back(x, z, y, box, cursor);
 		return true;
 	}
 	if (map->is_it_empty_here(cursor, z, x, y))
 	{
-		put_container_push_back(z, x, y, box);
+		put_container_push_back(z, x, y, box, cursor);
 		return true;
 	}
 
@@ -183,9 +189,9 @@ bool Warehouse::put_box_manual(Box* box, Cursor cursor)
 
 bool Warehouse::delete_box(int ID)
 {
-	for (int i = 0; i < this->racks.size(); i++)
+	for (unsigned int i = 0; i < this->racks.size(); i++)
 	{
-		for (int j = 0; j < this->racks[i]->size(); j++)
+		for (unsigned int j = 0; j < this->racks[i]->size(); j++)
 		{
 			if (this->racks[i]->box_rack[j]->ID == ID)
 			{
@@ -194,15 +200,57 @@ bool Warehouse::delete_box(int ID)
 				if (this->racks[i]->size() == 0)
 				{
 					this->map->clear_place(this->racks[i]->placed_cursor, this->racks[i]->base_length, this->racks[i]->base_width);
+					delete this->racks[i];
 					this->racks.erase(this->racks.begin() + i);
 				}
 
-				this->set_numbers();
 				return true;
 			}
-			
 		}
 	}
+	return false;
+}
+
+bool Warehouse::move_box(int ID, Cursor cursor)
+{
+	Box* b_ptr;
+
+	for (unsigned int i = 0; i < this->racks.size(); i++)
+	{
+		for (unsigned int j = 0; j < this->racks[i]->size(); j++)
+		{
+			if (this->racks[i]->box_rack[j]->ID == ID)
+			{
+				if (this->who_is_there(cursor) == i) return false; //Перемещение коробки на то же место где она была
+
+				b_ptr = this->racks[i]->box_rack[j];
+
+				if (this->put_box_manual(b_ptr, cursor))
+				{
+					this->racks[i]->box_rack[j] = nullptr;
+					b_ptr->ID = ID;
+
+					this->racks[i]->box_rack.erase(this->racks[i]->box_rack.begin() + j);
+					if (this->racks[i]->box_rack.size() == 0)
+					{
+						this->map->clear_place(this->racks[i]->placed_cursor, this->racks[i]->base_length, this->racks[i]->base_width);
+
+						delete this->racks[i];
+						this->racks.erase(this->racks.begin() + i);
+					}
+
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+				
+			}
+		}
+	}
+
+
 	return false;
 }
 
@@ -210,7 +258,7 @@ int Warehouse::get_size() const
 {
 	int size = 0;
 
-	for (int i = 0; i < this->racks.size(); i++)
+	for (unsigned int i = 0; i < this->racks.size(); i++)
 	{
 		size += this->racks[i]->size();
 	}
@@ -218,11 +266,16 @@ int Warehouse::get_size() const
 	return size;
 }
 
+unsigned int Warehouse::generate_ID()
+{
+	return this->it_ID++;
+}
+
 int Warehouse::who_is_there(Cursor cursor)
 {
-	for (int i = 0; i < this->racks.size(); i++)
+	for (unsigned int i = 0; i < this->racks.size(); i++)
 	{
-		if ((cursor.x_length >= this->racks[i]->placed_cursor.x_length && cursor.x_length <= this->racks[i]->placed_cursor.x_length + this->racks[i]->base_length) && (cursor.y_width >= this->racks[i]->placed_cursor.y_width && cursor.y_width <= this->racks[i]->placed_cursor.y_width + this->racks[i]->base_width))
+		if ((cursor.x_length >= this->racks[i]->placed_cursor.x_length && cursor.x_length < this->racks[i]->placed_cursor.x_length + this->racks[i]->base_length) && (cursor.y_width >= this->racks[i]->placed_cursor.y_width && cursor.y_width < this->racks[i]->placed_cursor.y_width + this->racks[i]->base_width))
 		{
 			return i;
 		}
@@ -230,24 +283,11 @@ int Warehouse::who_is_there(Cursor cursor)
 	return -1;
 }
 
-void Warehouse::set_numbers()
-{
-	unsigned int number = 0;
-	for (int i = 0; i < this->racks.size(); i++)
-	{
-		for (int j = 0; j < this->racks[i]->size(); j++)
-		{
-			this->racks[i]->box_rack[j]->ID = number;
-			number++;
-		}
-	}
-}
-
-void Warehouse::put_container_push_back(unsigned int x, unsigned int y, unsigned int z, Box* box)
+void Warehouse::put_container_push_back(unsigned int x, unsigned int y, unsigned int z, Box* box, Cursor cursor)
 {
 	box->set_all(x, y, z);
 	this->racks.push_back(new Box_container(cursor, box, this->height));
-	set_numbers();
+	box->ID = this->generate_ID();
 }
 
 void Warehouse::map_out()
