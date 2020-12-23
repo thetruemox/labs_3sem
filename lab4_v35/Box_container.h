@@ -20,7 +20,7 @@ public:
 
 	unsigned int size();
 	
-	bool put_box(Box* box);
+	bool put_box_auto(Box* box);
 	void delete_box(int index);
 
 	friend class Warehouse;

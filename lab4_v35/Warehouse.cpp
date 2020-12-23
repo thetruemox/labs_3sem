@@ -60,7 +60,7 @@ void Warehouse::out_all_boxes(std::ostream& out) const
 	}
 }
 
-bool Warehouse::put_box(Box *box)
+bool Warehouse::put_box_auto(Box *box)
 {
 	Cool_box* cb_ptr = dynamic_cast<Cool_box*>(box);
 	if (cb_ptr != nullptr && cb_ptr->get_temperature() > this->temperature) return false;
@@ -68,13 +68,13 @@ bool Warehouse::put_box(Box *box)
 	//Попытка поместить коробку на стеллаж 
 	for (int i = 0; i < racks.size(); i++)
 	{
-		if (racks[i]->put_box(box))
+		if (racks[i]->put_box_auto(box))
 		{
 			set_numbers();
 			return true;
 		}
 	}
-
+	
 	//Поиск места и создание нового стеллажа
 	unsigned int x = box->length;
 	unsigned int y = box->width;
@@ -122,6 +122,53 @@ bool Warehouse::put_box(Box *box)
 				return true;
 			}
 		}
+	}
+
+	return false;
+}
+
+bool Warehouse::put_box_manual(Box* box, Cursor cursor)
+{
+	Cool_box* cb_ptr = dynamic_cast<Cool_box*>(box);
+	if (cb_ptr != nullptr && cb_ptr->get_temperature() > this->temperature) return false;
+
+	unsigned int x = box->length;
+	unsigned int y = box->width;
+	unsigned int z = box->height;
+
+	if (map->is_it_empty_here(cursor, x, y, z))
+	{
+		put_container_push_back(x, y, z, box);
+		return true;
+	}
+	if (map->is_it_empty_here(cursor, y, x, z))
+	{
+		put_container_push_back(y, x, z, box);
+		return true;
+	}
+
+	if (dynamic_cast<Fragile_box*>(box) != nullptr) return false;
+
+	if (map->is_it_empty_here(cursor, y, z, x))
+	{
+		put_container_push_back(y, z, x, box);
+		return true;
+	}
+	if (map->is_it_empty_here(cursor, z, y, x))
+	{
+		put_container_push_back(z, y, x, box);
+		return true;
+	}
+
+	if (map->is_it_empty_here(cursor, x, z, y))
+	{
+		put_container_push_back(x, z, y, box);
+		return true;
+	}
+	if (map->is_it_empty_here(cursor, z, x, y))
+	{
+		put_container_push_back(z, x, y, box);
+		return true;
 	}
 
 	return false;

@@ -29,7 +29,7 @@ Box_container::~Box_container()
 	}
 }
 
-bool Box_container::put_box(Box* box)
+bool Box_container::put_box_auto(Box* box)
 {
 	if(!check_pressure(box->mass)) return false;
 	
