@@ -132,6 +132,13 @@ bool Warehouse::put_box_manual(Box* box, Cursor cursor)
 	Cool_box* cb_ptr = dynamic_cast<Cool_box*>(box);
 	if (cb_ptr != nullptr && cb_ptr->get_temperature() > this->temperature) return false;
 
+	int index = this->who_is_there(cursor);
+
+	if (index != -1)
+	{
+		return this->racks[index]->put_box_auto(box);
+	}
+
 	unsigned int x = box->length;
 	unsigned int y = box->width;
 	unsigned int z = box->height;
@@ -209,6 +216,18 @@ int Warehouse::get_size() const
 	}
 
 	return size;
+}
+
+int Warehouse::who_is_there(Cursor cursor)
+{
+	for (int i = 0; i < this->racks.size(); i++)
+	{
+		if ((cursor.x_length >= this->racks[i]->placed_cursor.x_length && cursor.x_length <= this->racks[i]->placed_cursor.x_length + this->racks[i]->base_length) && (cursor.y_width >= this->racks[i]->placed_cursor.y_width && cursor.y_width <= this->racks[i]->placed_cursor.y_width + this->racks[i]->base_width))
+		{
+			return i;
+		}
+	}
+	return -1;
 }
 
 void Warehouse::set_numbers()

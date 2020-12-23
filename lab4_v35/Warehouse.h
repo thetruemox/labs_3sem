@@ -30,6 +30,7 @@ private:
 
 	std::vector<Box_container*> racks;
 
+	int who_is_there(Cursor cursor);
 	void set_numbers();
 	void put_container_push_back(unsigned int x, unsigned int y, unsigned int z, Box* box);
 };
