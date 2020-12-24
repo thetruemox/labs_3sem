@@ -187,6 +187,24 @@ TEST(methods, clear_busy_lines)
 TEST(methods, put_keg)
 {
 	Lotto_card lotto;
+	int t_num;
+
+	int it = 0;
+	int* num_arr = new int[5 * lotto.get_height()];
+
+	 for (int i = 0; i < lotto.get_height(); i++)
+	 {
+		 for (int j = 0; j < lotto.get_width(); j++)
+		 {
+			 t_num = lotto.get_number(i, j);
+			 if (t_num != 0)
+			 {
+				 num_arr[it] = t_num;
+				 it++;
+			 }
+		 }
+	 }
+
 
 	int power = 10 * lotto.get_width();
 	while (lotto.get_height() >= power) power *= 10;
@@ -196,7 +214,7 @@ TEST(methods, put_keg)
 		EXPECT_NO_THROW(lotto.put_keg(i));
 	}
 
-	int t_num;
+
 	power = 10;
 	while (lotto.get_height() >= power) power *= 10;
 	for (int i = 0; i < lotto.get_height(); i++)
@@ -211,4 +229,19 @@ TEST(methods, put_keg)
 		}
 	}
 
+	it = 0;
+	for (int i = 0; i < lotto.get_height(); i++)
+	{
+		for (int j = 0; j < lotto.get_width(); j++)
+		{
+			t_num = lotto.get_number(i, j);
+			if (t_num != 0)
+			{
+				EXPECT_EQ(num_arr[it], t_num);
+				it++;
+			}
+		}
+	}
+
+	delete[] num_arr;
 }
