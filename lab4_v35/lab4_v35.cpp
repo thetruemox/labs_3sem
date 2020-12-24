@@ -10,10 +10,8 @@ using namespace std;
 #include <stdlib.h>
 #include <crtdbg.h>
 
-
-
 int main()
-{ 
+{
     Terminal terminal;
 	int num = 0;
 
@@ -35,6 +33,8 @@ int main()
 		while (!std::cin.good())
 		{
 			std::cout << std::endl << "Invalid input, try again" << std::endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			std::cin >> num;
 		}
 
@@ -76,14 +76,14 @@ int main()
 			std::cout << std::endl;
 			break;
 		case 8:
+			_CrtDumpMemoryLeaks();
 			return 0;
 		default:
 			cout << "There is no such command!" << endl << endl;
 			break;
 		}
 	}
-
-    _CrtDumpMemoryLeaks();
+ 
     return 0;
 }
 

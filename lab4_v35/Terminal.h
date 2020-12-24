@@ -19,6 +19,7 @@ private:
 	int wh_size(int index);
 
 	int get_int_pos();
+	int get_int_pos_wzero();
 	int get_int_any();
 	float get_float_any();
 	float get_float_pos();

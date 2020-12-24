@@ -12,15 +12,15 @@ void Terminal::out_warehouses()
 {
 	for (int i = 0; i < this->warehouses.size(); i++)
 	{
-		std::cout << "Warehouse " << i << " " << std::endl << "size: " << this->wh_size(i);
+		std::cout << "Warehouse " << i << " " << std::endl << "size: " << this->wh_size(i) << std::endl;
 	}
 }
 
 void Terminal::map_out()
 {
 	std::cout << "In which warehouse? ";
-	int index = get_int_any();
-	if (index >= this->warehouses.size() || index < 0) return;
+	int index = get_int_pos_wzero();
+	if (index >= this->warehouses.size()) return;
 
 	this->warehouses[index]->map_out();
 }
@@ -28,8 +28,8 @@ void Terminal::map_out()
 void Terminal::out_boxes()
 {
 	std::cout << "In which warehouse? ";
-	int index = get_int_any();
-	if (index >= this->warehouses.size() || index < 0) return;
+	int index = get_int_pos_wzero();
+	if (index >= this->warehouses.size()) return;
 
 	this->warehouses[index]->out_all_boxes(std::cout);
 }
@@ -54,8 +54,8 @@ void Terminal::add_warehouse()
 void Terminal::put_box()
 {
 	std::cout << "In which warehouse? ";
-	int index = get_int_any();
-	if (index >= this->warehouses.size() || index < 0) return;
+	int index = get_int_pos_wzero();
+	if (index >= this->warehouses.size()) return;
 
 	std::cout << "Length: ";
 	int length = get_int_pos();
@@ -110,18 +110,18 @@ void Terminal::put_box()
 
 	if (choice == 1)
 	{
-		if (!this->warehouses[index]->put_box_auto(box)) delete box;
+		if(!this->warehouses[index]->put_box_auto(box)) delete box;
 	}
 	else if (choice == 2)
 	{
 		std::cout << "X: ";
-		int x = get_int_pos();
+		int x = get_int_pos_wzero();
 
 		std::cout << "Y: ";
-		int y = get_int_pos();
+		int y = get_int_pos_wzero();
 
 		Cursor cursor(x, y);
-		if (!this->warehouses[index]->put_box_manual(box, cursor)) delete box;
+		if(!this->warehouses[index]->put_box_manual(box, cursor)) delete box;
 	}
 	else return;
 }
@@ -148,10 +148,10 @@ void Terminal::move_box()
 	int ID = get_int_any();
 
 	std::cout << "X: ";
-	int x = get_int_pos();
+	int x = get_int_pos_wzero();
 
 	std::cout << "Y: ";
-	int y = get_int_pos();
+	int y = get_int_pos_wzero();
 
 	Cursor cursor(x, y);
 	this->warehouses[index]->move_box(ID, cursor);
@@ -168,6 +168,20 @@ int Terminal::get_int_pos()
 	std::cin >> num;
 
 	while (!std::cin.good() || num <= 0)
+	{
+		std::cout << std::endl << "Invalid input, try again" << std::endl;
+		std::cin >> num;
+	}
+
+	return num;
+}
+
+int Terminal::get_int_pos_wzero()
+{
+	int num;
+	std::cin >> num;
+
+	while (!std::cin.good() || num < 0)
 	{
 		std::cout << std::endl << "Invalid input, try again" << std::endl;
 		std::cin >> num;

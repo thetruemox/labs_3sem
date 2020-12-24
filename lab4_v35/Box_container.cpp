@@ -21,6 +21,7 @@ Box_container::Box_container(Cursor cursor, Box* box, unsigned  int max_height)
 	this->temp_height = box->height;
 }
 
+
 Box_container::~Box_container()
 {
 	for (int i = 0; i < box_rack.size(); i++)
@@ -28,6 +29,7 @@ Box_container::~Box_container()
 		delete box_rack[i];
 	}
 }
+
 
 bool Box_container::put_box_auto(Box* box)
 {

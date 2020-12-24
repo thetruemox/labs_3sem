@@ -11,6 +11,7 @@ Warehouse::Warehouse()
 	this->length = BASE_SIZE;
 	this->width = BASE_SIZE;
 	this->height = BASE_SIZE;
+	this->it_ID = 0;
 }
 
 
@@ -26,6 +27,7 @@ Warehouse::Warehouse(int l, int w, int h, float temperature)
 		this->width = w;
 		this->height = h;
 		this->temperature = temperature;
+		this->it_ID = 0;
 
 		map = new Warehouse_map(l, w, h);
 
@@ -172,7 +174,7 @@ bool Warehouse::put_box_manual(Box* box, Cursor cursor)
 		put_container_push_back(z, y, x, box, cursor);
 		return true;
 	}
-
+	
 	if (map->is_it_empty_here(cursor, x, z, y))
 	{
 		put_container_push_back(x, z, y, box, cursor);

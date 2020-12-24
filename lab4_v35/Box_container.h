@@ -14,6 +14,7 @@ class Box_container
 public:
 	
 	Box_container();
+	Box_container(const Box_container& container);
 	Box_container(Cursor cursor, Box* box, unsigned int max_height);
 	
 	~Box_container();

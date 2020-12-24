@@ -31,7 +31,7 @@ private:
 
 	std::vector<Box_container*> racks;
 
-	unsigned int it_ID = 0;
+	unsigned int it_ID;
 	unsigned int generate_ID();
 	int who_is_there(Cursor cursor);
 	void put_container_push_back(unsigned int x, unsigned int y, unsigned int z, Box* box, Cursor cursor);
