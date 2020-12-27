@@ -49,6 +49,9 @@ Warehouse::~Warehouse()
 
 void Warehouse::out_all_boxes(std::ostream& out) const
 {
+	Cool_box* cb_ptr = nullptr;
+	Fragile_box* fb_ptr = nullptr;
+
 	for (unsigned int i = 0; i < this->racks.size(); i++)
 	{
 		out << "Rack number: " << i << std::endl;
@@ -57,6 +60,21 @@ void Warehouse::out_all_boxes(std::ostream& out) const
 		{
 			out << "Box ID = " << this->racks[i]->box_rack[j]->get_ID() << ", mass = " << this->racks[i]->box_rack[j]->get_mass() << std::endl;
 			out << "l = " << this->racks[i]->box_rack[j]->get_length() << ", w = " << this->racks[i]->box_rack[j]->get_width() << ", h = " << this->racks[i]->box_rack[j]->get_height() << std::endl;
+			
+			cb_ptr = nullptr;
+			cb_ptr = dynamic_cast<Cool_box*>(this->racks[i]->box_rack[j]);
+			if (cb_ptr != nullptr)
+			{
+				out << "Temperature = " << cb_ptr->get_temperature() << std::endl;
+			}
+
+			fb_ptr = nullptr;
+			fb_ptr = dynamic_cast<Fragile_box*>(this->racks[i]->box_rack[j]);
+			if (fb_ptr != nullptr)
+			{
+				out << "Max pressure = " << fb_ptr->get_max_pressure() << std::endl;
+			}
+
 			out << std::endl;
 		}
 

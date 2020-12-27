@@ -3,7 +3,7 @@
 
 Cool_box::Cool_box() : Box()
 {
-    this->temperature = 36.6f;
+    this->temperature = 0.0f;
 }
 
 Cool_box::Cool_box(const Cool_box& box) : Box(box)

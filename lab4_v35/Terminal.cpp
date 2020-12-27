@@ -14,6 +14,7 @@ void Terminal::out_warehouses()
 	{
 		std::cout << "Warehouse " << i << " " << std::endl; 
 		std::cout << "l = " << this->warehouses[i]->get_length() << ", w = " << this->warehouses[i]->get_width() << ", h = " << this->warehouses[i]->get_height() << std::endl;
+		std::cout << "Temperature =  " << this->warehouses[i]->get_temperature() << std::endl;
 		std::cout << "Has " << this->wh_size(i) << " box(-es)" << std::endl;
 
 		std::cout << std::endl;
