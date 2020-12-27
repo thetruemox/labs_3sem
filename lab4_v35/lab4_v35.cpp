@@ -27,7 +27,7 @@ int main()
 		cout << "8. delete_warehouse()" << endl;
 		cout << "9. Exit" << endl;
 		cout << "Command number: ";
-		
+
 		std::cin >> num;
 
 		while (!std::cin.good())
@@ -81,14 +81,13 @@ int main()
 			std::cout << std::endl;
 			break;
 		case 9:
-			_CrtDumpMemoryLeaks();
 			return 0;
 		default:
 			cout << "There is no such command!" << endl << endl;
 			break;
 		}
 	}
- 
+
     return 0;
 }
 

@@ -44,7 +44,6 @@ Warehouse::~Warehouse()
 	}
 
 	delete map;
-	//деструктор
 }
 
 void Warehouse::out_all_boxes(std::ostream& out) const
@@ -87,7 +86,7 @@ bool Warehouse::put_box_auto(Box *box)
 	Cool_box* cb_ptr = dynamic_cast<Cool_box*>(box);
 	if (cb_ptr != nullptr && cb_ptr->get_temperature() > this->temperature) return false;
 	
-	//Попытка поместить коробку на стеллаж 
+	//Trying to put box in rack
 	for (unsigned int i = 0; i < racks.size(); i++)
 	{
 		if (racks[i]->put_box_auto(box))
@@ -97,7 +96,7 @@ bool Warehouse::put_box_auto(Box *box)
 		}
 	}
 	
-	//Поиск места и создание нового стеллажа
+	//Finding a new place for box and creating rack
 	unsigned int x = box->get_length();
 	unsigned int y = box->get_width();
 	unsigned int z = box->get_height();
@@ -216,7 +215,7 @@ bool Warehouse::delete_box(int ID)
 		{
 			if (this->racks[i]->box_rack[j]->get_ID() == ID)
 			{
-				this->racks[i]->delete_box(j); //вызов функции удаления
+				this->racks[i]->delete_box(j); 
 
 				if (this->racks[i]->size() == 0)
 				{
@@ -242,7 +241,7 @@ bool Warehouse::move_box(int ID, Cursor cursor)
 		{
 			if (this->racks[i]->box_rack[j]->get_ID() == ID)
 			{
-				if (this->who_is_there(cursor) == i) return false; //Перемещение коробки на то же место где она была
+				if (this->who_is_there(cursor) == i) return false; //Trying to move box to a place where it was from the start
 
 				b_ptr = this->racks[i]->box_rack[j];
 
