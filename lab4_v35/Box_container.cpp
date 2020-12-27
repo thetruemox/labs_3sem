@@ -14,11 +14,11 @@ Box_container::Box_container(Cursor cursor, Box* box, unsigned  int max_height)
 	this->placed_cursor = cursor;
 	this->box_rack.push_back(box);
 
-	this->base_length = box->length;
-	this->base_width = box->width;
+	this->base_length = box->get_length();
+	this->base_width = box->get_width();
 
 	this->max_height = max_height;
-	this->temp_height = box->height;
+	this->temp_height = box->get_height();
 }
 
 
@@ -33,11 +33,11 @@ Box_container::~Box_container()
 
 bool Box_container::put_box_auto(Box* box)
 {
-	if(!check_pressure(box->mass)) return false;
+	if(!check_pressure(box->get_mass())) return false;
 	
-	unsigned int x = box->length;
-	unsigned int y = box->width;
-	unsigned int z = box->height;
+	unsigned int x = box->get_length();
+	unsigned int y = box->get_width();
+	unsigned int z = box->get_height();
 
 	if (x <= this->base_length && y <= this->base_width && (z + this->temp_height) <= max_height) // XY
 	{
@@ -85,7 +85,7 @@ void Box_container::delete_box(int index)
 		fb_ptr = dynamic_cast<Fragile_box*>(this->box_rack[i]);
 		if (fb_ptr != nullptr)
 		{
-			fb_ptr->set_pressure(fb_ptr->get_pressure() - this->box_rack[index]->mass);
+			fb_ptr->set_pressure(fb_ptr->get_pressure() - this->box_rack[index]->get_mass());
 		}
 	}
 
@@ -99,7 +99,7 @@ void Box_container::put_box_push_back(unsigned int x, unsigned int y, unsigned i
 	this->temp_height += z;
 
 	this->box_rack.push_back(box);
-	add_pressure(box->mass);
+	add_pressure(box->get_mass());
 }
 
 bool Box_container::check_pressure(float mass) const

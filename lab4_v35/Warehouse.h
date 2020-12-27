@@ -13,6 +13,11 @@ public:
 	Warehouse(int l, int w, int h, float temperature);
 	~Warehouse();
 
+	unsigned int get_length() { return this->length; }
+	unsigned int get_width() { return this->width; }
+	unsigned int get_height() { return this->height; }
+	float get_temperature() { return this->temperature; }
+
 	void out_all_boxes(std::ostream& out) const;
 
 	bool put_box_auto(Box *box);

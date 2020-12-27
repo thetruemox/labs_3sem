@@ -12,7 +12,7 @@ using namespace std;
 
 int main()
 {
-    Terminal terminal;
+	Terminal terminal;
 	int num = 0;
 
 	while (num != 8)

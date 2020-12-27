@@ -55,8 +55,9 @@ void Warehouse::out_all_boxes(std::ostream& out) const
 
 		for (unsigned int j = 0; j < this->racks[i]->size(); j++)
 		{
-			
-			out << "Box ID: " << this->racks[i]->box_rack[j]->ID << std::endl;
+			out << "Box ID = " << this->racks[i]->box_rack[j]->get_ID() << ", mass = " << this->racks[i]->box_rack[j]->get_mass() << std::endl;
+			out << "l = " << this->racks[i]->box_rack[j]->get_length() << ", w = " << this->racks[i]->box_rack[j]->get_width() << ", h = " << this->racks[i]->box_rack[j]->get_height() << std::endl;
+			out << std::endl;
 		}
 
 		out << std::endl;
@@ -73,15 +74,15 @@ bool Warehouse::put_box_auto(Box *box)
 	{
 		if (racks[i]->put_box_auto(box))
 		{
-			box->ID = this->generate_ID();
+			box->set_ID(this->generate_ID());
 			return true;
 		}
 	}
 	
 	//Поиск места и создание нового стеллажа
-	unsigned int x = box->length;
-	unsigned int y = box->width;
-	unsigned int z = box->height;
+	unsigned int x = box->get_length();
+	unsigned int y = box->get_width();
+	unsigned int z = box->get_height();
 
 	for (unsigned int i = 0; i < this->length; i++)
 	{
@@ -141,15 +142,15 @@ bool Warehouse::put_box_manual(Box* box, Cursor cursor)
 	{
 		if (this->racks[index]->put_box_auto(box))
 		{
-			box->ID = this->generate_ID();
+			box->set_ID(this->generate_ID());
 			return true;
 		}
 		else return false;
 	}
 
-	unsigned int x = box->length;
-	unsigned int y = box->width;
-	unsigned int z = box->height;
+	unsigned int x = box->get_length();
+	unsigned int y = box->get_width();
+	unsigned int z = box->get_height();
 
 	if (map->is_it_empty_here(cursor, x, y, z))
 	{
@@ -195,7 +196,7 @@ bool Warehouse::delete_box(int ID)
 	{
 		for (unsigned int j = 0; j < this->racks[i]->size(); j++)
 		{
-			if (this->racks[i]->box_rack[j]->ID == ID)
+			if (this->racks[i]->box_rack[j]->get_ID() == ID)
 			{
 				this->racks[i]->delete_box(j); //вызов функции удаления
 
@@ -221,7 +222,7 @@ bool Warehouse::move_box(int ID, Cursor cursor)
 	{
 		for (unsigned int j = 0; j < this->racks[i]->size(); j++)
 		{
-			if (this->racks[i]->box_rack[j]->ID == ID)
+			if (this->racks[i]->box_rack[j]->get_ID() == ID)
 			{
 				if (this->who_is_there(cursor) == i) return false; //Перемещение коробки на то же место где она была
 
@@ -230,7 +231,7 @@ bool Warehouse::move_box(int ID, Cursor cursor)
 				if (this->put_box_manual(b_ptr, cursor))
 				{
 					this->racks[i]->box_rack[j] = nullptr;
-					b_ptr->ID = ID;
+					b_ptr->set_ID(ID);
 
 					this->racks[i]->box_rack.erase(this->racks[i]->box_rack.begin() + j);
 					if (this->racks[i]->box_rack.size() == 0)
@@ -289,7 +290,7 @@ void Warehouse::put_container_push_back(unsigned int x, unsigned int y, unsigned
 {
 	box->set_all(x, y, z);
 	this->racks.push_back(new Box_container(cursor, box, this->height));
-	box->ID = this->generate_ID();
+	box->set_ID(this->generate_ID());
 }
 
 void Warehouse::map_out()
