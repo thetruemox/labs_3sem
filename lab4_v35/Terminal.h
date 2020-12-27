@@ -8,6 +8,8 @@ public:
 	~Terminal();
 
 	void add_warehouse();
+	void delete_warehouse();
+
 	void put_box();
 	void delete_box();
 	void move_box();

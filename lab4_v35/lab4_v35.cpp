@@ -15,7 +15,7 @@ int main()
 	Terminal terminal;
 	int num = 0;
 
-	while (num != 8)
+	while (num != 9)
 	{
 		cout << "1. add_warehouse()" << endl;
 		cout << "2. put_box()" << endl;
@@ -24,9 +24,9 @@ int main()
 		cout << "5. out_boxes()" << endl;
 		cout << "6. out_warehouses()" << endl;
 		cout << "7. map_out()" << endl;
-		cout << "8. Exit" << endl;
+		cout << "8. delete_warehouse()" << endl;
+		cout << "9. Exit" << endl;
 		cout << "Command number: ";
-
 		
 		std::cin >> num;
 
@@ -76,6 +76,11 @@ int main()
 			std::cout << std::endl;
 			break;
 		case 8:
+			std::cout << std::endl;
+			terminal.delete_warehouse();
+			std::cout << std::endl;
+			break;
+		case 9:
 			_CrtDumpMemoryLeaks();
 			return 0;
 		default:

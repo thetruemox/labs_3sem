@@ -56,6 +56,18 @@ void Terminal::add_warehouse()
 	warehouses.push_back(new Warehouse(length, width, height, temperature));
 }
 
+void Terminal::delete_warehouse()
+{
+	std::cout << "Index of warehouse: ";
+	int index = this->get_int_pos_wzero();
+
+	if (index >= this->warehouses.size()) return;
+	
+	delete this->warehouses[index];
+	this->warehouses.erase(this->warehouses.begin() + index);
+
+}
+
 void Terminal::put_box()
 {
 	std::cout << "In which warehouse? ";
