@@ -2,13 +2,17 @@
 #include "Cursor.h"
 
 #include <iostream>
-
+#define BASE_SIZE 1
 /**
  * @brief Map showing free and occupied places in the warehouse
  */
 class Warehouse_map
 {
 public:
+	/// <summary>
+	/// Base constructor
+	/// </summary>
+	Warehouse_map();
 	/// <summary>
 	/// Map constructor. Initializes its dimensions
 	/// </summary>
@@ -40,9 +44,23 @@ public:
 	/// </summary>
 	void map_out();
 
-private:
-	Warehouse_map();
+	/// <summary>
+	/// Returns warehouse map length
+	/// </summary>
+	/// <returns>Warehouse map length</returns>
+	unsigned int get_length() { return this->length; }
+	/// <summary>
+	/// Returns warehouse map width
+	/// </summary>
+	/// <returns>Warehouse map width</returns>
+	unsigned int get_width() { return this->width; }
+	/// <summary>
+	/// Returns warehouse map height
+	/// </summary>
+	/// <returns>Warehouse map height</returns>
+	unsigned int get_height() { return this->height; }
 
+private:
 	void place_container(Cursor cursor, int length, int width);
 
 	bool** map;

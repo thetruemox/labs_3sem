@@ -1,5 +1,26 @@
 #include "Warehouse_map.h"
 
+Warehouse_map::Warehouse_map()
+{
+	this->length = BASE_SIZE;
+	this->width = BASE_SIZE;
+	this->height = BASE_SIZE;
+
+	map = new bool* [this->length];
+	for (int i = 0; i < this->length; i++)
+	{
+		map[i] = new bool[this->width];
+	}
+
+	for (int i = 0; i < this->length; i++)
+	{
+		for (int j = 0; j < this->width; j++)
+		{
+			map[i][j] = true;
+		}
+	}
+}
+
 Warehouse_map::Warehouse_map(int length, int width, int height)
 {
 	this->length = length;

@@ -1,13 +1,13 @@
 #include "Warehouse.h"
 #include <iostream>
 
-#define BASE_SIZE 10
+#define BASE_SIZE 1
 Warehouse::Warehouse()
 {
 	map = new Warehouse_map(BASE_SIZE, BASE_SIZE, BASE_SIZE);
 	this->cursor.x_length = 0;
 	this->cursor.y_width = 0;
-	this->temperature = 36.6f;
+	this->temperature = BASE_SIZE;
 	this->length = BASE_SIZE;
 	this->width = BASE_SIZE;
 	this->height = BASE_SIZE;

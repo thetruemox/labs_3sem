@@ -51,3 +51,25 @@ TEST(Base_constructor, Box_container)
 	EXPECT_EQ(container.get_temp_height(), 0);
 
 }
+TEST(Base_constructor, Cursor)
+{
+	Cursor cursor;
+	EXPECT_EQ(cursor.x_length, 0);
+	EXPECT_EQ(cursor.y_width, 0);
+}
+TEST(Base_constructor, Warehouse)
+{
+	Warehouse warehouse;
+	EXPECT_EQ(warehouse.get_length(), BASE_SIZE);
+	EXPECT_EQ(warehouse.get_width(), BASE_SIZE);
+	EXPECT_EQ(warehouse.get_height(), BASE_SIZE);
+	EXPECT_EQ(warehouse.get_temperature(), BASE_SIZE);
+	EXPECT_EQ(warehouse.get_size(), 0);
+}
+TEST(Base_constructor, Warehouse_map)
+{
+	Warehouse_map map;
+	EXPECT_EQ(map.get_length(), BASE_SIZE);
+	EXPECT_EQ(map.get_width(), BASE_SIZE);
+	EXPECT_EQ(map.get_height(), BASE_SIZE);
+}
