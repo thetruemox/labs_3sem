@@ -29,11 +29,13 @@ Fragile_box::Fragile_box(int l, int w, int h, float mass, float max_pressure) : 
 void Fragile_box::set_pressure(float mass)
 {
 	if (mass >= 0) this->pressure = mass;
+	else throw "Negative pressure";
 }
 
 void Fragile_box::set_max_pressure(float max)
 {
 	if (max >= 0) this->max_pressure = max;
+	else throw "Negative pressure";
 }
 
 float Fragile_box::get_pressure() const

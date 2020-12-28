@@ -88,7 +88,7 @@ void Box_container::delete_box(int index)
 			fb_ptr->set_pressure(fb_ptr->get_pressure() - this->box_rack[index]->get_mass());
 		}
 	}
-
+	this->temp_height -= this->box_rack[index]->get_height();
 	delete this->box_rack[index];
 	this->box_rack.erase(this->box_rack.begin() + index);
 }

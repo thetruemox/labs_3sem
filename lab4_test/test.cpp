@@ -73,3 +73,107 @@ TEST(Base_constructor, Warehouse_map)
 	EXPECT_EQ(map.get_width(), BASE_SIZE);
 	EXPECT_EQ(map.get_height(), BASE_SIZE);
 }
+
+TEST(Set, Box)
+{
+	Box box;
+
+	for (int i = -100; i < 0; i++)
+	{
+		EXPECT_EQ(box.set_all(i,i,i), false);
+	}
+	for (int i = 1; i < 100; i++)
+	{
+		EXPECT_EQ(box.set_all(i, i, i), true);
+	}
+}
+
+TEST(Set, Cool_box)
+{
+	Cool_box box;
+
+	for (int i = -100; i < 100; i++)
+	{
+		EXPECT_NO_THROW(box.set_temperature(i));
+		EXPECT_EQ(box.get_temperature(), i);
+	}
+}
+
+TEST(Set, Fragile_box)
+{
+	Fragile_box box;
+
+	for (int i = -100; i < 0; i++)
+	{
+		EXPECT_THROW(box.set_pressure(i), const char*);
+		EXPECT_THROW(box.set_max_pressure(i), const char*);
+	}
+	for (int i = 0; i < 100; i++)
+	{
+		EXPECT_NO_THROW(box.set_pressure(i));
+		EXPECT_NO_THROW(box.set_max_pressure(i));
+	}
+}
+
+TEST(Methods, Box_container)
+{
+	Box_container container;
+
+	for (int i = 0; i < 2; i++)
+	{
+		EXPECT_EQ(container.put_box_auto(new Box), true);
+		EXPECT_EQ(container.size(), 1);
+		EXPECT_NO_THROW(container.delete_box(0));
+	}
+}
+
+TEST(Put_box, Warehouse)
+{
+	int size = 10;
+
+	Warehouse warehouse(size, size, 1, size);
+
+	for (int i = 0; i < size*size; i++)
+	{
+		EXPECT_EQ(warehouse.put_box_auto(new Box), true);
+	}
+	EXPECT_EQ(warehouse.put_box_auto(new Box), false);
+}
+
+TEST(Delete_box, Warehouse)
+{
+	int size = 10;
+
+	Warehouse warehouse(size, size, 1, size);
+
+	for (int i = 0; i < size*size; i++)
+	{
+		EXPECT_EQ(warehouse.put_box_auto(new Box), true);
+	}
+	
+	for (int i = 0; i < size*size; i++)
+	{	
+		EXPECT_EQ(warehouse.delete_box(i), true);
+	}
+
+	EXPECT_EQ(warehouse.get_size(), 0);
+}
+
+TEST(Move_box, Warehouse)
+{
+	int size = 10;
+	Cursor cursor;
+
+	Warehouse warehouse(size, size, 1, size);
+	warehouse.put_box_auto(new Box);
+
+	for (int i = 1; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			cursor.x_length = i;
+			cursor.y_width = j;
+			EXPECT_EQ(warehouse.move_box(0, cursor), true);
+		}
+	}
+}
