@@ -1,9 +1,9 @@
 #include "Fragile_box.h"
 
-
+#define BASE_SIZE 1
 Fragile_box::Fragile_box() : Box()
 {
-	this->max_pressure = 100.0f;
+	this->max_pressure = BASE_SIZE;
 	this->pressure = 0;
 }
 

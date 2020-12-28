@@ -1,11 +1,13 @@
 #include "Box_container.h"
 
+#define BASE_SIZE 1
 Box_container::Box_container()
 {
 	Cursor cursor;
 	this->placed_cursor = cursor;
-	this->base_length = 1;
-	this->base_width = 1;
+	this->base_length = BASE_SIZE;
+	this->base_width = BASE_SIZE;
+	this->max_height = BASE_SIZE;
 	this->temp_height = 0;
 }
 

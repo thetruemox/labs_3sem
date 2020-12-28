@@ -48,6 +48,27 @@ public:
 	/// <param name="index">Removable box index</param>
 	void delete_box(int index);
 
+	/// <summary>
+	/// Return rack base length
+	/// </summary>
+	/// <returns>Rack base length</returns>
+	unsigned int get_base_length() { return this->base_length; }
+	/// <summary>
+	/// Return rack base width
+	/// </summary>
+	/// <returns>Rack base width</returns>
+	unsigned int get_base_width() { return this->base_width; }
+	/// <summary>
+	/// Return rack height
+	/// </summary>
+	/// <returns>Rack height</returns>
+	unsigned int get_temp_height() { return this->temp_height; }
+	/// <summary>
+	/// Return max rack height
+	/// </summary>
+	/// <returns>Max rack height</returns>
+	unsigned int get_max_height() { return this->max_height; }
+
 	friend class Warehouse;
 private:
 	Cursor placed_cursor;

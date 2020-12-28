@@ -1,9 +1,10 @@
 #include "Fragile_cool_box.h"
 
+#define BASE_SIZE 1
 Fragile_cool_box::Fragile_cool_box() : Box()
 {
-	this->set_temperature(36.6f);
-	this->set_max_pressure(100.0f);
+	this->set_temperature(BASE_SIZE);
+	this->set_max_pressure(BASE_SIZE);
 	this->set_pressure(0);
 }
 

@@ -94,3 +94,10 @@
 /lab4_t_container/Debug
 /lab4_t_container/.vs/lab4_t_container/v16
 /lab4_t_container/lab4_t_container.vcxproj.user
+/lab4_test/.vs/lab4_test/v16
+/lab4_test/Debug
+/lab4_test/packages/Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3
+/lab4_test/lab4_test.vcxproj.user
+/lab4_test/packages.config
+/lab4_test/pch.cpp
+/lab4_test/pch.h
