@@ -83,8 +83,12 @@ public:
 	/// <summary>
 	/// Displays a map
 	/// </summary>
-	void map_out();
-
+	void map_out() const;
+	/// <summary>
+	/// Return number of free cells on map
+	/// </summary>
+	/// <returns>Number of free cells on map</returns>
+	int free_cells() const;
 private:
 	Cursor cursor;
 	Warehouse_map* map;

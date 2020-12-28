@@ -177,3 +177,18 @@ TEST(Move_box, Warehouse)
 		}
 	}
 }
+
+TEST(Empty, Warehouse_map)
+{
+	int size = 10;
+
+	Warehouse warehouse(size, size, 1, size);
+
+	for (int i = 0; i < size * size; i++)
+	{
+		EXPECT_EQ(warehouse.put_box_auto(new Box), true);
+	}
+
+	EXPECT_EQ(warehouse.free_cells(), 0);
+
+}

@@ -310,7 +310,12 @@ void Warehouse::put_container_push_back(unsigned int x, unsigned int y, unsigned
 	box->set_ID(this->generate_ID());
 }
 
-void Warehouse::map_out()
+void Warehouse::map_out() const
 {
 	this->map->map_out();
+}
+
+int Warehouse::free_cells() const
+{
+	return this->map->free_cells();
 }

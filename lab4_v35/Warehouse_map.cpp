@@ -101,6 +101,22 @@ void Warehouse_map::map_out()
 	}
 }
 
+int Warehouse_map::free_cells()
+{
+	int num = 0;
+	for (int i = 0; i < this->length; i++)
+	{
+		for (int j = 0; j < this->width; j++)
+		{
+			if (this->map[i][j] == true)
+			{
+				num++;
+			}
+		}
+	}
+	return num;
+}
+
 void Warehouse_map::place_container(Cursor cursor, int length, int width)
 {
 	for (int i = cursor.x_length; i < cursor.x_length + length; i++)

@@ -38,12 +38,15 @@ public:
 	/// <param name="length">Cleaning length</param>
 	/// <param name="width">Cleaning width</param>
 	void clear_place(Cursor cursor, int length, int width);
-
 	/// <summary>
 	/// Displays a map
 	/// </summary>
 	void map_out();
-
+	/// <summary>
+	/// Return number of free cells
+	/// </summary>
+	/// <returns>Number of free cells</returns>
+	int free_cells();
 	/// <summary>
 	/// Returns warehouse map length
 	/// </summary>
