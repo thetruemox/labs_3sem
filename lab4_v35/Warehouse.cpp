@@ -14,7 +14,6 @@ Warehouse::Warehouse()
 	this->it_ID = 0;
 }
 
-
 Warehouse::Warehouse(int l, int w, int h, float temperature)
 {
 	if (l <= 0 || w <= 0 || h <= 0)
@@ -81,8 +80,9 @@ void Warehouse::out_all_boxes(std::ostream& out) const
 	}
 }
 
-bool Warehouse::put_box_auto(Box *box)
+bool Warehouse::put_box_auto(Box *t_box)
 {
+	Box* box = t_box->copy(t_box);
 	Cool_box* cb_ptr = dynamic_cast<Cool_box*>(box);
 	if (cb_ptr != nullptr && cb_ptr->get_temperature() > this->temperature) return false;
 	
@@ -148,8 +148,9 @@ bool Warehouse::put_box_auto(Box *box)
 	return false;
 }
 
-bool Warehouse::put_box_manual(Box* box, Cursor cursor)
+bool Warehouse::put_box_manual(Box* t_box, Cursor cursor)
 {
+	Box* box = t_box->copy(t_box);
 	Cool_box* cb_ptr = dynamic_cast<Cool_box*>(box);
 	if (cb_ptr != nullptr && cb_ptr->get_temperature() > this->temperature) return false;
 

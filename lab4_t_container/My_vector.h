@@ -1,5 +1,13 @@
 #pragma once
 
+/* todo
+	Перемещающие и прочие сделать или в приват все
+	Кванты
+	Не очищать память при удалении
+	Беззнаковые типы
+	Второй тип перегруженных [] на константную 
+*/
+
 template<class T>
 class My_vector
 {
@@ -111,7 +119,7 @@ inline void My_vector<T>::erase(int index)
 }
 
 template<class T>
-inline T& My_vector<T>::operator[](int index)
+inline T& My_vector<T>::operator[](int index) 
 {
 	if (index < 0 || index >= this->arr_size) throw "Out-of-bounds index";
 	return this->arr[index];

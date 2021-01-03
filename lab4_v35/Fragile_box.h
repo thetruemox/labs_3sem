@@ -26,6 +26,8 @@ public:
 	/// <param name="max_pressure">Box max_pressure</param>
 	Fragile_box(int l, int w, int h, float mass, float max_pressure);
 
+	Box* copy(Box* obj) override;
+
 	/// <summary>
 	/// Set the pressure of other boxes is higher for this
 	/// </summary>

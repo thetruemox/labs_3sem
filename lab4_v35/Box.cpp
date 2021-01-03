@@ -32,6 +32,17 @@ Box::Box(const Box& box)
     this->ID = box.ID;
 }
 
+Box* Box::copy(Box* obj)
+{
+    Box* copy_obj = new Box;
+
+    copy_obj->set_all(obj->get_length(), obj->get_width(), obj->get_height());
+    copy_obj->ID = obj->ID;
+    copy_obj->mass = obj->mass;
+
+    return copy_obj;
+}
+
 unsigned int Box::get_ID()
 {
     return this->ID;

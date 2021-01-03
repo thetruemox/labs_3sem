@@ -17,6 +17,9 @@ public:
 	/// </summary>
 	/// <param name="box">Copy box</param>
 	Fragile_cool_box(const Fragile_cool_box& box);
+
+	Box* copy(Box* obj) override;
+
 	/// <summary>
 	/// Constructor that initializes all box parameters
 	/// </summary>

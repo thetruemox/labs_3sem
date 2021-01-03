@@ -127,7 +127,8 @@ void Terminal::put_box()
 
 	if (choice == 1)
 	{
-		if(!this->warehouses[index]->put_box_auto(box)) delete box;
+		this->warehouses[index]->put_box_auto(box);
+		delete box;
 	}
 	else if (choice == 2)
 	{
@@ -138,7 +139,8 @@ void Terminal::put_box()
 		int y = get_int_pos_wzero();
 
 		Cursor cursor(x, y);
-		if(!this->warehouses[index]->put_box_manual(box, cursor)) delete box;
+		this->warehouses[index]->put_box_manual(box, cursor);
+		delete box;
 	}
 	else return;
 }

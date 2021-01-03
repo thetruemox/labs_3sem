@@ -192,3 +192,7 @@ TEST(Empty, Warehouse_map)
 	EXPECT_EQ(warehouse.free_cells(), 0);
 
 }
+
+/* todo 
+* При добавление нового обхекта проверять не поменялись ли старые
+*/

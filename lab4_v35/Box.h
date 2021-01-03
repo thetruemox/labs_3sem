@@ -27,6 +27,8 @@ public:
 
 	virtual ~Box() {}
 
+	virtual Box* copy(Box* obj);
+
 	/// <summary>
 	/// Return box ID in the warehouse
 	/// </summary>
@@ -46,6 +48,8 @@ public:
 	/// </summary>
 	/// <param name="ID">Box ID</param>
 	void set_ID(int ID) { this->ID = ID; }
+
+	void set_mass(float mass) { this->mass = mass; }
 
 	/// <summary>
 	/// Return box length

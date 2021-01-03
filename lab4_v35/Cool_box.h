@@ -26,6 +26,8 @@ public:
 	/// <param name="temperature">Box temperature</param>
 	Cool_box(int l, int w, int h, float mass, float temperature);
 
+	Box* copy(Box* obj) override;
+
 	/// <summary>
 	/// Return maximum available storage temperature
 	/// </summary>

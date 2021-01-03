@@ -16,6 +16,21 @@ Cool_box::Cool_box(int l, int w, int h, float mass, float temperature) : Box(l, 
     this->temperature = temperature;
 }
 
+Box* Cool_box::copy(Box* obj)
+{
+    Cool_box* ptr = dynamic_cast<Cool_box*>(obj);
+    if (ptr == nullptr) return nullptr;
+
+    Cool_box* copy_obj = new Cool_box;
+
+    copy_obj->set_all(obj->get_length(), obj->get_width(), obj->get_height());
+    copy_obj->set_ID(obj->get_ID());
+    copy_obj->set_mass(obj->get_mass());
+    copy_obj->set_temperature(ptr->get_temperature());
+
+    return copy_obj;
+}
+
 float Cool_box::get_temperature() const
 {
     return this->temperature;
