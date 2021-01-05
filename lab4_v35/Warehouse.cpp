@@ -1,5 +1,6 @@
 #include "Warehouse.h"
 #include <iostream>
+#include <mutex>
 
 #define BASE_SIZE 1
 Warehouse::Warehouse()
@@ -80,19 +81,23 @@ void Warehouse::out_all_boxes(std::ostream& out) const
 	}
 }
 
-bool Warehouse::put_box_auto(Box *t_box)
+std::mutex mx;
+
+int Warehouse::put_box_auto(Box *t_box)
 {
 	Box* box = t_box->copy(t_box);
 	Cool_box* cb_ptr = dynamic_cast<Cool_box*>(box);
-	if (cb_ptr != nullptr && cb_ptr->get_temperature() > this->temperature) return false;
+	if (cb_ptr != nullptr && cb_ptr->get_temperature() > this->temperature) return -1;
 	
+	std::lock_guard<std::mutex> lock(mx);
+
 	//Trying to put box in rack
 	for (unsigned int i = 0; i < racks.size(); i++)
 	{
 		if (racks[i]->put_box_auto(box))
 		{
 			box->set_ID(this->generate_ID());
-			return true;
+			return box->get_ID();
 		}
 	}
 	
@@ -111,12 +116,12 @@ bool Warehouse::put_box_auto(Box *t_box)
 			if (map->is_it_empty_here(cursor, x, y, z))
 			{
 				put_container_push_back(x, y, z, box, cursor);
-				return true;
+				return box->get_ID();
 			}
 			if (map->is_it_empty_here(cursor, y, x, z))
 			{
 				put_container_push_back(y, x, z, box, cursor);
-				return true;
+				return box->get_ID();
 			}
 
 			if (dynamic_cast<Fragile_box*>(box) != nullptr) continue;
@@ -124,28 +129,28 @@ bool Warehouse::put_box_auto(Box *t_box)
 			if (map->is_it_empty_here(cursor, y, z, x))
 			{
 				put_container_push_back(y, z, x, box, cursor);
-				return true;
+				return box->get_ID();
 			}
 			if (map->is_it_empty_here(cursor, z, y, x))
 			{
 				put_container_push_back(z, y, x, box, cursor);
-				return true;
+				return box->get_ID();
 			}
 
 			if (map->is_it_empty_here(cursor, x, z, y))
 			{
 				put_container_push_back(x, z, y, box, cursor);
-				return true;
+				return box->get_ID();
 			}
 			if (map->is_it_empty_here(cursor, z, x, y))
 			{
 				put_container_push_back(z, x, y, box, cursor);
-				return true;
+				return box->get_ID();
 			}
 		}
 	}
 
-	return false;
+	return -1;
 }
 
 bool Warehouse::put_box_manual(Box* t_box, Cursor cursor)

@@ -53,8 +53,8 @@ public:
 	/// Places a box in the warehouse, automatically finding free space
 	/// </summary>
 	/// <param name="box">Pointer on the box</param>
-	/// <returns>True if it was successfully placed and false if not</returns>
-	bool put_box_auto(Box *box);
+	/// <returns>ID of placed box or -1 if box wasnt placed</returns>
+	int put_box_auto(Box *box);
 	/// <summary>
 	/// Places a box in the warehouse at the specified coordinates
 	/// </summary>

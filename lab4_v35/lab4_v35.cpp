@@ -3,6 +3,7 @@ using namespace std;
 #include <memory>
 #include <list>
 #include <vector>
+#include <thread>
 
 #include "Terminal.h"
 

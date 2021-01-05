@@ -101,3 +101,8 @@
 /lab4_test/packages.config
 /lab4_test/pch.cpp
 /lab4_test/pch.h
+/Provider_threads/.editorconfig
+/Provider_threads/Debug
+/Provider_threads/.vs/Provider_threads/v16
+/Provider_threads/Box.cpp
+/Provider_threads/Provider_threads.vcxproj.user
