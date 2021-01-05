@@ -215,6 +215,7 @@ bool Warehouse::put_box_manual(Box* t_box, Cursor cursor)
 
 bool Warehouse::delete_box(int ID)
 {
+	std::lock_guard<std::mutex> lock(mx);
 	for (unsigned int i = 0; i < this->racks.size(); i++)
 	{
 		for (unsigned int j = 0; j < this->racks[i]->size(); j++)

@@ -5,7 +5,8 @@
 #include <ctime>
 #include <cstdlib>
 
-#define MAX_BOX_SIZE 10
+
+#define MAX_BOX_SIZE 5
 #define MAX_BOX_MASS 5
 #define MAX_PRESSURE 10
 #define MIN_TEMPERATURE -10
@@ -18,13 +19,14 @@ public:
 	Provider(Warehouse* warehouse) { this->warehouse = warehouse; }
 
 	void add_box();
-	//void delete_box(int ID);
+	void delete_box();
 
-private:
 	int rand_num(int min, int max);
 
+	int get_size() { return this->id_arr.size(); }
+private:
 	Warehouse* warehouse;
 	std::vector<int> id_arr;
-	std::string name;
+	//std::string name;
 };
 

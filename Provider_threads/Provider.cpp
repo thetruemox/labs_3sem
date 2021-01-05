@@ -2,6 +2,10 @@
 
 void Provider::add_box()
 {
+	if (this->warehouse == nullptr) return;
+
+	srand(time(0));
+
 	Box* box;
 	int ID;
 
@@ -35,6 +39,20 @@ void Provider::add_box()
 		break;
 	}
 }
+
+void Provider::delete_box()
+{
+	if (this->id_arr.size() == 0) return;
+	
+	srand(time(0));
+
+	int index = this->rand_num(0, this->id_arr.size() - 1);
+	if (this->warehouse->delete_box(this->id_arr[index]))
+	{
+		this->id_arr.erase(this->id_arr.begin() + index);
+	}
+}
+
 
 int Provider::rand_num(int min, int max)
 {
